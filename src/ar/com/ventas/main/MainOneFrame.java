@@ -8,8 +8,10 @@ package ar.com.ventas.main;
 import ar.com.ventas.entities.Usuario;
 import ar.com.ventas.services.EquipoActivoService;
 import ar.com.ventas.services.UsuarioService;
+import ar.com.ventas.util.Globals;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -20,8 +22,13 @@ import javax.swing.JOptionPane;
  */
 public class MainOneFrame extends javax.swing.JFrame {
 
-//    private Integer order_num;
-//    private String order_name;
+    private Usuario usuario;
+    private Boolean permiso;
+    private Integer order_num;
+    private String order_name;
+    private DecimalFormat df_order = new DecimalFormat("000");
+    private DecimalFormat df_codigo = new DecimalFormat("000000");
+
     /**
      * Creates new form MainOneFrame
      */
@@ -170,8 +177,19 @@ public class MainOneFrame extends javax.swing.JFrame {
 
     private void contrasenaTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contrasenaTxtKeyPressed
         if (evt.getKeyCode() == 10) {
-            if(!contrasenaTxt.getText().isEmpty()){
-                Integer a = colocarNombre();
+            Integer a;
+            if (!contrasenaTxt.getText().isEmpty()) {
+                a = colocarNombre();
+            } else {
+                a = 0;
+            }
+            if (a == 0) {
+                JOptionPane.showMessageDialog(this, "NO EXISTE USUARIO");
+                codigoTxt.requestFocus();
+                return;
+            }
+            if (a == 1) {
+                verificarContrasenia(usuario);
             }
         }
     }//GEN-LAST:event_contrasenaTxtKeyPressed
@@ -263,6 +281,7 @@ public class MainOneFrame extends javax.swing.JFrame {
     private void limpiarCampos() {
         codigoTxt.setText("");
         contrasenaTxt.setText("");
+        nombreTxt.setText(" ");
     }
 
     private boolean esNumerico() {
@@ -281,15 +300,56 @@ public class MainOneFrame extends javax.swing.JFrame {
     private Integer colocarNombre() {
         Integer a = 0;
         Integer codigo = Integer.valueOf(codigoTxt.getText());
-        Usuario usuario = null;
+        usuario = null;
         try {
             usuario = new UsuarioService().getUsuarioByCodigo(codigo);
         } catch (Exception ex) {
             Logger.getLogger(MainOneFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(usuario != null){
+        if (usuario != null) {
             nombreTxt.setText(usuario.getNombre());
+            a = 1;
         }
         return a;
+    }
+
+    private void verificarContrasenia(Usuario usu) {
+        String psw0 = contrasenaTxt.getText();
+        Integer psw1 = Integer.valueOf(psw0);
+        Integer psw2 = usu.getContrasena();
+        order_name = establecerNombre();
+        order_num = establecerOrden();
+        if (psw1.equals(psw2)) {
+            String str = df_order.format(order_num)
+                    + df_codigo.format(usuario.getCodigo())
+                    + order_name;
+            Globals.USR.set(str);
+            MainFrame mf = new MainFrame();
+            mf.setVisible(true);
+            this.dispose();
+        }
+    }
+
+    private String establecerNombre() {
+        InetAddress localHost;
+        try {
+            localHost = InetAddress.getLocalHost();
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(MainOneFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "ERROR INGRESANDO AL SISTEMA,\nINGRESE NUEVAMENTE");
+            return "";
+        }
+        return localHost.getHostName();
+    }
+
+    private Integer establecerOrden() {
+        Integer i = 0;
+        try {
+            i = new EquipoActivoService().calcularOrden(order_name, "A");
+        } catch (Exception ex) {
+            Logger.getLogger(MainOneFrame.class.getName()).log(Level.SEVERE, null, ex);
+            i = 0;
+        }
+        return i;
     }
 }
