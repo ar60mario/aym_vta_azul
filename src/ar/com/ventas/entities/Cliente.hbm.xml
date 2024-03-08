@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ar.com.ventas.entities.Cliente" schema="ventas" table="cliente">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="codigo" type="string" column="CODIGO"/>
+        <property name="alias" type="string" column="ALIAS"/>
+        <property name="razonSocial" type="string" column="RAZON_SOCIAL"/>
+        <property name="tipo" type="string" column="TIPO"/>
+        <property name="cuit" type="string" column="CUIT"/>
+        <property name="categoriaDeIva" type="integer" column="CATEGORIA_DE_IVA"/>
+        <property name="telefono" type="string" column="TELEFONO"/>
+        <property name="celular" type="string" column="CELULAR"/>
+        <property name="mail" type="string" column="MAIL"/>
+        <property name="descuento" type="float" column="DESCUENTO"/>
+        <property name="tieneDescuento" type="boolean" column="TIENE_DESCUENTO"/>
+        <property name="activo" type="boolean" column="ACTIVO"/>
+        <property name="saldo" type="double" column="SALDO"/>
+        <property name="importeMostrador" type="double" column="IMPORTE_MOSTRADOR"/>
+        <property name="formaDePago" type="integer" column="FORMA_DE_PAGO"/>
+        <property name="observaciones" type="string" column="OBSERVACIONES"/>
+        <property name="entrega" type="string" column="ENTREGA"/>
+        <many-to-one name="domicilio"
+                    class="ar.com.ventas.entities.Domicilio"
+                     lazy="false">
+                     <column name="ID_DOMICILIO" not-null="false"/>
+        </many-to-one>
+        <many-to-one name="vendedor"
+                    class="ar.com.ventas.entities.Vendedor"
+                     lazy="false">
+                     <column name="ID_VENDEDOR" not-null="false"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

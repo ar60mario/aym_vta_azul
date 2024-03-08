@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ar.com.ventas.entities.CuentaCorriente" schema="ventas" table="cuenta_corriente">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="fecha" type="date" column="FECHA"/>
+        <property name="fechaVencimiento" type="date" column="FECHA_VENCIMIENTO"/>
+        <property name="letra" type="string" column="LETRA"/>
+        <property name="sucursal" type="integer" column="SUCURSAL"/>
+        <property name="numero" type="integer" column="NUMERO"/>
+        <property name="tipo" type="integer" column="TIPO"/>
+        <property name="debe" type="double" column="DEBE"/>
+        <property name="haber" type="double" column="HABER"/>
+        <property name="saldo" type="double" column="SALDO"/>
+        <property name="importeSaldado" type="double" column="IMPORTE_SALDADO"/>
+        <many-to-one name="cliente"
+                    class="ar.com.ventas.entities.Cliente"
+                     lazy="false">
+                     <column name="ID_CLIENTE" not-null="true"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

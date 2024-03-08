@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ar.com.ventas.entities.TipoDoc" schema="ventas" table="tipo_doc">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="codigo" type="string" column="CODIGO"/>
+        <property name="descripcion" type="string" column="DESCRIPCION"/>
+    </class>
+</hibernate-mapping>

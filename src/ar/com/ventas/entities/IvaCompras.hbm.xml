@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ar.com.ventas.entities.IvaCompras" schema="ventas" table="iva_compras">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="fechaPeriodo" type="date" column="FECHA_PERIODO"/>
+        <property name="fechaFactura" type="date" column="FECHA_FACTURA"/>
+        <property name="letra" type="string" column="LETRA"/>
+        <property name="numeroSucursal" type="integer" column="NUMERO_SUCURSAL"/>
+        <property name="numeroFactura" type="integer" column="NUMERO_FACTURA"/>
+        <property name="gravado" type="double" column="GRAVADO"/>
+        <property name="noGravado" type="double" column="NO_GRAVADO"/>
+        <property name="impuestoInterno" type="double" column="IMPUESTO_INTERNO"/>
+        <property name="percepcionIiBb" type="double" column="PERCEPCION_II_BB"/>
+        <property name="percepcionIva" type="double" column="PERCEPCION_IVA"/>
+        <property name="otro" type="double" column="OTRO"/>
+        <property name="iva" type="double" column="IVA"/>
+        <property name="total" type="double" column="TOTAL"/>
+        <many-to-one name="proveedor"
+                    class="ar.com.ventas.entities.Proveedor"
+                     lazy="false">
+                     <column name="ID_PROVEEDOR" not-null="false"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ar.com.ventas.entities.Usuario" schema="ventas" table="usuario">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="codigo" type="integer" column="CODIGO"/>
+        <property name="nombre" type="string" column="NOMBRE"/>
+        <property name="activo" type="boolean" column="ACTIVO"/>
+        <property name="nivel" type="integer" column="NIVEL"/>
+        <property name="fecha" type="date" column="FECHA"/>
+        <property name="contrasena" type="integer" column="CONTRASENA"/>
+        <property name="sector" type="integer" column="SECTOR"/>
+    </class>
+</hibernate-mapping>

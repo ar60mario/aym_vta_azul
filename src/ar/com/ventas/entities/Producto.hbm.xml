@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ar.com.ventas.entities.Producto" schema="ventas" table="producto">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="codigo" type="integer" column="CODIGO" unique="true"/>
+        <property name="codigoBarras" type="long" column="CODIGO_BARRAS"/>
+        <property name="detalle" type="string" column="DETALLE"/>
+        <property name="precio" type="double" column="PRECIO"/>
+        <property name="impuesto" type="float" column="IMPUESTO"/>
+        <property name="impuestoCompra" type="float" column="IMPUESTO_COMPRA"/>
+        <property name="sugerido" type="double" column="SUGERIDO"/>
+        <property name="inactivo" type="boolean" column="INACTIVO"/>
+        <property name="ivaCero" type="boolean" column="IVA_CERO"/>
+        <property name="ivaProducto" type="integer" column="IVA_PRODUCTO"/>
+        <property name="stock" type="float" column="STOCK"/>
+        <property name="stockMinimo" type="float" column="STOCK_MINIMO"/>
+        <property name="llevaDto" type="boolean" column="LLEVA_DTO"/>
+        <property name="descuento" type="integer" column="DESCUENTO"/>
+        <property name="cantidadDto" type="integer" column="CANTIDAD_DTO"/>
+        <property name="unidad" type="boolean" column="UNIDAD"/>
+        <property name="cantidadCaja" type="integer" column="CANTIDAD_CAJA"/>
+        <property name="costo" type="double" column="COSTO"/>
+        <property name="cantidadPorBulto" type="integer" column="CANTIDAD_POR_BULTO"/>
+        <property name="dcto" type="float" column="DCTO"/>
+        <property name="margenAyM" type="float" column="MARGEN_AYM"/>
+        <property name="MargenCli" type="float" column="MARGEN_CLI"/>
+        <property name="fechaUltima" type="date" column="FECHA_ULTIMA"/>
+        <property name="actualizarWeb" type="boolean" column="ACTUALIZAR_WEB"/>
+        <property name="actualizarGondola" type="boolean" column="ACTUALIZAR_GONDOLA"/>
+        <property name="actualizarListaPrecios" type="boolean" column="ACTUALIZAR_LISTA_PRECIOS"/>
+        <property name="bloqueado" type="boolean" column="BLOQUEADO"/>
+        <property name="terminal" type="integer" column="TERMINAL"/>
+        <property name="listaPdf" type="boolean" column="LISTA_PDF"/>
+        <many-to-one name="rubro"
+                    class="ar.com.ventas.entities.Rubro"
+                     lazy="false">
+                     <column name="ID_RUBRO" not-null="false"/>
+        </many-to-one>
+        <many-to-one name="subRubro"
+                    class="ar.com.ventas.entities.SubRubro"
+                     lazy="false">
+                     <column name="ID_SUB_RUBRO" not-null="false"/>
+        </many-to-one>
+        <many-to-one name="productoCaja"
+                    class="ar.com.ventas.entities.Producto"
+                     lazy="false">
+                     <column name="ID_PRODUCTO" not-null="false"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ar.com.ventas.entities.IvaVentas" schema="ventas" table="iva_ventas">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="fecha" type="date" column="FECHA"/>
+        <property name="letra" type="string" column="LETRA"/>
+        <property name="numeroSucursal" type="integer" column="NUMERO_SUCURSAL"/>
+        <property name="numeroFactura" type="integer" column="NUMERO_FACTURA"/>
+        <property name="codigoTipoDoc" type="integer" column="CODIGO_TIPO_DOC"/>
+        <property name="gravado" type="double" column="GRAVADO"/>
+        <property name="gravadoCigarrillos" type="double" column="GRAVADO_CIGARRILLOS"/>
+        <property name="exento" type="double" column="EXENTO"/>
+        <property name="noGravado" type="double" column="NO_GRAVADO"/>
+        <property name="impuesto" type="double" column="IMPUESTO"/>
+        <property name="iva" type="double" column="IVA"/>
+        <property name="descuentoGlobal" type="double" column="DESCUENTO_GLOBAL"/>
+        <property name="porcentualDescuentoGlobal" type="float" column="PORCENTUAL_DESCUENTO_GLOBAL"/>
+        <property name="total" type="double" column="TOTAL"/>
+        <property name="fechaCae" type="date" column="FECHA_CAE"/>
+        <property name="cae" type="long" column="CAE"/>
+        <property name="textoPieFactura1" type="string" column="TEXTO_PIE_FACTURA_1"/>
+        <property name="textoPieFactura2" type="string" column="TEXTO_PIE_FACTURA_2"/>
+        <property name="hd" type="boolean" column="HD"/>
+        <property name="docAsociado" type="long" column="DOC_ASOCIADO"/>
+        <many-to-one name="cliente"
+                    class="ar.com.ventas.entities.Cliente"
+                     lazy="false">
+                     <column name="ID_CLIENTE" not-null="false"/>
+        </many-to-one>
+        <many-to-one name="vendedor"
+                    class="ar.com.ventas.entities.Vendedor"
+                     lazy="false">
+                     <column name="ID_VENDEDOR" not-null="false"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

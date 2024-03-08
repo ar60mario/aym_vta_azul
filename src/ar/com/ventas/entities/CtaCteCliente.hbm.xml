@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ar.com.ventas.entities.CtaCteCliente" schema="ventas" table="cta_cte_cliente">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="fecha" type="date" column="FECHA"/>
+        <property name="debe" type="double" column="DEBE"/>
+        <property name="haber" type="double" column="HABER"/>
+        <property name="saldo" type="double" column="SALDO"/>
+        <property name="tipo" type="string" column="TIPO"/>
+        <many-to-one name="cliente"
+                    class="ar.com.ventas.entities.Cliente"
+                     lazy="false">
+                     <column name="ID_CLIENTE" not-null="true"/>
+        </many-to-one>
+        <many-to-one name="factura"
+                    class="ar.com.ventas.entities.IvaVentas"
+                     lazy="false">
+                     <column name="ID_IVA_VENTAS" not-null="false"/>
+        </many-to-one>
+        <many-to-one name="notaCredito"
+                    class="ar.com.ventas.entities.IvaVentas"
+                     lazy="false">
+                     <column name="ID_IVA_NOTA_CREDITO" not-null="false"/>
+        </many-to-one>
+        <many-to-one name="recibo"
+                    class="ar.com.ventas.entities.Recibo"
+                     lazy="false">
+                     <column name="ID_RECIBO" not-null="false"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

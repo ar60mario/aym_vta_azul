@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    
+    <!-- ACA TENES QUE CONFIGURAR SERVIDOR, PUERTO, USUARIO Y CONTRASEÑA. EL RESTO 
+     QUEDA INTACTO -->
+    
+    <!--property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ventas</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">root</property-->
+    
+    <property name="hibernate.connection.url">jdbc:mysql://servidor:3306/ventas</property>
+    <property name="hibernate.connection.username">jos</property>
+    <property name="hibernate.connection.password">root</property>
+    
+    <!-- Enable Hibernate's automatic session context management -->
+    <property name="current_session_context_class">thread</property>
+    <!-- Disable the second-level cache -->
+    <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+    <!-- Echo all executed SQL to stdout -->
+    <property name="show_sql">true</property>
+    <property name="hibernate.use_sql_comments">true</property>
+    <property name="hibernate.format_sql">true</property>
+    <!--<property name="hibernate.session_factory_name">HibernateUtils</property>-->
+    
+    <!--
+        So the list of possible options are,
+
+            validate: validate the schema, makes no changes to the database.
+            update: update the schema.
+            create: creates the schema, destroying previous data.
+            create-drop: drop the schema at the end of the session.
+        -->
+    <property name="hibernate.hbm2ddl.auto">update</property>
+    
+    <!-- CADA ENTITIE QUE SE SUME SE TIENE QUE AGREGAR SU MAPEO -->
+    
+    <mapping resource="ar/com/ventas/entities/Cliente.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/ClienteTraba.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/CustomerTraba.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/Domicilio.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/EquipoActivo.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/Rubro.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/SubRubro.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/Pedido.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/RenglonPedido.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/Proveedor.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/Producto.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/IvaVentas.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/IvaCompras.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/RenglonFactura.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/Configuracion.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/CtaCteCliente.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/RenglonNotaCredito.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/Recibo.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/FcReserved.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/RenglonFcReserved.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/TipoDoc.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/Vendedor.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/Usuario.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/PorcentualVendedor.hbm.xml"/>
+  </session-factory>
+</hibernate-configuration>

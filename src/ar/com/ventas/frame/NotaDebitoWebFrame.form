@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="0"/>
+    <Property name="title" type="java.lang.String" value="NOTA DEBITO WEB"/>
+    <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+      <Color id="Cursor Por defecto"/>
+    </Property>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="ivaTxt" min="-2" pref="134" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="190" max="-2" attributes="0"/>
+                      <Component id="nombreClienteABuscarTxt" min="-2" pref="176" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="buscarClienteXNombre" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="comboClientes" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="codigoTxt" min="-2" pref="58" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="buscarClienteBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="razonSocialTxt" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="cuitTxt" min="-2" pref="143" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                      <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="fechaTxt" min="-2" pref="81" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="descuentoGlobalLbl" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="descuentoGlobalTxt" min="-2" pref="44" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="volverBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="texto1PieFacturaTxt" min="-2" pref="676" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="cantidadAtadosMassalinTxt" min="-2" pref="76" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="importeMassalinTxt" min="-2" pref="78" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="102" max="-2" attributes="0"/>
+                                      <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="cantidadAtadosNoblezaTxt" min="-2" pref="72" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jLabel20" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="importeNoblezaTxt" min="-2" pref="81" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="descuentoLineaLbl" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="descuentoLineaTxt" min="-2" pref="87" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="548" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="texto2PieFacturaTxt" min="-2" pref="676" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="cancelarBtn" min="-2" max="-2" attributes="0"/>
+                          <Component id="terminarBtn" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="61" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="249" max="-2" attributes="0"/>
+                              <Component id="nombreProductoABuscarTxt" min="-2" pref="180" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="buscarProductoXNombreBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Group type="102" attributes="0">
+                                                      <EmptySpace max="-2" attributes="0"/>
+                                                      <Component id="cantidadTxt" min="-2" pref="61" max="-2" attributes="0"/>
+                                                  </Group>
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                                                      <Component id="codigoProductoTxt" min="-2" pref="149" max="-2" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="nombreProductoConsultaTxt" min="-2" pref="258" max="-2" attributes="0"/>
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <Group type="103" groupAlignment="0" attributes="0">
+                                                          <Group type="102" alignment="1" attributes="0">
+                                                              <Component id="precioProductoConsultaTxt" min="-2" pref="148" max="-2" attributes="0"/>
+                                                              <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
+                                                              <Component id="leerCantidadBtn" min="-2" max="-2" attributes="0"/>
+                                                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                          </Group>
+                                                          <Group type="102" alignment="0" attributes="0">
+                                                              <Component id="comboProductos" min="-2" pref="311" max="-2" attributes="0"/>
+                                                              <EmptySpace max="32767" attributes="0"/>
+                                                          </Group>
+                                                      </Group>
+                                                      <Component id="nuevaCantidadTxt" min="-2" pref="68" max="-2" attributes="0"/>
+                                                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                              <Component id="codigoBarrasTxt" min="-2" pref="165" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="incorporarAFacturaBtn" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="agregarBtn" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="eliminarItemBtn" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="leerPrecioBtn" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="nuevoPrecioTxt" min="-2" pref="81" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                                  <Component id="grabarCantidadBtn" min="-2" max="-2" attributes="0"/>
+                                  <Component id="imprimeChk" alignment="1" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="totalTxt" min="-2" pref="115" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="grabarPrecioBtn" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="descuentoBtn" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                  <Component id="descuentoVolumenTxt" min="-2" pref="107" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="cantidadItemsTxt" min="-2" pref="98" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jScrollPane1" min="-2" pref="973" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="codigoTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="razonSocialTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="fechaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="buscarClienteBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="descuentoGlobalTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="descuentoGlobalLbl" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="volverBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cuitTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ivaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="buscarClienteXNombre" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="comboClientes" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nombreClienteABuscarTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="291" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="nombreProductoABuscarTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="buscarProductoXNombreBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="codigoBarrasTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="descuentoBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="descuentoVolumenTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="comboProductos" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="codigoProductoTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="totalTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cantidadTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nombreProductoConsultaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cantidadItemsTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="descuentoLineaLbl" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="descuentoLineaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="precioProductoConsultaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="leerCantidadBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nuevaCantidadTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="grabarCantidadBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="agregarBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="eliminarItemBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="incorporarAFacturaBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="grabarPrecioBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nuevoPrecioTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="leerPrecioBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="texto1PieFacturaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="imprimeChk" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="texto2PieFacturaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cancelarBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel17" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cantidadAtadosMassalinTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cantidadAtadosNoblezaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="importeMassalinTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel20" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="importeNoblezaTxt" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="terminarBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTable" name="tablaFactura">
+          <Properties>
+            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+              <Table columnCount="10" rowCount="0">
+                <Column editable="false" title="C&#xf3;digo" type="java.lang.Object"/>
+                <Column editable="false" title="Cant" type="java.lang.Integer"/>
+                <Column editable="false" title="Detalle" type="java.lang.Object"/>
+                <Column editable="false" title="P.Unit" type="java.lang.Integer"/>
+                <Column editable="false" title="Gravado" type="java.lang.Integer"/>
+                <Column editable="false" title="Impuesto" type="java.lang.Integer"/>
+                <Column editable="false" title="IVA" type="java.lang.Integer"/>
+                <Column editable="false" title="dto." type="java.lang.Integer"/>
+                <Column editable="false" title="SubTotal" type="java.lang.Integer"/>
+                <Column editable="false" title="Sug." type="java.lang.Integer"/>
+              </Table>
+            </Property>
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+              <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="30" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="10" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="330" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="25" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="25" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="25" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="30" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
+              </TableColumnModel>
+            </Property>
+            <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+            </Property>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cliente:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Iva:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Fecha:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel5">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="C&#xf3;digo:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel6">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="C.Barras:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel7">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cantidad:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="codigoProductoTxt">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="CODIGO P"/>
+      </Properties>
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="codigoProductoTxtKeyPressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="codigoBarrasTxt">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="COD BARRAS"/>
+      </Properties>
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="codigoBarrasTxtKeyPressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="cantidadTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="CANT"/>
+      </Properties>
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="cantidadTxtKeyPressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="codigoTxt">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="CODIGO"/>
+      </Properties>
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="codigoTxtKeyPressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="razonSocialTxt">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="RAZON SOCIAL"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="fechaTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="FECHA"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="ivaTxt">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="IVA"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel8">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="TOTAL ND:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="agregarBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Agregar otro Item"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="agregarBtnActionPerformed"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="agregarBtnKeyPressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="totalTxt">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="12" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="cc" type="rgb"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="TOTAL"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="terminarBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Terminar ND"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="terminarBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="cancelarBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cancelar ND"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelarBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="buscarClienteBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Buscar"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buscarClienteBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="incorporarAFacturaBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Incorporar a ND"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="incorporarAFacturaBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="eliminarItemBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Eliminar Item seleccionado"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="eliminarItemBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="buscarClienteXNombre">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Buscar x nombre"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buscarClienteXNombreActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="buscarProductoXNombreBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Buscar x nombre"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buscarProductoXNombreBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="descuentoGlobalLbl">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Descuento:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="descuentoGlobalTxt">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="DESC"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="descuentoLineaLbl">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Dscto:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="descuentoLineaTxt">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="DESCUENTO"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="comboClientes">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comboClientesActionPerformed"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="comboClientesKeyPressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="comboProductos">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="4">
+            <StringItem index="0" value="Item 1"/>
+            <StringItem index="1" value="Item 2"/>
+            <StringItem index="2" value="Item 3"/>
+            <StringItem index="3" value="Item 4"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="comboProductosActionPerformed"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="comboProductosKeyPressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="nombreClienteABuscarTxt">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="NOMBRE CLIENTE A BUSCAR"/>
+      </Properties>
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nombreClienteABuscarTxtKeyPressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="nombreProductoABuscarTxt">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="NOMBRE PRODUCTO A BUSCAR"/>
+      </Properties>
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nombreProductoABuscarTxtKeyPressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="descuentoBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Dto"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel12">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Descuento"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="descuentoVolumenTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="DESCEUNTO"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="texto1PieFacturaTxt">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="TEXTO 1 PIE FACTURA"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="texto2PieFacturaTxt">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="TEXTO 2 PIE FACTURA"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="volverBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Volver"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="volverBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="nombreProductoConsultaTxt">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="NOMBRE PRODUCTO CONSULTA"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="precioProductoConsultaTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="PRECIO PROD CONSU"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel15">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Massalin:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel17">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Nobleza:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="cantidadAtadosMassalinTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Cant.Mass."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="cantidadAtadosNoblezaTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Cant.Nobl."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel18">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cant. Items:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="cantidadItemsTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="Cantidad Items"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="nuevaCantidadTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="NUE CANT"/>
+      </Properties>
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nuevaCantidadTxtKeyPressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="leerCantidadBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Leer Cantidad"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="leerCantidadBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="grabarCantidadBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Grabar Cantidad"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="grabarCantidadBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="leerPrecioBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Leer Precio"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="leerPrecioBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="grabarPrecioBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Grabar Precio"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="grabarPrecioBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="nuevoPrecioTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="NUE PREC"/>
+      </Properties>
+      <Events>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nuevoPrecioTxtKeyPressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel19">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Importe:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="importeMassalinTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="IMP.MASS."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel20">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Importe:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="importeNoblezaTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="text" type="java.lang.String" value="IMP.NOBL."/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="cuitTxt">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="CUIT"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="imprimeChk">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Imprime"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>

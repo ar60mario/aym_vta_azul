@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ar.com.ventas.entities.MovimientoCaja" schema="ventas" table="movimiento_caja">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="fecha" type="date" column="FECHA"/>
+        <property name="totalFacturado" type="double" column="TOTAL_FACTURADO"/>
+        <property name="saldoDeudorAnterior" type="double" column="SALDO_DEUDOR_ANTERIOR"/>
+        <property name="cajaInicial" type="double" column="CAJA_INICIAL"/>
+        <property name="totalDeudoresHoy" type="double" column="TOTAL_DEUDORES_HOY"/>
+        <property name="descuentos" type="double" column="DESCUENTOS"/>
+        <property name="deposito" type="double" column="DEPOSITO"/>
+        <property name="totalVales" type="double" column="TOTAL_VALES"/>
+        <property name="cerrado" type="boolean" column="CERRADO"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ar.com.ventas.entities.Recibo" schema="ventas" table="recibo">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="fecha" type="date" column="FECHA"/>
+        <property name="numero" type="integer" column="NUMERO"/>
+        <property name="importe" type="double" column="IMPORTE"/>
+        <many-to-one name="cliente"
+                    class="ar.com.ventas.entities.Cliente"
+                     lazy="false">
+                     <column name="ID_CLIENTE" not-null="true"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

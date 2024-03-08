@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ar.com.ventas.entities.CostoProducto" schema="ventas" table="costo_producto">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="saldo" type="double" column="SALDO"/>
+        <property name="codigo" type="string" column="CODIGO"/>
+        <many-to-one name="producto"
+                    class="ar.com.ventas.entities.Producto"
+                     lazy="false">
+                     <column name="ID_PRODUCTO" not-null="false"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

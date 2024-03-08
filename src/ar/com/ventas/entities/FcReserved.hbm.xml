@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ar.com.ventas.entities.FcReserved" schema="ventas" table="fc_reserved">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="fecha" type="date" column="FECHA"/>
+        <property name="gravado" type="double" column="GRAVADO"/>
+        <property name="gravadoCigarrillos" type="double" column="GRAVADO_CIGARRILLOS"/>
+        <property name="exento" type="double" column="EXENTO"/>
+        <property name="noGravado" type="double" column="NO_GRAVADO"/>
+        <property name="impuesto" type="double" column="IMPUESTO"/>
+        <property name="iva" type="double" column="IVA"/>
+        <property name="descuentoGlobal" type="double" column="DESCUENTO_GLOBAL"/>
+        <property name="porcentualDescuentoGlobal" type="float" column="PORCENTUAL_DESCUENTO_GLOBAL"/>
+        <property name="total" type="double" column="TOTAL"/>
+        <many-to-one name="cliente"
+                    class="ar.com.ventas.entities.Cliente"
+                     lazy="false">
+                     <column name="ID_CLIENTE" not-null="false"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

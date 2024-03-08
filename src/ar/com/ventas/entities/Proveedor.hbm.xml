@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ar.com.ventas.entities.Proveedor" schema="ventas" table="proveedor">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="codigo" type="integer" column="CODIGO"/>
+        <property name="razonSocial" type="string" column="RAZON_SOCIAL"/>
+        <property name="cuit" type="string" column="CUIT"/>
+        <property name="categoriaIva" type="integer" column="CATEGORIA_IVA"/>
+        <property name="telefono" type="string" column="TELEFONO"/>
+        <property name="celular" type="string" column="CELULAR"/>
+        <property name="mail" type="string" column="MAIL"/>
+        <property name="observaciones" type="string" column="OBSERVACIONES"/>
+        <property name="activo" type="boolean" column="ACTIVO"/>
+        <many-to-one name="domicilio"
+                    class="ar.com.ventas.entities.Domicilio"
+                     lazy="false">
+                     <column name="ID_DOMICILIO" not-null="false"/>
+        </many-to-one>
+        
+    </class>
+</hibernate-mapping>
