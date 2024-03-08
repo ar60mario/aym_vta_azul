@@ -35,20 +35,29 @@ import ar.com.ventas.frame.VerProductosFrame;
 import ar.com.ventas.services.ConfiguracionService;
 import ar.com.ventas.services.EquipoActivoService;
 import ar.com.ventas.services.UsuarioService;
+import ar.com.ventas.util.Globals;
 import ar.com.ventas.util.LectorDeExcel;
+import ar.com.ventas.util.UtilFrame;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 /**
  *
@@ -56,6 +65,7 @@ import javax.swing.JTextField;
  */
 public class MainFrame extends javax.swing.JFrame {
 
+    private JPanel contentPanel;
     private String filtro = "";
     private Usuario usuario;
     private final Integer nivel = 1;
@@ -66,16 +76,33 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      *
-     
+     *
      */
     public MainFrame() {
         initComponents();
-        this.setLocationRelativeTo(null);
+//        this.setLocationRelativeTo(null);
+
+        contentPanel = jPanel1;
+        
+//System.out.println(localHost.getHostName());
 //        iniciarConfiguracionBtn.setVisible(false);
         //order_name, order_num
 //        this.order_name = order_name;
 //        this.order_num = order_num;
 //        tstInicio();
+        int i = JFrame.PROPERTIES;
+        JFrame jFrame = MainFrame.this;
+        String str1 = UtilFrame.getNombreEquipo();
+        String str0 = UtilFrame.getUsuario() + " " + str1;
+
+        setBounds(100, 100, 800, 600);
+        contentPanel.setBorder(new EmptyBorder(5, 5, 100, 5));
+        contentPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED),
+                str0, TitledBorder.LEFT, TitledBorder.BELOW_BOTTOM));
+
+        jFrame.setDefaultCloseOperation(0);
+        setContentPane(contentPanel);
+//        limpiarFrame();
     }
 
     /**
@@ -89,12 +116,13 @@ public class MainFrame extends javax.swing.JFrame {
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         jMenuItem5 = new javax.swing.JMenuItem();
-        salirBtn = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        facturaWebPedidosBtn = new javax.swing.JButton();
         facturarBtn = new javax.swing.JButton();
         facturaBtn = new javax.swing.JButton();
-        notaCreditoBtn = new javax.swing.JButton();
-        facturaWebPedidosBtn = new javax.swing.JButton();
         consultarPrecioBtn = new javax.swing.JButton();
+        notaCreditoBtn = new javax.swing.JButton();
+        salirBtn = new javax.swing.JButton();
         mainMenuFrame = new javax.swing.JMenuBar();
         archivo = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
@@ -132,11 +160,13 @@ public class MainFrame extends javax.swing.JFrame {
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, this, org.jdesktop.beansbinding.ELProperty.create("Distribuidora A y M"), this, org.jdesktop.beansbinding.BeanProperty.create("title"));
         bindingGroup.addBinding(binding);
 
-        salirBtn.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        salirBtn.setText("Salir");
-        salirBtn.addActionListener(new java.awt.event.ActionListener() {
+        jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        facturaWebPedidosBtn.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        facturaWebPedidosBtn.setText("Factura Web de Pedidos");
+        facturaWebPedidosBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                salirBtnActionPerformed(evt);
+                facturaWebPedidosBtnActionPerformed(evt);
             }
         });
 
@@ -156,6 +186,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        consultarPrecioBtn.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        consultarPrecioBtn.setText("Consultar Precio");
+        consultarPrecioBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                consultarPrecioBtnActionPerformed(evt);
+            }
+        });
+
         notaCreditoBtn.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         notaCreditoBtn.setText("Nota Crédito");
         notaCreditoBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -164,21 +202,50 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        facturaWebPedidosBtn.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        facturaWebPedidosBtn.setText("Factura Web de Pedidos");
-        facturaWebPedidosBtn.addActionListener(new java.awt.event.ActionListener() {
+        salirBtn.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        salirBtn.setText("Salir");
+        salirBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                facturaWebPedidosBtnActionPerformed(evt);
+                salirBtnActionPerformed(evt);
             }
         });
 
-        consultarPrecioBtn.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        consultarPrecioBtn.setText("Consultar Precio");
-        consultarPrecioBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                consultarPrecioBtnActionPerformed(evt);
-            }
-        });
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(facturarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(facturaBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(consultarPrecioBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(notaCreditoBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
+                        .addComponent(salirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(facturaWebPedidosBtn)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(395, 395, 395)
+                .addComponent(facturaWebPedidosBtn)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(facturarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(facturaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(consultarPrecioBtn)
+                    .addComponent(notaCreditoBtn)
+                    .addComponent(salirBtn))
+                .addContainerGap())
+        );
 
         archivo.setText("Archivo");
         archivo.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -394,37 +461,16 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(facturarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(facturaBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(notaCreditoBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 167, Short.MAX_VALUE)
-                        .addComponent(salirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(facturaWebPedidosBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(consultarPrecioBtn)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(377, 377, 377)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(facturaWebPedidosBtn)
-                    .addComponent(consultarPrecioBtn))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(facturarBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(facturaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(notaCreditoBtn)
-                    .addComponent(salirBtn))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -652,6 +698,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuBar mainMenuFrame;
     private javax.swing.JButton notaCreditoBtn;
     private javax.swing.JMenuItem notaDebitoMnu;
