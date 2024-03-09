@@ -90,7 +90,7 @@ public class MainFrame extends javax.swing.JFrame {
 //        this.order_name = order_name;
 //        this.order_num = order_num;
 //        tstInicio();
-        int i = JFrame.PROPERTIES;
+//        int i = JFrame.PROPERTIES;
         JFrame jFrame = MainFrame.this;
         String str1 = UtilFrame.getNombreEquipo();
         String str0 = UtilFrame.getUsuario() + " " + str1;

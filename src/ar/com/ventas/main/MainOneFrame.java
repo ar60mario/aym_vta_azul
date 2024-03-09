@@ -22,13 +22,10 @@ import javax.swing.JOptionPane;
  */
 public class MainOneFrame extends javax.swing.JFrame {
 
-    private Usuario usuario;
-    private Boolean permiso;
     private Integer order_num;
     private String order_name;
     private DecimalFormat df_order = new DecimalFormat("000");
-    private DecimalFormat df_codigo = new DecimalFormat("000000");
-
+    
     /**
      * Creates new form MainOneFrame
      */
@@ -137,7 +134,7 @@ public class MainOneFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel1)
-                .addGap(36, 36, 36)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(codigoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -145,9 +142,9 @@ public class MainOneFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(contrasenaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
+                .addGap(29, 29, 29)
                 .addComponent(nombreTxt)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(salirBtn)
                     .addComponent(ingresarBtn))
@@ -163,9 +160,6 @@ public class MainOneFrame extends javax.swing.JFrame {
 
     private void ingresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresarBtnActionPerformed
         ingresar();
-//        MainFrame mf = new MainFrame("mario", 1);
-//        mf.setVisible(true);
-//        this.dispose();
     }//GEN-LAST:event_ingresarBtnActionPerformed
 
     private void codigoTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoTxtKeyPressed
@@ -195,9 +189,7 @@ public class MainOneFrame extends javax.swing.JFrame {
                 codigoTxt.requestFocus();
                 return;
             }
-            if (a == 1) {
-                verificarContrasenia(usuario);
-            }
+
         }
     }//GEN-LAST:event_contrasenaTxtKeyPressed
 
@@ -252,43 +244,22 @@ public class MainOneFrame extends javax.swing.JFrame {
     }
 
     private void ingresar() {
-//        order_name = establecerNombre();
-//        if (order_name == "") {
-//            System.exit(0);
-//        }
-//        order_num = establecerOrden();
-//        if (order_num > 0) {
+        verificarContrasenia();
+
         MainFrame mf = new MainFrame();
         mf.setVisible(true);
         this.dispose();
-//        }
+
     }
 
-//    private String establecerNombre() {
-//        InetAddress localHost;
-//        try {
-//            localHost = InetAddress.getLocalHost();
-//        } catch (UnknownHostException ex) {
-//            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-//            JOptionPane.showMessageDialog(this, "ERROR INGRESANDO AL SISTEMA,\nINGRESE NUEVAMENTE");
-//            return "";
-//        }
-//        return localHost.getHostName();
-//    }
-//    private Integer establecerOrden() {
-//        Integer i = 0;
-//        try {
-//            i = new EquipoActivoService().calcularOrden(order_name, "A");
-//        } catch (Exception ex) {
-//            Logger.getLogger(MainOneFrame.class.getName()).log(Level.SEVERE, null, ex);
-//            i = 0;
-//        }
-//        return i;
-//    }
     private void limpiarCampos() {
         codigoTxt.setText("");
         contrasenaTxt.setText("");
         nombreTxt.setText(" ");
+        jLabel2.setVisible(false);
+        jLabel3.setVisible(false);
+        codigoTxt.setVisible(false);
+        contrasenaTxt.setVisible(false);
     }
 
     private boolean esNumerico() {
@@ -307,34 +278,34 @@ public class MainOneFrame extends javax.swing.JFrame {
     private Integer colocarNombre() {
         Integer a = 0;
         Integer codigo = Integer.valueOf(codigoTxt.getText());
-        usuario = null;
+//        usuario = null;
         try {
-            usuario = new UsuarioService().getUsuarioByCodigo(codigo);
+//            usuario = new UsuarioService().getUsuarioByCodigo(codigo);
         } catch (Exception ex) {
             Logger.getLogger(MainOneFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (usuario != null) {
-            nombreTxt.setText(usuario.getNombre());
-            a = 1;
-        }
+//        if (usuario != null) {
+//            nombreTxt.setText(usuario.getNombre());
+//            a = 1;
+//        }
         return a;
     }
 
-    private void verificarContrasenia(Usuario usu) {
+    private void verificarContrasenia() {
         String psw0 = contrasenaTxt.getText();
-        Integer psw1 = Integer.valueOf(psw0);
-        Integer psw2 = usu.getContrasena();
+//        Integer psw1 = Integer.valueOf(psw0);
+//        Integer psw2 = usu.getContrasena();
         order_name = establecerNombre();
         order_num = establecerOrden();
-        if (psw1.equals(psw2)) {
-            String str = df_order.format(order_num)
-                    + df_codigo.format(usuario.getCodigo())
-                    + order_name;
-            Globals.USR.set(str);
-            MainFrame mf = new MainFrame();
-            mf.setVisible(true);
-            this.dispose();
-        }
+//        if (psw1.equals(psw2)) {
+        String str = df_order.format(order_num) + " " + order_name;
+//                    + df_codigo.format(usuario.getCodigo())
+//                    + order_name;
+        Globals.USR.set(str);
+        MainFrame mf = new MainFrame();
+        mf.setVisible(true);
+        this.dispose();
+//        }
     }
 
     private String establecerNombre() {

@@ -18,6 +18,8 @@ import java.util.logging.Logger;
  */
 public class UtilFrame {
     public static String getUsuario() {
+//        System.out.println(Globals.USR.get());
+//        System.exit(0);
         String str1 = Globals.USR.get();
         String str3 = str1.substring(3, 9);
         String str5 = str3;

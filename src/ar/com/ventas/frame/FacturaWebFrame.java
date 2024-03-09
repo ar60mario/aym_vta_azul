@@ -1961,7 +1961,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // presentacion web
+        // presentacion web  --  1 esta en test
 
         if (tst == 0) {
             try {
