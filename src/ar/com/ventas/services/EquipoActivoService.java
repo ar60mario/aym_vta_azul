@@ -9,24 +9,29 @@ import org.hibernate.Transaction;
 
 public class EquipoActivoService {
 
-    public Integer calcularOrden(String nombre, String sistema) throws Exception {
+    public Integer calcularOrden(String nombre, String tipo) throws Exception {
         Integer orden = 0;
         List<EquipoActivo> equipos = null;
-        EquipoActivo eq = null;
+//        EquipoActivo eq = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
-            equipos = new EquipoActivoBO().getEquiposActivos(nombre, sistema);
+            equipos = new EquipoActivoBO().getEquiposActivos(nombre.trim(), tipo);
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();
             throw new Exception(ex);
         }
+        System.out.println(equipos);
+//        JOptionPane.showMessageDialog(null, "VER");
         if (equipos != null && !equipos.isEmpty()) {
             int equipo = 0;
             int equipoLibre = 0;
             for (EquipoActivo ea : equipos) {
-                if (ea.getNombre().equals(nombre)) {
+                System.out.println(nombre.trim());
+                System.out.println(ea.getNombre());
+                if (ea.getNombre().equals(nombre.trim())) {
+                    System.out.println(ea.getActivo());
                     if (ea.getActivo()) {
                         if (ea.getOrden() > orden) {
                             orden = ea.getOrden();
@@ -37,14 +42,17 @@ public class EquipoActivoService {
                         orden -= 1;
                         break;
                     }
+                    
                 }
                 equipo += 1;
             }
+//            System.out.println(orden);
+//            System.exit(0);
             orden += 1;
             if (equipoLibre == 0) {
                 EquipoActivo ea2 = new EquipoActivo();
                 ea2.setActivo(true);
-                ea2.setNombre(nombre);
+                ea2.setNombre(nombre.trim());
                 ea2.setOrden(orden);
                 ea2.setTipo("A");
                 new EquipoActivoService().saveEquipoActivo(ea2);
@@ -57,7 +65,7 @@ public class EquipoActivoService {
             orden += 1;
             EquipoActivo ea2 = new EquipoActivo();
             ea2.setActivo(true);
-            ea2.setNombre(nombre);
+            ea2.setNombre(nombre.trim());
             ea2.setOrden(orden);
             ea2.setTipo("A");
             new EquipoActivoService().saveEquipoActivo(ea2);
@@ -94,7 +102,7 @@ public class EquipoActivoService {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
-            ea = new EquipoActivoBO().getEquipoActivoByNombreAndOrden(nombre, orden, sistema);
+            ea = new EquipoActivoBO().getEquipoActivoByNombreAndOrden(nombre.trim(), orden, sistema);
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();

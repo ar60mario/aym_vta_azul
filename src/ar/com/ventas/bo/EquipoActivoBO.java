@@ -14,10 +14,10 @@ import org.hibernate.HibernateException;
  */
 public class EquipoActivoBO {
 
-    public List<EquipoActivo> getEquiposActivos(String nombre, String sistema) throws Exception {
+    public List<EquipoActivo> getEquiposActivos(String nombre, String tipo) throws Exception {
         List<EquipoActivo> equipos;
         try {
-            equipos = new EquipoActivoDAO().getAll(EquipoActivo.class);
+            equipos = new EquipoActivoDAO().getEquiposActivos(nombre, tipo);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }

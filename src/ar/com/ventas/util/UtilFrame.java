@@ -5,12 +5,13 @@
  */
 package ar.com.ventas.util;
 
-import ar.com.ventas.entities.Usuario;
-import ar.com.ventas.services.UsuarioService;
+import ar.com.ventas.main.MainOneFrame;
+import ar.com.ventas.services.EquipoActivoService;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,20 +19,11 @@ import java.util.logging.Logger;
  */
 public class UtilFrame {
     public static String getUsuario() {
-//        System.out.println(Globals.USR.get());
-//        System.exit(0);
         String str1 = Globals.USR.get();
-        String str3 = str1.substring(3, 9);
-        String str5 = str3;
-        Integer codigo = Integer.valueOf(str3);
-        Usuario u = null;
-        try {
-            u = new UsuarioService().getUsuarioByCodigo(codigo);
-        } catch (Exception ex) {
-            Logger.getLogger(UtilFrame.class.getName()).log(Level.SEVERE, null, ex);
-            return str5;
-        }
-        str5 = str5 + " - " + u.getNombre();
+        Integer largo = str1.length();
+        String str0 = str1.substring(0, 3);
+        String str3 = str1.substring(4, largo);
+        String str5 = str0 + " - " + str3;
         return str5;
     }
     
@@ -49,5 +41,29 @@ public class UtilFrame {
             }
         }
         return str1;
+    }
+    
+    public static String establecerNombre() {
+        InetAddress localHost;
+        try {
+            localHost = InetAddress.getLocalHost();
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(MainOneFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "ERROR INGRESANDO AL SISTEMA,\nINGRESE NUEVAMENTE");
+            return "";
+        }
+        return localHost.getHostName();
+    }
+    
+    public static Integer establecerOrden() {
+        Integer i = 0;
+        String order_name = establecerNombre();
+        try {
+            i = new EquipoActivoService().calcularOrden(order_name.trim(), "A");
+        } catch (Exception ex) {
+            Logger.getLogger(MainOneFrame.class.getName()).log(Level.SEVERE, null, ex);
+            i = 0;
+        }
+        return i;
     }
 }

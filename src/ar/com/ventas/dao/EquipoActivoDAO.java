@@ -20,11 +20,12 @@ import org.hibernate.criterion.Order;
  */
 public class EquipoActivoDAO extends GenericDAO {
 
-    public List<EquipoActivo> getEquiposActivos(String nombre) {
+    public List<EquipoActivo> getEquiposActivos(String nombre, String tipo) {
         List<EquipoActivo> equipos;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Criteria criteria = session.createCriteria(EquipoActivo.class);
         criteria.add(Restrictions.eq("activo", true));
+        criteria.add(Restrictions.eq("tipo", tipo));
         equipos = (List<EquipoActivo>) criteria.list();
         return equipos;
     }

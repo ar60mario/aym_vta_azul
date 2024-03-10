@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ar.com.ventas.main;
 
 import ar.com.ventas.entities.Configuracion;
@@ -23,7 +18,6 @@ import ar.com.ventas.frame.FacturaWebFrame;
 import ar.com.ventas.frame.ImportarClienteFrame;
 import ar.com.ventas.frame.ImportarProductoFrame;
 import ar.com.ventas.frame.NotaCreditoSelectFrame;
-import ar.com.ventas.frame.NotaDebitoWebFrame;
 import ar.com.ventas.frame.NotaDebitoWebSelectFrame;
 import ar.com.ventas.frame.PedidoFrame;
 import ar.com.ventas.frame.PedidosPendientesFrame;
@@ -35,7 +29,6 @@ import ar.com.ventas.frame.VerProductosFrame;
 import ar.com.ventas.services.ConfiguracionService;
 import ar.com.ventas.services.EquipoActivoService;
 import ar.com.ventas.services.UsuarioService;
-import ar.com.ventas.util.Globals;
 import ar.com.ventas.util.LectorDeExcel;
 import ar.com.ventas.util.UtilFrame;
 import java.io.BufferedReader;
@@ -43,8 +36,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -70,8 +61,8 @@ public class MainFrame extends javax.swing.JFrame {
     private Usuario usuario;
     private final Integer nivel = 1;
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//    private final Integer order_num;
-//    private final String order_name;
+    private Integer order_num;
+    private String order_name;
 
     /**
      * Creates new form MainFrame
@@ -80,29 +71,22 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-//        this.setLocationRelativeTo(null);
-
         contentPanel = jPanel1;
-        
-//System.out.println(localHost.getHostName());
-//        iniciarConfiguracionBtn.setVisible(false);
-        //order_name, order_num
-//        this.order_name = order_name;
-//        this.order_num = order_num;
-//        tstInicio();
-//        int i = JFrame.PROPERTIES;
         JFrame jFrame = MainFrame.this;
-        String str1 = UtilFrame.getNombreEquipo();
-        String str0 = UtilFrame.getUsuario() + " " + str1;
+//        jFrame.setExtendedState(6);
+        jFrame.setLocationRelativeTo(null);
+//        String str1 = UtilFrame.getNombreEquipo();
+        String str0 = UtilFrame.getUsuario(); // + " " + str1;
+        int largo = str0.length();
+        order_num = Integer.valueOf(str0.substring(0, 3));
+        order_name = str0.substring(6, largo);
 
-        setBounds(100, 100, 800, 600);
+//        setBounds(100, 100, 800, 600);
         contentPanel.setBorder(new EmptyBorder(5, 5, 100, 5));
         contentPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED),
                 str0, TitledBorder.LEFT, TitledBorder.BELOW_BOTTOM));
-
         jFrame.setDefaultCloseOperation(0);
         setContentPane(contentPanel);
-//        limpiarFrame();
     }
 
     /**
@@ -218,6 +202,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(facturaWebPedidosBtn)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(facturarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(facturaBtn)
@@ -226,16 +213,13 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(notaCreditoBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
-                        .addComponent(salirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(facturaWebPedidosBtn)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(salirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(395, 395, 395)
+                .addGap(346, 346, 346)
                 .addComponent(facturaWebPedidosBtn)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -244,7 +228,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(consultarPrecioBtn)
                     .addComponent(notaCreditoBtn)
                     .addComponent(salirBtn))
-                .addContainerGap())
+                .addGap(60, 60, 60))
         );
 
         archivo.setText("Archivo");
@@ -470,8 +454,8 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -777,12 +761,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void salir() {
         int escape = JOptionPane.showConfirmDialog(null, "CONFIRME SALIR DEL SISTEMA", "Atención - salir de SISTEMA", JOptionPane.YES_NO_OPTION);
-        // 0 = si; 1 = no
         if (escape == 0) {
-            int si = 1; //cerrarSistema();
+            int si = cerrarSistema();
             if (si == 0) {
-                JOptionPane.showMessageDialog(this, "ERROR SALIENDO DEL SISTEMA\nINTENTE NUEVAMENTE");
-                return;
+                JOptionPane.showMessageDialog(this, "ERROR SALIENDO DEL SISTEMA");
             }
             System.exit(0);
         }
@@ -985,21 +967,32 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
-//    private Integer cerrarSistema() {
-//        EquipoActivo ea = null;
-//        try {
-//            ea = new EquipoActivoService().getEquipoActivoByNombreAndOrden(order_name, order_num, "A");
-//        } catch (Exception ex) {
-//            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-//            return 0;
-//        }
-//        ea.setActivo(false);
-//        try {
-//            new EquipoActivoService().updateEquipoActivo(ea);
-//            return 1;
-//        } catch (Exception ex) {
-//            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-//            return 0;
-//        }
-//    }
+    private Integer cerrarSistema() {
+        EquipoActivo ea;
+//        order_name = UtilFrame.establecerNombre();
+//        order_num = UtilFrame.establecerOrden();
+        System.out.println(order_name);
+        System.out.println(order_num);
+        try {
+            ea = new EquipoActivoService().getEquipoActivoByNombreAndOrden(order_name.trim(), order_num, "A");
+        } catch (Exception ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("no se encontro");
+            return 0;
+        }
+        if (ea != null) {
+            ea.setActivo(false);
+        } else {
+            System.out.println("aca pasa algo");
+            System.exit(0);
+        }
+        try {
+            new EquipoActivoService().updateEquipoActivo(ea);
+            return 1;
+        } catch (Exception ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("no se actualizo");
+            return 0;
+        }
+    }
 }
