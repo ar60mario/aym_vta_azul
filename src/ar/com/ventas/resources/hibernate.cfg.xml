@@ -43,6 +43,7 @@
     <mapping resource="ar/com/ventas/entities/CustomerTraba.hbm.xml"/>
     <mapping resource="ar/com/ventas/entities/Domicilio.hbm.xml"/>
     <mapping resource="ar/com/ventas/entities/EquipoActivo.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/EquipoBloqueado.hbm.xml"/>
     <mapping resource="ar/com/ventas/entities/Rubro.hbm.xml"/>
     <mapping resource="ar/com/ventas/entities/SubRubro.hbm.xml"/>
     <mapping resource="ar/com/ventas/entities/Pedido.hbm.xml"/>

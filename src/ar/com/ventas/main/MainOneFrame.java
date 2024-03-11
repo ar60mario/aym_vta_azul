@@ -210,7 +210,6 @@ public class MainOneFrame extends javax.swing.JFrame {
         MainFrame mf = new MainFrame();
         mf.setVisible(true);
         this.dispose();
-
     }
 
     private void limpiarCampos() {

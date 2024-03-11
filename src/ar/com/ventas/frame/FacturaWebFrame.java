@@ -9,6 +9,7 @@ import ar.com.ventas.entities.Cliente;
 import ar.com.ventas.entities.ClienteTraba;
 import ar.com.ventas.entities.Configuracion;
 import ar.com.ventas.entities.CtaCteCliente;
+import ar.com.ventas.entities.EquipoBloqueado;
 import ar.com.ventas.entities.FcReserved;
 import ar.com.ventas.entities.IvaVentas;
 import ar.com.ventas.entities.Producto;
@@ -21,6 +22,7 @@ import ar.com.ventas.main.MainFrame;
 import ar.com.ventas.services.ClienteService;
 import ar.com.ventas.services.ClienteTrabaService;
 import ar.com.ventas.services.ConfiguracionService;
+import ar.com.ventas.services.EquipoBloqueadoService;
 import ar.com.ventas.services.FacturaService;
 import ar.com.ventas.services.FcReservedService;
 import ar.com.ventas.services.ProductoService;
@@ -29,6 +31,7 @@ import ar.com.ventas.services.UsuarioService;
 import ar.com.ventas.util.Constantes;
 import ar.com.ventas.util.DesktopApi;
 import ar.com.ventas.util.PDFBuilder2;
+import ar.com.ventas.util.UtilFrame;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Writer;
 import com.google.zxing.WriterException;
@@ -1928,27 +1931,27 @@ public class FacturaWebFrame extends javax.swing.JFrame {
     private void terminarFactura() {
         numCae = "0";
         sucursalFacturaPapel = "5";
-        try {
-            config = new ConfiguracionService().getFacturas(1L);
-        } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            config = new ConfiguracionService().getFacturas(1L);
+//        } catch (Exception ex) {
+//            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         vencCae = sdf.format(fecha);
         if (categoriaIva.equals(1) || categoriaIva.equals(2)) {
-            numeroFactura = config.getNumeroFacturaA();
-            numeroFactura += 1;
+//            numeroFactura = config.getNumeroFacturaA();
+//            numeroFactura += 1;
             letraFacturaPapel = "A";
         } else {
-            numeroFactura = config.getNumeroFacturaB();
-            numeroFactura += 1;
+//            numeroFactura = config.getNumeroFacturaB();
+//            numeroFactura += 1;
             letraFacturaPapel = "B";
         }
-        numeroFacturaPapel = numeroFactura.toString();
-        try {
-            config = new ConfiguracionService().updateConfiguracion(config);
-        } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        numeroFacturaPapel = numeroFactura.toString();
+//        try {
+//            config = new ConfiguracionService().updateConfiguracion(config);
+//        } catch (Exception ex) {
+//            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         // presentacion web  --  1 esta en test
 
         if (tst == 0) {
@@ -2045,7 +2048,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                         new Variant(fecha_serv_desde), new Variant(fecha_serv_hasta),
                         new Variant(moneda_id), new Variant(moneda_ctz));
                 if (internos > 0) {
-                    Variant tributo_id = new Variant(4),
+                    Variant tributo_id = new Variant(4),//99 otros impuestos
                             tributo_desc = new Variant("Impuestos internos"),
                             tributo_base_imp = new Variant("0.00"),
                             tributo_alic = new Variant("0.00"),
@@ -2148,6 +2151,10 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             }
         }
         // fin presentacion web
+        
+        // aqui va el bloqueo de equipo
+        int bloqueado = bloquearEquipo();
+        
         String codi = clienteFactura.getCodigo();
         try {
             clienteFactura = new ClienteService().getClienteByCodigo(codi);
@@ -3193,5 +3200,22 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         MainFrame ff = new MainFrame();
         ff.setVisible(true);
         this.dispose();
+    }
+
+    private int bloquearEquipo() {
+        String str0 = UtilFrame.getUsuario(); // + " " + str1;
+        int largo = str0.length();
+        Integer order_num = Integer.valueOf(str0.substring(0, 3));
+        String order_name = str0.substring(6, largo);
+        Boolean libres = true;
+        try {
+            libres = new EquipoBloqueadoService().getEquiposLibres();
+        } catch (Exception ex) {
+            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(libres){
+            
+        }
+        return libres;
     }
 }
