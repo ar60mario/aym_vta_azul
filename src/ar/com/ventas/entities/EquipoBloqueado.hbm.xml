@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ar.com.ventas.entities.EquipoBloqueado" schema="ventas" table="equipo_bloqueado">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="orden" type="integer" column="ORDEN"/>
+        <property name="nombre" type="string" column="NOMBRE"/>
+        <property name="bloqueado" type="boolean" column="BLOQUEADO"/>
+    </class>
+</hibernate-mapping>

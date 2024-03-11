@@ -5,8 +5,10 @@
  */
 package ar.com.ventas.dao;
 
-import ar.com.ventas.entities.EquipoActivo;
+import ar.com.ventas.entities.Cliente;
+import ar.com.ventas.entities.EquipoBloqueado;
 import ar.com.ventas.util.HibernateUtils;
+//import org.hibernate.classic.Session;
 import org.hibernate.Session;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -18,37 +20,20 @@ import org.hibernate.criterion.Order;
  *
  * @author Mar y Mar Informatica
  */
-public class EquipoActivoDAO extends GenericDAO {
+public class EquipoBloqueadoDAO extends GenericDAO {
 
-    public List<EquipoActivo> getEquiposActivos(String nombre, String tipo) {
-        List<EquipoActivo> equipos;
+    public Boolean getEquiposLibres() {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        Criteria criteria = session.createCriteria(EquipoActivo.class);
-        criteria.add(Restrictions.eq("activo", true));
-        criteria.add(Restrictions.eq("tipo", tipo));
-        equipos = (List<EquipoActivo>) criteria.list();
-        return equipos;
+        List<EquipoBloqueado> equipos;
+        Criteria criteria = session.createCriteria(EquipoBloqueado.class);
+        criteria.add(Restrictions.eq("bloqueado", true));
+        equipos = (List<EquipoBloqueado>) criteria.list();
+        return equipos.isEmpty();
     }
-
-    public List<EquipoActivo> getEquiposTodos(String nombre, String tipo) {
-        List<EquipoActivo> equipos;
+    
+    public void bloquearEquipo(EquipoBloqueado equipo) {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        Criteria criteria = session.createCriteria(EquipoActivo.class);
-//        criteria.add(Restrictions.eq("activo", true));
-        criteria.add(Restrictions.eq("tipo", tipo));
-        equipos = (List<EquipoActivo>) criteria.list();
-        return equipos;
-    }
-
-    public EquipoActivo getEquipoActivoByNombreAndOrden(String nombre, Integer orden, String sistema) {
-        EquipoActivo equipo;
-        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        Criteria criteria = session.createCriteria(EquipoActivo.class);
-        criteria.add(Restrictions.eq("nombre", nombre));
-        criteria.add(Restrictions.eq("orden", orden));
-        criteria.add(Restrictions.eq("tipo", sistema));
-        equipo = (EquipoActivo) criteria.uniqueResult();
-        return equipo;
+        
     }
 //    public Cliente getByCodigo(String codigo) {
 //        Cliente cliente = null;

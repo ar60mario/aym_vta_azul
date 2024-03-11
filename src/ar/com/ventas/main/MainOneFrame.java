@@ -1,32 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ar.com.ventas.main;
 
-import ar.com.ventas.entities.Usuario;
 import ar.com.ventas.services.EquipoActivoService;
-import ar.com.ventas.services.UsuarioService;
+import ar.com.ventas.util.Globals;
+import ar.com.ventas.util.UtilFrame;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author argia
+ * @author Mario
  */
 public class MainOneFrame extends javax.swing.JFrame {
 
-//    private Integer order_num;
-//    private String order_name;
+    private Integer order_num;
+    private String order_name;
+    private DecimalFormat df_order = new DecimalFormat("000");
+
     /**
      * Creates new form MainOneFrame
      */
     public MainOneFrame() {
         initComponents();
+        this.setLocationRelativeTo(null);
         limpiarCampos();
     }
 
@@ -47,12 +46,14 @@ public class MainOneFrame extends javax.swing.JFrame {
         codigoTxt = new javax.swing.JTextField();
         contrasenaTxt = new javax.swing.JPasswordField();
         nombreTxt = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("SISTEMA DE VENTAS - LOGIN");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("SISTEMA DE VENTAS");
+        jLabel1.setText("DISTRIBUIDORA");
 
         ingresarBtn.setText("INGRESAR");
         ingresarBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -74,48 +75,48 @@ public class MainOneFrame extends javax.swing.JFrame {
 
         codigoTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         codigoTxt.setText("CODIGO");
-        codigoTxt.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                codigoTxtKeyPressed(evt);
-            }
-        });
 
         contrasenaTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         contrasenaTxt.setText("jPasswordField1");
-        contrasenaTxt.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                contrasenaTxtKeyPressed(evt);
-            }
-        });
 
         nombreTxt.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         nombreTxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         nombreTxt.setText("NOMBRE");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("A & M");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(ingresarBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(salirBtn))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(71, 71, 71)
                                 .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(contrasenaTxt))
-                            .addGroup(layout.createSequentialGroup()
+                                .addGap(49, 49, 49))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
                                 .addComponent(jLabel2)
-                                .addGap(40, 40, 40)
-                                .addComponent(codigoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(nombreTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(63, 63, 63)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(codigoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(contrasenaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 183, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(ingresarBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(salirBtn))
+                            .addComponent(nombreTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -123,17 +124,19 @@ public class MainOneFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel1)
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(codigoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(contrasenaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(41, 41, 41)
+                    .addComponent(codigoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(contrasenaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(nombreTxt)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(salirBtn)
                     .addComponent(ingresarBtn))
@@ -149,32 +152,7 @@ public class MainOneFrame extends javax.swing.JFrame {
 
     private void ingresarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingresarBtnActionPerformed
         ingresar();
-//        MainFrame mf = new MainFrame("mario", 1);
-//        mf.setVisible(true);
-//        this.dispose();
     }//GEN-LAST:event_ingresarBtnActionPerformed
-
-    private void codigoTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoTxtKeyPressed
-        if (evt.getKeyCode() == 10) {
-            if (!codigoTxt.getText().isEmpty()) {
-                if (esNumerico()) {
-                    contrasenaTxt.requestFocus();
-                } else {
-                    JOptionPane.showMessageDialog(this, "EL CODIGO ES SOLO NUMERICO");
-                    codigoTxt.setText("");
-                    codigoTxt.requestFocus();
-                }
-            }
-        }
-    }//GEN-LAST:event_codigoTxtKeyPressed
-
-    private void contrasenaTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_contrasenaTxtKeyPressed
-        if (evt.getKeyCode() == 10) {
-            if(!contrasenaTxt.getText().isEmpty()){
-                Integer a = colocarNombre();
-            }
-        }
-    }//GEN-LAST:event_contrasenaTxtKeyPressed
 
     /**
      * @param args the command line arguments
@@ -218,6 +196,7 @@ public class MainOneFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel nombreTxt;
     private javax.swing.JButton salirBtn;
     // End of variables declaration//GEN-END:variables
@@ -227,69 +206,26 @@ public class MainOneFrame extends javax.swing.JFrame {
     }
 
     private void ingresar() {
-//        order_name = establecerNombre();
-//        if (order_name == "") {
-//            System.exit(0);
-//        }
-//        order_num = establecerOrden();
-//        if (order_num > 0) {
+        verificarContrasenia();
         MainFrame mf = new MainFrame();
         mf.setVisible(true);
         this.dispose();
-//        }
     }
 
-//    private String establecerNombre() {
-//        InetAddress localHost;
-//        try {
-//            localHost = InetAddress.getLocalHost();
-//        } catch (UnknownHostException ex) {
-//            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-//            JOptionPane.showMessageDialog(this, "ERROR INGRESANDO AL SISTEMA,\nINGRESE NUEVAMENTE");
-//            return "";
-//        }
-//        return localHost.getHostName();
-//    }
-//    private Integer establecerOrden() {
-//        Integer i = 0;
-//        try {
-//            i = new EquipoActivoService().calcularOrden(order_name, "A");
-//        } catch (Exception ex) {
-//            Logger.getLogger(MainOneFrame.class.getName()).log(Level.SEVERE, null, ex);
-//            i = 0;
-//        }
-//        return i;
-//    }
     private void limpiarCampos() {
         codigoTxt.setText("");
         contrasenaTxt.setText("");
+        nombreTxt.setText(" ");
+        jLabel2.setVisible(false);
+        jLabel3.setVisible(false);
+        codigoTxt.setVisible(false);
+        contrasenaTxt.setVisible(false);
     }
 
-    private boolean esNumerico() {
-        Boolean si = true;
-        Integer codigo;
-        try {
-            codigo = Integer.valueOf(codigoTxt.getText());
-        } catch (Exception ex) {
-            codigo = 0;
-            si = false;
-        }
-        System.out.println(codigo);
-        return si;
-    }
-
-    private Integer colocarNombre() {
-        Integer a = 0;
-        Integer codigo = Integer.valueOf(codigoTxt.getText());
-        Usuario usuario = null;
-        try {
-            usuario = new UsuarioService().getUsuarioByCodigo(codigo);
-        } catch (Exception ex) {
-            Logger.getLogger(MainOneFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if(usuario != null){
-            nombreTxt.setText(usuario.getNombre());
-        }
-        return a;
+    private void verificarContrasenia() {
+        order_name = UtilFrame.establecerNombre();
+        order_num = UtilFrame.establecerOrden();
+        String str = df_order.format(order_num) + " " + order_name;
+        Globals.USR.set(str);
     }
 }
