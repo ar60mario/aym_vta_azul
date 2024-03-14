@@ -31,6 +31,17 @@ public class ClienteDAO extends GenericDAO {
         return cliente;
     }
     
+    public Long getUltimoId(){
+        Long ui;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Cliente.class);
+        criteria.addOrder(Order.desc("id"));
+        criteria.setMaxResults(1);
+        Cliente cl = (Cliente) criteria.uniqueResult();
+        ui = cl.getId();
+        return ui;
+    }
+    
     public Cliente getByCodigoTodos(String codigo) {
         Cliente cliente = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();

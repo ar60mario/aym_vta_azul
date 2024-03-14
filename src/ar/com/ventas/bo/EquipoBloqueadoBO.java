@@ -8,9 +8,11 @@ import ar.com.ventas.entities.Cliente;
 import ar.com.ventas.entities.Domicilio;
 import ar.com.ventas.bo.DomicilioBO;
 import ar.com.ventas.dao.EquipoBloqueadoDAO;
+import ar.com.ventas.entities.EquipoBloqueado;
 import ar.com.ventas.util.Constantes;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 
 /**
@@ -24,14 +26,46 @@ public class EquipoBloqueadoBO {
     private static final Logger logger = Logger.getLogger("EquipoBloqueadoBO");
 
     public Boolean getEquiposLibres() throws Exception {
-        Boolean libres;
+        Boolean libres = true;
+        List<EquipoBloqueado> equipos;
         try {
-            libres = dao.getEquiposLibres();
-//            listClientes = dao.getAll(Cliente.class);
+//            libres = dao.getEquiposLibres();
+            equipos = dao.getAll(EquipoBloqueado.class);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }
+        if (equipos != null && !equipos.isEmpty()) {
+            for (EquipoBloqueado eb : equipos) {
+                if (eb.getBloqueado()) {
+                    libres = false;
+                }
+            }
+        }
         return libres;
+    }
+
+    public EquipoBloqueado getEquipoBloqueadoByNombreAndOrden(String nombre, Integer orden) throws Exception {
+        EquipoBloqueado eb = null;
+        try {
+            eb = dao.getEquipoBloqueadoByNombreAndOrden(nombre, orden);
+        } catch (Exception ex) {
+//            JOptionPane.showMessageDialog(null, "bo");
+            throw new Exception(ex);
+            
+        }
+//        System.out.println(nombre);
+//        System.out.println(orden);
+        return eb;
+    }
+
+    public void bloquearEquipoExistente(EquipoBloqueado eb, Boolean bloqueo) throws Exception {
+        eb.setBloqueado(bloqueo);
+        dao.update(eb);
+    }
+
+    public void bloquearEquipoNuevo(EquipoBloqueado eb, Boolean bloqueo) throws Exception {
+        eb.setBloqueado(bloqueo);
+        dao.save(eb);
     }
 
 //    public List<Cliente> getAllClientes() throws Exception {

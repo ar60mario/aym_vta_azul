@@ -81,7 +81,7 @@ import javax.swing.JFrame;
  *
  * @author Mario
  */
-public class FacturaWebFrame extends javax.swing.JFrame {
+public class FacturaWebFrame1 extends javax.swing.JFrame {
 
     private Double maximoSinIdentificar = 0.0;
     private List<RenglonFactura> renglonFactura = new ArrayList<RenglonFactura>();
@@ -164,7 +164,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
      * Creates new form FacturaFrame
      *
      */
-    public FacturaWebFrame() {
+    public FacturaWebFrame1() {
         getContentPane().setBackground(new java.awt.Color(135, 206, 235));
         initComponents();
         this.setLocationRelativeTo(null);
@@ -810,7 +810,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             try {
                 new ClienteService().updateCliente(clienteFactura);
             } catch (Exception ex) {
-                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             }
             desbloquearCliente();
         } else {
@@ -873,7 +873,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                     buscar();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Error - buscar cliente");
-                    Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -903,39 +903,13 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                     cantidadTxt.requestFocus();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Error - buscar producto");
-                    Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
     }//GEN-LAST:event_comboProductosActionPerformed
 
-    private void verificarConsumidor() {
-        //                ClienteIdentificado ci = new ClienteIdentificado();
-//                final JFrame jFrame = FacturaWebFrame.this;
-//                this.setMinimumSize(20,20);
-        final IngresoDniFrame idf = new IngresoDniFrame();
-        idf.setVisible(true);
-        idf.setLocationRelativeTo(null);
-        idf.cancelarBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String codigo = idf.getData();
-                try {
-                    clienteFactura = new ClienteService().getClienteByCodigo(codigo);
-                    codigoTxt.setText(clienteFactura.getCodigo());
-                    razonSocialTxt.setText(clienteFactura.getRazonSocial());
-                    cuitTxt.setText(clienteFactura.getCuit());
-                } catch (Exception ex) {
-//                    Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                idf.dispose();
-            }
-
-        });
-    }
-
     private void terminarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terminarBtnActionPerformed
-
         double xSaldo = clienteFactura.getSaldo();
         double ySaldo = rint(xSaldo * 100);
         if (ySaldo != 0) {
@@ -945,32 +919,85 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         }
         String cuit_max = clienteFactura.getCuit();
         String tipo_max = clienteFactura.getTipo();
-//        ClienteIdentificado ci = new ClienteIdentificado();
+        ClienteIdentificado ci = new ClienteIdentificado();
         if (cuit_max.equals("00-00000000-0") && tipo_max.equals("99")) {
             if (totalFactura > maximoSinIdentificar) {
-                verificarConsumidor();
+//                ClienteIdentificado ci = new ClienteIdentificado();
+                final JFrame jFrame = FacturaWebFrame1.this;
+                jFrame.setVisible(false);
+                IngresoDniFrame idf = new IngresoDniFrame();
+                idf.setVisible(true);
+//                idf.setLocation(null);
+                idf.cancelarBtn.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+//                        ClienteIdentificado cid = idf.getData();
+//                        Long ultimo_id;
+//                        try {
+//                            ultimo_id = new ClienteService().getUltimoId();
+//                        } catch (Exception ex) {
+//                            //Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+//                            JOptionPane.showMessageDialog(null, "ERROR nro. 933 - GRABANDO NUEVO CLIENTE");
+//                            return;
+//                        }
+//                        clienteFactura.setImporteMostrador(0.0);
+//                        try {
+//                            new ClienteService().updateCliente(clienteFactura);
+//                        } catch (Exception ex) {
+//                            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                        clienteFactura = new Cliente();
+//                        clienteFactura.setCategoriaDeIva(5);
+//                        clienteFactura.setActivo(true);
+//                        clienteFactura.setAlias("");
+//                        ultimo_id += 1;
+//                        clienteFactura.setCodigo("999 " + ultimo_id.toString());
+//                        clienteFactura.setCuit(cid.getIdentificacion());
+//                        clienteFactura.setDescuento(0.0F);
+//                        Domicilio dm = new Domicilio();
+//                        dm.setCalle(cid.getCalle());
+//                        dm.setNumero(cid.getNumero());
+//                        dm.setCodigoPostal(cid.getCodigoPostal());
+//                        dm.setLocalidad(cid.getLocalidad());
+//                        dm.setProvincia(cid.getProvincia());
+//                        clienteFactura.setDomicilio(dm);
+//                        clienteFactura.setEntrega("");
+//                        clienteFactura.setFormaDePago(1);
+//                        clienteFactura.setImporteMostrador(totalFactura);
+//                        clienteFactura.setRazonSocial(cid.getNombre());
+//                        clienteFactura.setSaldo(0.0);
+//                        clienteFactura.setTieneDescuento(false);
+//                        clienteFactura.setTipo(cid.getTipoIdentificacion());
+//                        try {
+//                            clienteFactura = new ClienteService().saveCliente(clienteFactura);
+//                        } catch (Exception ex) {
+//                            //Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+//                            JOptionPane.showMessageDialog(null, "ERROR nro. 961 - GRABANDO NUEVO CLIENTE");
+//                            return;
+//                        }
+                        jFrame.setVisible(true);
+                    }
+                });
             }
+//            ClienteIdentificado ci = new IngresoDniFrame();
+        }
+        int escape = JOptionPane.showConfirmDialog(null, "Quiere ingresar un texto antes de Imprimir?",
+                "Texto en el pie de Factura",
+                JOptionPane.YES_NO_OPTION);
+        if (escape == 0) {
+            texto1PieFacturaTxt.setEnabled(true);
+            texto2PieFacturaTxt.setEnabled(true);
+            texto1PieFacturaTxt.requestFocus();
         } else {
-            int escape = JOptionPane.showConfirmDialog(null, "Quiere ingresar un texto antes de Imprimir?",
-                    "Texto en el pie de Factura",
+            terminarBtn.setEnabled(false);
+            escape = JOptionPane.showConfirmDialog(null, "Confirma Terminar Factura?",
+                    "FINALIZAR FACTURA",
                     JOptionPane.YES_NO_OPTION);
             if (escape == 0) {
-                texto1PieFacturaTxt.setEnabled(true);
-                texto2PieFacturaTxt.setEnabled(true);
-                texto1PieFacturaTxt.requestFocus();
+                terminarFactura();
             } else {
-                terminarBtn.setEnabled(false);
-//                System.out.println(clienteFactura.getRazonSocial());
-//                System.exit(0);
-                escape = JOptionPane.showConfirmDialog(null, "Confirma Terminar Factura?",
-                        "FINALIZAR FACTURA",
-                        JOptionPane.YES_NO_OPTION);
-                if (escape == 0) {
-                    terminarFactura();
-                } else {
-                    agregarProducto();
-                    terminarBtn.setEnabled(true);
-                }
+                agregarProducto();
+                terminarBtn.setEnabled(true);
             }
         }
     }//GEN-LAST:event_terminarBtnActionPerformed
@@ -1656,21 +1683,23 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FacturaWebFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturaWebFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FacturaWebFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturaWebFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FacturaWebFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturaWebFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FacturaWebFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturaWebFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FacturaWebFrame().setVisible(true);
+                new FacturaWebFrame1().setVisible(true);
             }
         });
     }
@@ -1822,7 +1851,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             clientes = new ClienteService().getClientesByFiltro(filtro);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error - leyendo Clientes");
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         DefaultComboBoxModel model = (DefaultComboBoxModel) comboClientes.getModel();
         if (clientes != null && !clientes.isEmpty()) {
@@ -1845,7 +1874,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             productos = new ProductoService().getProductosByFiltroSin90SinDepo(filtro);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error - leyendo Productos");
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (productos != null && !productos.isEmpty()) {
             for (Producto pro : productos) {
@@ -1862,7 +1891,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             porcentualIva = conf.getIva();
             maximoSinIdentificar = conf.getMaxVtaSinIdentif();
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         fecha = Calendar.getInstance().getTime();
         //Cliente cli = new Cliente();
@@ -1870,7 +1899,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             clienteFactura = new ClienteService().getClienteByCodigo(codigoTxt.getText());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error - cliente");
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (clienteFactura != null) {
             razonSocialTxt.setText(clienteFactura.getRazonSocial());
@@ -1886,7 +1915,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             try {
                 ct = new ClienteTrabaService().getClienteByCodigo(s);
             } catch (Exception ex) {
-                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (ct.getTraba1() != null) {
                 if (ct.getTraba1()) {
@@ -2210,7 +2239,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             clienteFactura = new ClienteService().getClienteByCodigo(codi);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         saldoCliente = clienteFactura.getSaldo();
         saldoCliente += totalFactura;
@@ -2219,7 +2248,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             config = new ConfiguracionService().getFacturas(id);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Error: 2205");
         }
         config.setUltimaFechaSistema(fecha);
@@ -2282,7 +2311,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             try {
                 producto = new ProductoService().getProductoByCodigo(cod);
             } catch (Exception ex) {
-                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(this, "Error: 2268");
             }
             Float stock;
@@ -2305,7 +2334,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                             try {
                                 new ProductoService().updateProducto(caja);
                             } catch (Exception ex) {
-                                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
                                 JOptionPane.showMessageDialog(this, "Error: 2260");
                             }
                             stock += can;
@@ -2336,7 +2365,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             new FacturaService().saveFacturaCompleta(clienteFactura, config, ccc, ivaVentas, renglonFactura);
 //            reproceso = 1;
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
 //            JOptionPane.showMessageDialog(this, "Errora actualizando datos Factura - REPROCESO");
 //            reproceso = 0;
         }
@@ -2405,7 +2434,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                 pro = new ProductoService().getProductoByCodigoBarras(Long.valueOf(codigoBarrasTxt.getText()));
                 encontrado = true;
             } catch (Exception ex) {
-                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
                 nombreProductoABuscarTxt.requestFocus();
             }
         } else {
@@ -2414,7 +2443,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                     pro = new ProductoService().getProductoByCodigo(Integer.valueOf(codigoProductoTxt.getText()));
                     encontrado = true;
                 } catch (Exception ex) {
-                    Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
                     nombreProductoABuscarTxt.requestFocus();
                 }
             } else {
@@ -2686,7 +2715,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             new ClienteService().updateCliente(clienteFactura);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Error: 2512");
         }
     }
@@ -2738,7 +2767,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             fcr = new FcReservedService().saveFcReserved(fcr);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         for (RenglonFactura rf : renglonFactura) {
             RenglonFcReserved rfcr = new RenglonFcReserved();
@@ -2759,7 +2788,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             try {
                 new RenglonFcReservedService().saveRenglonFcReserved(rfcr);
             } catch (Exception ex) {
-                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -2924,13 +2953,13 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             xCli = new ClienteTrabaService().getClienteByCodigo(codi);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         xCli.setTraba1(true);
         try {
             new ClienteTrabaService().updateCliente(xCli);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Error al bloquear Cliente");
         }
     }
@@ -2940,44 +2969,34 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             clienteFactura = new ClienteService().getClienteByCodigo(codi);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         clienteFactura.setImporteMostrador(0.0);
         try {
             new ClienteService().updateCliente(clienteFactura);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             clienteFactura = new ClienteService().getClienteByCodigo(codi);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         ClienteTraba ct = null;
         try {
             ct = new ClienteTrabaService().getClienteByCodigo(codi);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Error al desbloquear Cliente - DEBE DESBLOQUEAR");
             return;
         }
-        if (ct != null) {
-            ct.setTraba1(false);
-            try {
-                new ClienteTrabaService().updateCliente(ct);
-            } catch (Exception ex) {
-                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(this, "Error al desbloquear Cliente - DEBE DESBLOQUEAR");
-            }
-        }else{
-            ClienteTraba ct1 = new ClienteTraba();
-            ct1.setCodigo(clienteFactura.getCodigo());
-            ct1.setTraba1(false);
-            try {
-                new ClienteTrabaService().saveCliente(ct);
-            } catch (Exception ex) {
-                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        ct.setTraba1(false);
+        try {
+            new ClienteTrabaService().updateCliente(ct);
+        } catch (Exception ex) {
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error al desbloquear Cliente - DEBE DESBLOQUEAR");
+            return;
         }
     }
 
@@ -3195,7 +3214,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             generarQR(data, nc);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         String code = iv.getCliente().getCodigo();
@@ -3204,7 +3223,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             cli = new ClienteService().getClienteByCodigo(code);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             if (categoriaIva.equals(1) || categoriaIva.equals(2)) {
@@ -3216,17 +3235,17 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             }
             JOptionPane.showMessageDialog(this, "PDF GENERADO CORRECTAMENTE");
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("err1");
             JOptionPane.showMessageDialog(this, "ERROR FILE 3554");
 //            JOptionPane.showMessageDialog(null, System.getProperty("user.dir"));
 //            JOptionPane.showMessageDialog(this, ex);
         } catch (DocumentException ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("err2");
             JOptionPane.showMessageDialog(this, "ERROR DOCUMENT 3557");
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("err3");
             JOptionPane.showMessageDialog(this, "ERROR EXCEPTION 3558");
         }
@@ -3274,7 +3293,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             libres = new EquipoBloqueadoService().getEquiposLibres();
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (libres) {
             EquipoBloqueado eb = null;
@@ -3311,7 +3330,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             eb = new EquipoBloqueadoService().getEquipoBloqueadoByNombreAndOrden(order_name, order_num);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        System.out.println(order_name);
 //        System.out.println(order_num);
@@ -3320,7 +3339,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             new EquipoBloqueadoService().bloquearEquipoExistente(eb, false);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -3328,7 +3347,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             sleep(1500);
         } catch (InterruptedException ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

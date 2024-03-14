@@ -22,19 +22,38 @@ import org.hibernate.criterion.Order;
  */
 public class EquipoBloqueadoDAO extends GenericDAO {
 
-    public Boolean getEquiposLibres() {
+//    public Boolean getEquiposLibres() {
+//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+//        List<EquipoBloqueado> equipos;
+//        Boolean libre = true;
+//        Criteria criteria = session.createCriteria(EquipoBloqueado.class);
+//        criteria.add(Restrictions.eq("bloqueado", true));
+//        equipos = (List<EquipoBloqueado>) criteria.list();
+//        for(EquipoBloqueado eb:equipos){
+//            if(eb.getBloqueado()){
+//                libre = false;
+//            }
+//        }
+//        return libre;
+//    }
+    
+    public EquipoBloqueado getEquipoBloqueadoByNombreAndOrden(String nombre, Integer orden) {
+        EquipoBloqueado eb;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        List<EquipoBloqueado> equipos;
         Criteria criteria = session.createCriteria(EquipoBloqueado.class);
-        criteria.add(Restrictions.eq("bloqueado", true));
-        equipos = (List<EquipoBloqueado>) criteria.list();
-        return equipos.isEmpty();
+        criteria.add(Restrictions.eq("nombre", nombre));
+        criteria.add(Restrictions.eq("orden", orden));
+        eb = (EquipoBloqueado) criteria.uniqueResult();
+//        System.out.println(eb);
+//        System.out.println(nombre);
+//        System.out.println(orden);
+        return eb;
     }
     
-    public void bloquearEquipo(EquipoBloqueado equipo) {
-        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        
-    }
+//    public void bloquearEquipo(EquipoBloqueado equipo, Boolean bloqueo) {
+//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+//        Criteria criteria = session.createCriteria(EquipoBloqueado.class);
+//    }
 //    public Cliente getByCodigo(String codigo) {
 //        Cliente cliente = null;
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();

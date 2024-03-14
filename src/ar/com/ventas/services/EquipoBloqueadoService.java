@@ -1,10 +1,8 @@
 package ar.com.ventas.services;
 
-import ar.com.ventas.bo.ClienteBO;
 import ar.com.ventas.bo.EquipoBloqueadoBO;
-import ar.com.ventas.entities.Cliente;
+import ar.com.ventas.entities.EquipoBloqueado;
 import ar.com.ventas.util.HibernateUtils;
-import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -26,6 +24,46 @@ public class EquipoBloqueadoService {
         }
         return libres;
     }
+    
+    public void bloquearEquipoNuevo(EquipoBloqueado eb, Boolean bloqueo) throws Exception{
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            bo.bloquearEquipoNuevo(eb, bloqueo);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+    }
+    
+    public void bloquearEquipoExistente(EquipoBloqueado eb, Boolean bloqueo) throws Exception{
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            bo.bloquearEquipoExistente(eb, bloqueo);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+    }
+    
+    public EquipoBloqueado getEquipoBloqueadoByNombreAndOrden(String nombre, Integer orden) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        EquipoBloqueado eb = null;
+        try {
+            eb = bo.getEquipoBloqueadoByNombreAndOrden(nombre, orden);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+//            JOptionPane.showMessageDialog(null, "service");
+            throw new Exception(ex);
+        }
+        return eb;
+    }
+    
 //    public Cliente getClienteByCodigo(String codigo) throws Exception{
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 //        Transaction tx = session.beginTransaction();

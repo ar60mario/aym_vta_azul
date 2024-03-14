@@ -50,16 +50,18 @@ public class ClienteService {
        }
     }
 
-    public void saveCliente(Cliente cliente) throws Exception {
+    public Cliente saveCliente(Cliente cliente) throws Exception {
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
+        Cliente cli;
         try {
-            new ClienteBO().saveCliente(cliente);
+            cli = new ClienteBO().saveCliente(cliente);
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();
             throw new Exception(ex);
         }
+        return cli;
     }
 
     public List<Cliente> getAllClientes() throws Exception {
@@ -114,6 +116,20 @@ public class ClienteService {
             throw new Exception(ex);
         }
         return count;
+    }
+    
+    public Long getUltimoId() throws Exception{
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        Long ui;
+        try{
+            ui = new ClienteBO().getUltimoId();
+            tx.commit();
+        }catch(Exception ex){
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return ui;
     }
     
     public List<Cliente> getClienteOrdenado() throws Exception{

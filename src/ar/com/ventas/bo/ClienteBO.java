@@ -33,6 +33,16 @@ public class ClienteBO {
         return listClientes;
     }
 
+    public Long getUltimoId() throws Exception {
+        Long id;
+        try {
+            id = dao.getUltimoId();
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return id;
+    }
+    
     public Cliente saveCliente(Cliente cliente) throws Exception {
         // Primero guardo la dirección del cliente.
         DomicilioBO domicilioBO = new DomicilioBO();

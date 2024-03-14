@@ -25,12 +25,18 @@ public class Configuracion {
     private Date ultimaFechaSistema;
     private Boolean cajaAnteriorCerrada;
     private Integer numeroReciboCompras;
+    private Double maxVtaSinIdentif;
     private Long comprobante;
     
     public Configuracion() {
     }
 
-    public Configuracion(Long id, Float iva, Integer sucursalA, Integer numeroFacturaA, Integer sucursalB, Integer numeroFacturaB, Integer numeroRecibo, Integer numeroPedido, Integer cantidadFacturasA, Integer cantidadFacturasB, Integer cantidadPedidos, Integer cantidadNotasCredito, Integer cantidadRecibos, Date ultimaFechaCierre, Date ultimaFechaSistema, Boolean cajaAnteriorCerrada, Integer numeroReciboCompras, Long comprobante) {
+    public Configuracion(Long id, Float iva, Integer sucursalA, Integer numeroFacturaA, 
+            Integer sucursalB, Integer numeroFacturaB, Integer numeroRecibo, Integer numeroPedido, 
+            Integer cantidadFacturasA, Integer cantidadFacturasB, Integer cantidadPedidos, 
+            Integer cantidadNotasCredito, Integer cantidadRecibos, Date ultimaFechaCierre, 
+            Date ultimaFechaSistema, Boolean cajaAnteriorCerrada, Integer numeroReciboCompras, 
+            Long comprobante, Double maxVtaSinIdentif) {
         this.id = id;
         this.iva = iva;
         this.sucursalA = sucursalA;
@@ -53,6 +59,7 @@ public class Configuracion {
         this.cajaAnteriorCerrada = cajaAnteriorCerrada;
         this.numeroReciboCompras = numeroReciboCompras;
         this.comprobante = comprobante;
+        this.maxVtaSinIdentif = maxVtaSinIdentif;
     }
 
     public Long getId() {
@@ -230,4 +237,13 @@ public class Configuracion {
     public void setComprobante(Long comprobante) {
         this.comprobante = comprobante;
     }
+
+    public Double getMaxVtaSinIdentif() {
+        return maxVtaSinIdentif;
+    }
+
+    public void setMaxVtaSinIdentif(Double maxVtaSinIdentif) {
+        this.maxVtaSinIdentif = maxVtaSinIdentif;
+    }
+    
 }

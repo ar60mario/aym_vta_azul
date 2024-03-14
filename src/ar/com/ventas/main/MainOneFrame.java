@@ -3,6 +3,7 @@ package ar.com.ventas.main;
 import ar.com.ventas.services.EquipoActivoService;
 import ar.com.ventas.util.Globals;
 import ar.com.ventas.util.UtilFrame;
+import static java.lang.Thread.sleep;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DecimalFormat;
@@ -228,4 +229,6 @@ public class MainOneFrame extends javax.swing.JFrame {
         String str = df_order.format(order_num) + " " + order_name;
         Globals.USR.set(str);
     }
+
+    
 }
