@@ -237,16 +237,12 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void volverBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBtnActionPerformed
-        MainFrame mf = new MainFrame();
-        mf.setVisible(true);
-        this.dispose();
+        volver();
     }//GEN-LAST:event_volverBtnActionPerformed
 
     private void guardarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBtnActionPerformed
         grabarConfiguracion();
-        MainFrame mf = new MainFrame();
-        mf.setVisible(true);
-        this.dispose();
+        volver();
     }//GEN-LAST:event_guardarBtnActionPerformed
 
     /**
@@ -330,7 +326,11 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
         sucursalATxt.setText(String.valueOf(config.getSucursalA()));
         sucursalBTxt.setText(String.valueOf(config.getSucursalB()));
         numeroATxt.setText(String.valueOf(config.getNumeroFacturaA()));
-        numeroBTxt.setText(String.valueOf(config.getNumeroFacturaB()));
+        if (config.getNumeroFacturaB() != null) {
+            numeroBTxt.setText(String.valueOf(config.getNumeroFacturaB()));
+        } else {
+            numeroBTxt.setText("0");
+        }
         if (config.getNumeroRecibo() != null) {
             numeroReciboTxt.setText(String.valueOf(config.getNumeroRecibo()));
         } else {
@@ -351,7 +351,7 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
             } catch (Exception ex) {
                 Logger.getLogger(ConfiguracionFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-            config.setIva(Float.valueOf(porcIvaTxt.getText()));
+            config.setIva(Float.valueOf(porcIvaTxt.getText().replace(",", ".")));
             config.setNumeroFacturaA(Integer.valueOf(numeroATxt.getText()));
             config.setNumeroFacturaB(Integer.valueOf(numeroBTxt.getText()));
             config.setSucursalA(Integer.valueOf(sucursalATxt.getText()));
@@ -384,6 +384,16 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
         if (numeroBTxt.getText().isEmpty()) {
             return false;
         }
+        if (importeTxt.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "INGRESE UN IMPORTE");
+            return false;
+        }
         return true;
+    }
+
+    private void volver() {
+        MainFrame mf = new MainFrame();
+        mf.setVisible(true);
+        this.dispose();
     }
 }

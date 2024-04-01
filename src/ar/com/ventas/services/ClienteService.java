@@ -23,6 +23,48 @@ public class ClienteService {
         return cliente;
     }
     
+    public List<Cliente> getAllClientesOrdenadoByPagina(Integer pagina, Integer limite) throws Exception{
+        List<Cliente> clientes = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try{
+            clientes = new ClienteBO().getAllClientesOrdenadoByPagina(pagina, limite);
+            tx.commit();
+        }catch(Exception ex){
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return clientes;
+    }
+    
+    public List<Cliente> getClientesComienzaByFiltro(String filtro, Integer pagina, Integer limite) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<Cliente> clientes = null;
+        try{
+            clientes = new ClienteBO().getClientesComienzaByFiltro(filtro, pagina, limite);
+            tx.commit();
+        }catch(Exception ex){
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return clientes;
+    }
+    
+    public List<Cliente> getClientesByFiltroPaginado(String filtro, Integer pagina, Integer limite) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<Cliente> clientes = null;
+        try{
+            clientes = new ClienteBO().getClientesByFiltroPaginado(filtro, pagina, limite);
+            tx.commit();
+        }catch(Exception ex){
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return clientes;
+    }
+    
     public Cliente getClienteByCodigoTodos(String codigo) throws Exception{
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
@@ -180,6 +222,20 @@ public class ClienteService {
         Transaction tx = session.beginTransaction();
         try{
             clientes = new ClienteBO().getClientesNumericoInactivos();
+            tx.commit();
+        }catch(Exception ex){
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return clientes;
+    }
+    
+    public List<Cliente> getClientesByFiltro2(String filtro, Integer pagina, Integer limite) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        List<Cliente> clientes = null;
+        try{
+            clientes = new ClienteBO().getClientesByFiltro2(filtro, pagina, limite);
             tx.commit();
         }catch(Exception ex){
             tx.rollback();

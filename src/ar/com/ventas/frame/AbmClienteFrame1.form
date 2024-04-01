@@ -34,32 +34,23 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" pref="920" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
+                      <Component id="alfabeticoRb" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="numericoRb" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="nombreTxt" min="-2" pref="211" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="codigoTxt" min="-2" pref="104" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="comienzaFiltroTxt" min="-2" pref="147" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="buscarBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="61" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="nuevoBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="modificarBtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="primeroBtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="anteriorBtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="siguienteBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="volverBtn" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -73,24 +64,19 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="alfabeticoRb" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="numericoRb" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="nombreTxt" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="buscarBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="codigoTxt" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="comienzaFiltroTxt" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="421" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="410" max="32767" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="nuevoBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="modificarBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="volverBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="primeroBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="anteriorBtn" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="siguienteBtn" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -152,6 +138,22 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nuevoBtnActionPerformed"/>
       </Events>
     </Component>
+    <Component class="javax.swing.JRadioButton" name="alfabeticoRb">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Alfab&#xe9;tico"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="alfabeticoRbActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="numericoRb">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Num&#xe9;rico"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="numericoRbActionPerformed"/>
+      </Events>
+    </Component>
     <Component class="javax.swing.JTextField" name="nombreTxt">
       <Properties>
         <Property name="text" type="java.lang.String" value="NOMBRE"/>
@@ -171,56 +173,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buscarBtnActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel2">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="CODIGO:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="codigoTxt">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="COD"/>
-      </Properties>
-      <Events>
-        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="codigoTxtKeyPressed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel3">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="COMIENZA:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="comienzaFiltroTxt">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="COMIENZA"/>
-      </Properties>
-      <Events>
-        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="comienzaFiltroTxtKeyPressed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="primeroBtn">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="PRIMERO"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="primeroBtnActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="anteriorBtn">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="ANTERIOR"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="anteriorBtnActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="siguienteBtn">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="SIGUIENTE"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="siguienteBtnActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

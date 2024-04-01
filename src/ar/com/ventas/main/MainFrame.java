@@ -468,7 +468,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_salirMenuActionPerformed
 
     private void clientesMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientesMenuActionPerformed
-        AbmClienteFrame abmCliente = new AbmClienteFrame(null, false);
+        AbmClienteFrame abmCliente = new AbmClienteFrame(null, null, null, null, null, null);
         abmCliente.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_clientesMenuActionPerformed

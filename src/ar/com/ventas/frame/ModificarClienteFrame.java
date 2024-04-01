@@ -48,27 +48,37 @@ public class ModificarClienteFrame extends javax.swing.JFrame {
     private DecimalFormat df1 = new DecimalFormat("#0.0");
     private Usuario usuario;
     private final Integer nivel = 2;
-    private Boolean o;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    private Integer pagina;
+    private String codigo;
+    private String fil;
+    private String fil2;
+    private Boolean alpha;
 //    private final Integer order_num;
 //    private final String order_name;
 
     // private Domicilio domicilio;
     /**
      *
-     * 
+     *
      * @param cliente
      * @param row
-     * @param o
+     * @param pagina
+     * @param fil
+     * @param alpha
+     * @param fil2
+     * @param codigo
      */
-    public ModificarClienteFrame(Cliente cliente, Integer row, Boolean o) {
+    public ModificarClienteFrame(Cliente cliente, Integer row, Integer pagina,
+            String fil, Boolean alpha, String fil2, String codigo) {
         initComponents();
         this.row = row;
-        this.o = o;
-        //limpiarCampos();
         this.cliente = cliente;
-//        this.order_num = order_num;
-//        this.order_name = order_name;
+        this.pagina = pagina;
+        this.fil = fil;
+        this.alpha = alpha;
+        this.fil2 = fil2;
+        this.codigo = codigo;
         llenarComboTipo();
         llenarCampos();
         codigoTxt.setEditable(false);
@@ -495,7 +505,7 @@ public class ModificarClienteFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_guardarClienteBtnActionPerformed
 
     private void volverNuevoClienteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverNuevoClienteBtnActionPerformed
-        AbmClienteFrame abmClienteFrame = new AbmClienteFrame(row, o);
+        AbmClienteFrame abmClienteFrame = new AbmClienteFrame(row, pagina, fil, alpha, fil2, codigo);
         this.dispose();
         abmClienteFrame.setVisible(true);
     }//GEN-LAST:event_volverNuevoClienteBtnActionPerformed
@@ -542,7 +552,7 @@ public class ModificarClienteFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ModificarClienteFrame(null, null, null).setVisible(true);
+                new ModificarClienteFrame(null, null, null, null, null, null, null).setVisible(true);
             }
         });
     }
@@ -675,7 +685,7 @@ public class ModificarClienteFrame extends javax.swing.JFrame {
                 Logger.getLogger(ModificarClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(this, "CLIENTE no guardado.");
             }
-            AbmClienteFrame acf = new AbmClienteFrame(row, o);
+            AbmClienteFrame acf = new AbmClienteFrame(row, pagina, fil, alpha, fil2, codigo);
             acf.setVisible(true);
             this.dispose();
         }

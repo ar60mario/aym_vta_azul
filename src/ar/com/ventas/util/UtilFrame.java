@@ -12,6 +12,8 @@ import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -65,5 +67,17 @@ public class UtilFrame {
             i = 0;
         }
         return i;
+    }
+    
+    public static JTable limpiarTabla(JTable tabla) {
+        int rows = tabla.getRowCount();
+        if (rows > 0) {
+            DefaultTableModel tbl = (DefaultTableModel) tabla.getModel();
+            for (int i = 0; i < rows; i++) {
+                tbl.removeRow(0);
+            }
+            tabla.setModel(tbl);
+        }
+        return tabla;
     }
 }

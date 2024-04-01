@@ -949,32 +949,38 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         if (cuit_max.equals("00-00000000-0") && tipo_max.equals("99")) {
             if (totalFactura > maximoSinIdentificar) {
                 verificarConsumidor();
+            } else {
+                terminar2();
             }
         } else {
-            int escape = JOptionPane.showConfirmDialog(null, "Quiere ingresar un texto antes de Imprimir?",
-                    "Texto en el pie de Factura",
-                    JOptionPane.YES_NO_OPTION);
-            if (escape == 0) {
-                texto1PieFacturaTxt.setEnabled(true);
-                texto2PieFacturaTxt.setEnabled(true);
-                texto1PieFacturaTxt.requestFocus();
-            } else {
-                terminarBtn.setEnabled(false);
-//                System.out.println(clienteFactura.getRazonSocial());
-//                System.exit(0);
-                escape = JOptionPane.showConfirmDialog(null, "Confirma Terminar Factura?",
-                        "FINALIZAR FACTURA",
-                        JOptionPane.YES_NO_OPTION);
-                if (escape == 0) {
-                    terminarFactura();
-                } else {
-                    agregarProducto();
-                    terminarBtn.setEnabled(true);
-                }
-            }
+            terminar2();
         }
     }//GEN-LAST:event_terminarBtnActionPerformed
 
+    private void terminar2(){
+        int escape = JOptionPane.showConfirmDialog(null, "Quiere ingresar un texto antes de Imprimir?",
+                "Texto en el pie de Factura",
+                JOptionPane.YES_NO_OPTION);
+        if (escape == 0) {
+            texto1PieFacturaTxt.setEnabled(true);
+            texto2PieFacturaTxt.setEnabled(true);
+            texto1PieFacturaTxt.requestFocus();
+        } else {
+            terminarBtn.setEnabled(false);
+//                System.out.println(clienteFactura.getRazonSocial());
+//                System.exit(0);
+            escape = JOptionPane.showConfirmDialog(null, "Confirma Terminar Factura?",
+                    "FINALIZAR FACTURA",
+                    JOptionPane.YES_NO_OPTION);
+            if (escape == 0) {
+                terminarFactura();
+            } else {
+                agregarProducto();
+                terminarBtn.setEnabled(true);
+            }
+        }
+    }
+    
     private void volverBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBtnActionPerformed
         volver();
     }//GEN-LAST:event_volverBtnActionPerformed
@@ -1776,6 +1782,14 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         importeNoblezaTxt.setEditable(false);
         imprimeChk.setSelected(false);
         imprimeChk.setVisible(false);
+        Long id = (long) 1;
+        try {
+            Configuracion conf = new ConfiguracionService().getFacturas(id);
+            porcentualIva = conf.getIva();
+            maximoSinIdentificar = conf.getMaxVtaSinIdentif();
+        } catch (Exception ex) {
+            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void bloquearCampos() {
@@ -1856,14 +1870,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
 
     private void buscar() {
         filtro = "";
-        Long id = (long) 1;
-        try {
-            Configuracion conf = new ConfiguracionService().getFacturas(id);
-            porcentualIva = conf.getIva();
-            maximoSinIdentificar = conf.getMaxVtaSinIdentif();
-        } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         fecha = Calendar.getInstance().getTime();
         //Cliente cli = new Cliente();
         try {
@@ -2969,7 +2976,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                 Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(this, "Error al desbloquear Cliente - DEBE DESBLOQUEAR");
             }
-        }else{
+        } else {
             ClienteTraba ct1 = new ClienteTraba();
             ct1.setCodigo(clienteFactura.getCodigo());
             ct1.setTraba1(false);

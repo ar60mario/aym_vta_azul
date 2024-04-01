@@ -92,6 +92,26 @@ public class ClienteBO {
 
     }
 
+    public List<Cliente> getClientesComienzaByFiltro(String filtro, Integer pagina, Integer limite) throws Exception {
+        List<Cliente> clientes = null;
+        try {
+            clientes = dao.getClientesComienzaByFiltro(filtro, pagina, limite);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return clientes;
+    }
+    
+    public List<Cliente> getClientesByFiltroPaginado(String filtro, Integer pagina, Integer limite) throws Exception {
+        List<Cliente> clientes = null;
+        try {
+            clientes = dao.getClientesByFiltroPaginado(filtro, pagina, limite);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return clientes;
+    }
+    
     public int getClientesCount() throws Exception {
 
         int cantidad = 0;
@@ -125,6 +145,16 @@ public class ClienteBO {
             throw new Exception(ex);
         }
         return cliente;
+    }
+    
+    public List<Cliente> getAllClientesOrdenadoByPagina(Integer pagina, Integer limite) throws Exception {
+        List<Cliente> listadoClientes = null;
+        try {
+            listadoClientes = dao.getAllClientesOrdenadoByPagina(pagina, limite);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return listadoClientes;
     }
     
     public Cliente getClienteByCodigoTodos(String codigo) throws Exception {
@@ -181,6 +211,16 @@ public class ClienteBO {
         return listadoClientes;
     }
 
+    public List<Cliente> getClientesByFiltro2(String filtro, Integer pagina, Integer limite) throws Exception {
+        List<Cliente> clientes = null;
+        try {
+            clientes = dao.getClientesByFiltro2(filtro, pagina, limite);
+        } catch (HibernateException ex) {
+            throw new Exception(ex);
+        }
+        return clientes;
+    }
+    
     public List<Cliente> getClientesByFiltro(String filtro) throws Exception {
         List<Cliente> clientes = null;
         try {

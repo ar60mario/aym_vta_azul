@@ -15,6 +15,7 @@ import ar.com.ventas.services.ClienteTrabaService;
 import ar.com.ventas.services.CustomerTrabaService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -65,6 +66,7 @@ public class IngresoDniFrame extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         codigoPostalTxt = new javax.swing.JTextField();
         codigoTxt = new javax.swing.JTextField();
+        combo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("INGRESAR IDENTIFICACION");
@@ -107,7 +109,7 @@ public class IngresoDniFrame extends javax.swing.JFrame {
             }
         });
 
-        cancelarBtn.setText("SALIR");
+        cancelarBtn.setText("VOLVER");
         cancelarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelarBtnActionPerformed(evt);
@@ -171,6 +173,8 @@ public class IngresoDniFrame extends javax.swing.JFrame {
         codigoTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         codigoTxt.setText("CODIGO");
 
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -182,36 +186,37 @@ public class IngresoDniFrame extends javax.swing.JFrame {
                         .addComponent(guardarBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(cancelarBtn))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(dniRb)
-                                .addGap(18, 18, 18)
-                                .addComponent(cuilRb)
-                                .addGap(18, 18, 18)
-                                .addComponent(cuitRb))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(calleTxt)
-                                    .addComponent(nombreTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(dniTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(codigoTxt))
-                                    .addComponent(numeroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(provinciaTxt)
-                                    .addComponent(localidadTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
-                                    .addComponent(codigoPostalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel7))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(calleTxt)
+                                .addComponent(nombreTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(dniTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(codigoTxt))
+                                .addComponent(numeroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(provinciaTxt)
+                                .addComponent(localidadTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                                .addComponent(codigoPostalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(dniRb)
+                            .addGap(18, 18, 18)
+                            .addComponent(cuilRb)
+                            .addGap(18, 18, 18)
+                            .addComponent(cuitRb)
+                            .addGap(18, 18, 18)
+                            .addComponent(combo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -222,6 +227,12 @@ public class IngresoDniFrame extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(dniTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(codigoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dniRb)
+                    .addComponent(cuilRb)
+                    .addComponent(cuitRb)
+                    .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -246,12 +257,7 @@ public class IngresoDniFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(provinciaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dniRb)
-                    .addComponent(cuilRb)
-                    .addComponent(cuitRb))
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardarBtn)
                     .addComponent(cancelarBtn))
@@ -384,6 +390,7 @@ public class IngresoDniFrame extends javax.swing.JFrame {
     public javax.swing.JButton cancelarBtn;
     private javax.swing.JTextField codigoPostalTxt;
     private javax.swing.JTextField codigoTxt;
+    private javax.swing.JComboBox<String> combo;
     private javax.swing.JRadioButton cuilRb;
     private javax.swing.JRadioButton cuitRb;
     private javax.swing.JRadioButton dniRb;
@@ -413,6 +420,14 @@ public class IngresoDniFrame extends javax.swing.JFrame {
         localidadTxt.setText("");
         provinciaTxt.setText("");
         nombreTxt.setText("");
+        combo.removeAllItems();
+        combo.addItem("");
+        DefaultComboBoxModel model = (DefaultComboBoxModel) combo.getModel();
+        model.addElement("1- Inscripto");
+        model.addElement("2- Monotributo");
+        model.addElement("3- Exento");
+        model.addElement("4- Consumidor Final");
+        combo.setModel(model);
     }
 
     public String getData() {
@@ -467,7 +482,7 @@ public class IngresoDniFrame extends javax.swing.JFrame {
             return;
         }
         ultimo_id += 1;
-        cli.setCodigo("999 " + ultimo_id.toString());
+        cli.setCodigo("999_" + ultimo_id.toString());
         cli.setCuit(dniTxt.getText());
         cli.setDescuento(0.0F);
         Domicilio dm = new Domicilio();
