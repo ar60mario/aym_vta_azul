@@ -29,13 +29,16 @@ import ar.com.ventas.frame.VerProductosFrame;
 import ar.com.ventas.services.ConfiguracionService;
 import ar.com.ventas.services.EquipoActivoService;
 import ar.com.ventas.services.UsuarioService;
+import ar.com.ventas.util.Globals;
 import ar.com.ventas.util.LectorDeExcel;
 import ar.com.ventas.util.UtilFrame;
+import ar.com.ventas.util.UtilTerminal;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import static java.lang.Thread.sleep;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -71,22 +74,12 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        contentPanel = jPanel1;
-        JFrame jFrame = MainFrame.this;
-//        jFrame.setExtendedState(6);
-        jFrame.setLocationRelativeTo(null);
 //        String str1 = UtilFrame.getNombreEquipo();
-        String str0 = UtilFrame.getUsuario(); // + " " + str1;
-        int largo = str0.length();
-        order_num = Integer.valueOf(str0.substring(0, 3));
-        order_name = str0.substring(6, largo);
-
+//        int largo = str0.length();
+//        order_num = Integer.valueOf(str0.substring(0, 3));
+//        order_name = str0.substring(6, largo);
 //        setBounds(100, 100, 800, 600);
-        contentPanel.setBorder(new EmptyBorder(5, 5, 100, 5));
-        contentPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED),
-                str0, TitledBorder.LEFT, TitledBorder.BELOW_BOTTOM));
-        jFrame.setDefaultCloseOperation(0);
-        setContentPane(contentPanel);
+        prepararFrame();
     }
 
     /**
@@ -107,6 +100,9 @@ public class MainFrame extends javax.swing.JFrame {
         consultarPrecioBtn = new javax.swing.JButton();
         notaCreditoBtn = new javax.swing.JButton();
         salirBtn = new javax.swing.JButton();
+        bloquearBtn = new javax.swing.JButton();
+        desbloquearBtn = new javax.swing.JButton();
+        estadoBloqueoTxt = new javax.swing.JLabel();
         mainMenuFrame = new javax.swing.JMenuBar();
         archivo = new javax.swing.JMenu();
         jMenu1 = new javax.swing.JMenu();
@@ -194,6 +190,22 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        bloquearBtn.setText("BLOQUEAR");
+        bloquearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bloquearBtnActionPerformed(evt);
+            }
+        });
+
+        desbloquearBtn.setText("DESBLOQUEAR");
+        desbloquearBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                desbloquearBtnActionPerformed(evt);
+            }
+        });
+
+        estadoBloqueoTxt.setText("ESTADO BLOQUEO");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -201,9 +213,6 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(facturaWebPedidosBtn)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(facturarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -213,13 +222,28 @@ public class MainFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(notaCreditoBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
-                        .addComponent(salirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(salirBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(facturaWebPedidosBtn)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(bloquearBtn)
+                                .addGap(18, 18, 18)
+                                .addComponent(desbloquearBtn)
+                                .addGap(18, 18, 18)
+                                .addComponent(estadoBloqueoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(346, 346, 346)
+                .addGap(305, 305, 305)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bloquearBtn)
+                    .addComponent(desbloquearBtn)
+                    .addComponent(estadoBloqueoTxt))
+                .addGap(18, 18, 18)
                 .addComponent(facturaWebPedidosBtn)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -228,7 +252,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(consultarPrecioBtn)
                     .addComponent(notaCreditoBtn)
                     .addComponent(salirBtn))
-                .addGap(60, 60, 60))
+                .addContainerGap())
         );
 
         archivo.setText("Archivo");
@@ -455,7 +479,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -628,6 +652,14 @@ public class MainFrame extends javax.swing.JFrame {
         productosIvaCero();
     }//GEN-LAST:event_productosIvaCeroMnuActionPerformed
 
+    private void bloquearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bloquearBtnActionPerformed
+        bloquear();
+    }//GEN-LAST:event_bloquearBtnActionPerformed
+
+    private void desbloquearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desbloquearBtnActionPerformed
+        desbloquear();
+    }//GEN-LAST:event_desbloquearBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -665,11 +697,14 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu archivo;
+    private javax.swing.JButton bloquearBtn;
     private javax.swing.JMenuItem clientesInactivosMnu;
     private javax.swing.JMenuItem clientesMenu;
     private javax.swing.JMenuItem configMenu;
     private javax.swing.JMenuItem consultaAfipMnu;
     private javax.swing.JButton consultarPrecioBtn;
+    private javax.swing.JButton desbloquearBtn;
+    private javax.swing.JLabel estadoBloqueoTxt;
     private javax.swing.JButton facturaBtn;
     private javax.swing.JButton facturaWebPedidosBtn;
     private javax.swing.JButton facturarBtn;
@@ -969,8 +1004,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     private Integer cerrarSistema() {
         EquipoActivo ea;
-//        order_name = UtilFrame.establecerNombre();
-//        order_num = UtilFrame.establecerOrden();
+        order_name = Globals.USR_NOMBRE.get();
+        order_num = Integer.valueOf(Globals.USR_ORDEN.get());
         System.out.println(order_name);
         System.out.println(order_num);
         try {
@@ -986,6 +1021,7 @@ public class MainFrame extends javax.swing.JFrame {
             System.out.println("aca pasa algo");
             System.exit(0);
         }
+        UtilTerminal.desbloquearEquipo();
         try {
             new EquipoActivoService().updateEquipoActivo(ea);
             return 1;
@@ -995,4 +1031,38 @@ public class MainFrame extends javax.swing.JFrame {
             return 0;
         }
     }
+
+    private void bloquear() {
+        Boolean puedoGrabar = false;
+        do {
+            puedoGrabar = UtilTerminal.getPermisoGrabar();
+            try {
+                sleep(2000);
+            } catch (InterruptedException ex) {
+                puedoGrabar = false;
+            }
+        } while (!puedoGrabar);
+        estadoBloqueoTxt.setText("BLOQUEADO");
+    }
+
+    private void desbloquear() {
+        UtilTerminal.desbloquearEquipo();
+        estadoBloqueoTxt.setText("DES----BLOQUEADO");
+    }
+
+    private void prepararFrame() {
+        String str0 = UtilFrame.getUsuario(); // + " " + str1;
+        bloquearBtn.setVisible(false);
+        desbloquearBtn.setVisible(false);
+        estadoBloqueoTxt.setVisible(false);
+        contentPanel = jPanel1;
+        JFrame jFrame = MainFrame.this;
+        jFrame.setLocationRelativeTo(null);
+        contentPanel.setBorder(new EmptyBorder(5, 5, 100, 5));
+        contentPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED),
+                str0, TitledBorder.LEFT, TitledBorder.BELOW_BOTTOM));
+        jFrame.setDefaultCloseOperation(0);
+        setContentPane(contentPanel);
+    }
+
 }

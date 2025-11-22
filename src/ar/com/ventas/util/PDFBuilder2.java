@@ -1269,7 +1269,7 @@ public class PDFBuilder2 {
 //        JOptionPane.showMessageDialog(null, fileNameFormatted);
         return new File(fileNameFormatted);
     }
-    
+
     public File armarNdA(Cliente cli, IvaVentas iv, List<RenglonFactura> rf) throws FileNotFoundException, DocumentException, Exception {
         String nr0 = dfn.format(iv.getNumeroFactura());
         String fileNameFormatted = getFileNameFormatted2(iv);
@@ -1767,8 +1767,8 @@ public class PDFBuilder2 {
         PdfPTable encabezado = new PdfPTable(3);
         encabezado.setWidthPercentage(100);
         PdfPCell celdaEncabezado1 = new PdfPCell(new Paragraph("DISTRIBUIDORA A & M", FontFactory.getFont("arial", 9, Font.BOLD, NEGRO)));
-        PdfPCell celdaEncabezado2 = new PdfPCell(new Paragraph("B", FontFactory.getFont("arial", 9, Font.BOLD, NEGRO)));
-        PdfPCell celdaEncabezado3 = new PdfPCell(new Paragraph("FACTURA", FontFactory.getFont("arial", 9, Font.BOLD, NEGRO)));
+        PdfPCell celdaEncabezado2 = new PdfPCell(new Paragraph("B", FontFactory.getFont("arial", 14, Font.BOLD, NEGRO)));
+        PdfPCell celdaEncabezado3 = new PdfPCell(new Paragraph("FACTURA", FontFactory.getFont("arial", 11, Font.BOLD, NEGRO)));
         PdfPCell celdaEncabezado4 = new PdfPCell(new Paragraph("Av. San Martin 3284", FontFactory.getFont("arial", 8, Font.BOLD, NEGRO)));
         PdfPCell celdaEncabezado5 = new PdfPCell(new Paragraph("Cod.nro:" + cod, FontFactory.getFont("arial", 8, Font.PLAIN, NEGRO)));
         PdfPCell celdaEncabezado6 = new PdfPCell(new Paragraph(nro, FontFactory.getFont("arial", 8, Font.PLAIN, NEGRO)));
@@ -2001,25 +2001,25 @@ public class PDFBuilder2 {
         String f_venc_cae = sdf.format(iv.getFechaCae());
         String cae_nro = dfc.format(iv.getCae());
         if (iv.getImpuesto() > 0.00) {
-            impu = "Total Impuesto: " + df.format(iv.getImpuesto());
+            impu = " " + df.format(iv.getImpuesto());
         }
 
-        String tpd = iv.getCliente().getTipo().toString();
-        String vto = sdf2.format(iv.getFechaCae());
-        String cuit1;
-        tpd = "80";
-        if (tpd.equals("96")) {
-            cuit1 = "00000000000";//cui.trim();
-            tpd = "96";
-        } else {
-            cuit1 = "00000000000";//cui.substring(0, 2) + cui.substring(3, 11) + cui.substring(12, 13);
-        }
-        Integer suma1 = 0;
-        Integer suma2 = 0;
-        String sucu = dfs.format(iv.getNumeroSucursal());
-        String cae = iv.getCae().toString();
-        int largo = cae.length();
-        String txtCadenaRP = "";
+//        String tpd = iv.getCliente().getTipo().toString();
+//        String vto = sdf2.format(iv.getFechaCae());
+//        String cuit1;
+//        tpd = "80";
+//        if (tpd.equals("96")) {
+//            cuit1 = "00000000000";//cui.trim();
+//            tpd = "96";
+//        } else {
+//            cuit1 = "00000000000";//cui.substring(0, 2) + cui.substring(3, 11) + cui.substring(12, 13);
+//        }
+//        Integer suma1 = 0;
+//        Integer suma2 = 0;
+//        String sucu = dfs.format(iv.getNumeroSucursal());
+//        String cae = iv.getCae().toString();
+//        int largo = cae.length();
+//        String txtCadenaRP = "";
         String t1 = "";
         String t2 = "";
         if (t1 != null) {
@@ -2030,7 +2030,16 @@ public class PDFBuilder2 {
         }
 
         PdfPTable pieFc = new PdfPTable(2);
+
+        float[] anchos2 = new float[2];
+        anchos2[0] = 70;
+        anchos2[1] = 30;
+
+        String to_Iva = df.format(iv.getIva());
         pieFc.setWidthPercentage(100);
+        pieFc.setWidths(anchos2);
+        PdfPCell pieFc1a = new PdfPCell(new Paragraph("Régimen de Transparencia Fiscal al Consumidor (Ley 27.743)", FontFactory.getFont("arial", 9, Font.PLAIN, NEGRO)));
+        PdfPCell pieFc2a = new PdfPCell(new Paragraph(" IVA Contenido:  $:" + to_Iva, FontFactory.getFont("arial", 10, Font.BOLD, NEGRO)));
         PdfPCell pieFc1 = new PdfPCell(new Paragraph(" IMPUESTO: " + impu, FontFactory.getFont("arial", 9, Font.PLAIN, NEGRO)));
         PdfPCell pieFc2 = new PdfPCell(new Paragraph(" TOTAL: " + totFc, FontFactory.getFont("arial", 10, Font.BOLD, NEGRO)));
         PdfPCell pieFc3 = new PdfPCell(new Paragraph(" Fecha Vencimiento CAE: " + f_venc_cae, FontFactory.getFont("arial", 9, Font.PLAIN, NEGRO)));
@@ -2041,6 +2050,8 @@ public class PDFBuilder2 {
         Image imagen = Image.getInstance("c://qr//CodigoQR" + nr0 + ".png");
         Image img2 = Image.getInstance("c://qr//afip.png");
 
+        pieFc1a.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
+        pieFc2a.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
         pieFc1.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
         pieFc2.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
         pieFc3.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
@@ -2050,6 +2061,8 @@ public class PDFBuilder2 {
 //        pieFc7.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 //        pieFc8.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 
+        pieFc.addCell(pieFc1a).setBorder(3);
+        pieFc.addCell(pieFc2a).setBorder(3);
         pieFc.addCell(pieFc1).setBorder(PdfPCell.NO_BORDER);
         pieFc.addCell(pieFc2).setBorder(PdfPCell.NO_BORDER);
         pieFc.addCell(pieFc3).setBorder(PdfPCell.NO_BORDER);
@@ -2059,7 +2072,7 @@ public class PDFBuilder2 {
 
         pdf.add(pieFc);
 
-        imagen.setAbsolutePosition(20f, 100f);// 10 - 40
+        imagen.setAbsolutePosition(22f, 100f);// 10 - 40
         img2.setAbsolutePosition(180f, 160f);
         pdf.add(imagen);
         pdf.add(img2);
@@ -2067,7 +2080,7 @@ public class PDFBuilder2 {
         pdf.close();
         return new File(fileNameFormatted);
     }
-    
+
     public File armarNdB(Cliente cli, IvaVentas iv, List<RenglonFactura> rf) throws FileNotFoundException, DocumentException, Exception {
         String nr0 = dfn.format(iv.getNumeroFactura());
         String fileNameFormatted = getFileNameFormatted3(iv);

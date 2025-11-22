@@ -50,6 +50,33 @@ public class EquipoBloqueadoDAO extends GenericDAO {
         return eb;
     }
     
+//    public void bloquearEquipoExistente2(String nombre, Integer orden) {
+//        EquipoBloqueado eb;
+//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+//        Criteria criteria = session.createCriteria(EquipoBloqueado.class);
+//        criteria.add(Restrictions.eq("nombre", nombre));
+//        criteria.add(Restrictions.eq("orden", orden));
+//        eb = (EquipoBloqueado) criteria.uniqueResult();
+//        eb.setBloqueado(true);
+//        update(eb);
+//    }
+    
+    public Boolean getExisteEquipoByNombreAndOrden(String nombre, Integer orden) {
+        Integer cantidad;
+        List<EquipoBloqueado> eb = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(EquipoBloqueado.class);
+        criteria.add(Restrictions.eq("nombre", nombre));
+        criteria.add(Restrictions.eq("orden", orden));
+        eb = (List<EquipoBloqueado>) criteria.list();
+        cantidad = eb.size();
+        if(cantidad > 0){
+            return true;
+        }
+        return false;
+    }
+    
+    
 //    public void bloquearEquipo(EquipoBloqueado equipo, Boolean bloqueo) {
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 //        Criteria criteria = session.createCriteria(EquipoBloqueado.class);

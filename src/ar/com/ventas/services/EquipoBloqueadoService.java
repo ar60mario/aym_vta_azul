@@ -37,11 +37,47 @@ public class EquipoBloqueadoService {
         }
     }
     
+    public void bloquearEquipoNuevo2(String nombre, Integer orden) throws Exception{
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            bo.bloquearEquipoNuevo2(nombre, orden);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+    }
+    
     public void bloquearEquipoExistente(EquipoBloqueado eb, Boolean bloqueo) throws Exception{
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
             bo.bloquearEquipoExistente(eb, bloqueo);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+    }
+    
+    public void bloquearEquipoExistente2(String nombre, Integer orden) throws Exception{
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            bo.bloquearEquipoExistente2(nombre, orden);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+    }
+    
+    public void updateEquipo(EquipoBloqueado equipo) throws Exception{
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            bo.updateEquipo(equipo);
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();
@@ -62,6 +98,20 @@ public class EquipoBloqueadoService {
             throw new Exception(ex);
         }
         return eb;
+    }
+    
+    public Boolean getExisteEquipoByNombreAndOrden(String nombre, Integer orden) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        Boolean existe = false;
+        try {
+            existe = bo.getExisteEquipoByNombreAndOrden(nombre, orden);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return existe;
     }
     
 //    public Cliente getClienteByCodigo(String codigo) throws Exception{

@@ -51,11 +51,22 @@ public class EquipoBloqueadoBO {
         } catch (Exception ex) {
 //            JOptionPane.showMessageDialog(null, "bo");
             throw new Exception(ex);
-            
+
         }
 //        System.out.println(nombre);
 //        System.out.println(orden);
         return eb;
+    }
+
+    public Boolean getExisteEquipoByNombreAndOrden(String nombre, Integer orden) throws Exception {
+        Boolean existe = false;
+        try {
+            existe = dao.getExisteEquipoByNombreAndOrden(nombre, orden);
+        } catch (Exception ex) {
+            throw new Exception(ex);
+
+        }
+        return existe;
     }
 
     public void bloquearEquipoExistente(EquipoBloqueado eb, Boolean bloqueo) throws Exception {
@@ -63,11 +74,45 @@ public class EquipoBloqueadoBO {
         dao.update(eb);
     }
 
+    public void bloquearEquipoExistente2(String nombre, Integer orden) throws Exception {
+        EquipoBloqueado eb;
+        try {
+            eb = dao.getEquipoBloqueadoByNombreAndOrden(nombre, orden);
+        } catch (Exception ex) {
+            throw new Exception(ex);
+        }
+        eb.setBloqueado(true);
+        try {
+            dao.update(eb);
+        } catch (Exception ex) {
+            throw new Exception(ex);
+        }
+    }
+
+    public void updateEquipo(EquipoBloqueado equipo) throws Exception {
+        try {
+            dao.update(equipo);
+        } catch (Exception ex) {
+            throw new Exception(ex);
+        }
+    }
+
+    public void bloquearEquipoNuevo2(String nombre, Integer orden) throws Exception {
+        EquipoBloqueado eb = new EquipoBloqueado();
+        eb.setBloqueado(true);
+        eb.setNombre(nombre);
+        eb.setOrden(orden);
+        try {
+            dao.save(eb);
+        } catch (Exception ex) {
+            throw new Exception(ex);
+        }
+    }
+
     public void bloquearEquipoNuevo(EquipoBloqueado eb, Boolean bloqueo) throws Exception {
         eb.setBloqueado(bloqueo);
         dao.save(eb);
     }
-
 //    public List<Cliente> getAllClientes() throws Exception {
 //        List<Cliente> listClientes = null;
 //

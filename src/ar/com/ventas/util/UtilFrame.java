@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ar.com.ventas.util;
 
 import ar.com.ventas.main.MainOneFrame;
@@ -15,17 +10,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author argia
- */
 public class UtilFrame {
     public static String getUsuario() {
-        String str1 = Globals.USR.get();
-        Integer largo = str1.length();
-        String str0 = str1.substring(0, 3);
-        String str3 = str1.substring(4, largo);
-        String str5 = str0 + " - " + str3;
+        String str1 = Globals.USR_NOMBRE.get();
+        String str0 = Globals.USR_ORDEN.get();
+        String str5 = str0 + " - " + str1;
         return str5;
     }
     
