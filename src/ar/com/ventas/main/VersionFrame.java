@@ -13,7 +13,7 @@ public class VersionFrame extends javax.swing.JFrame {
 
     public VersionFrame() {
         initComponents();
-        versionTxt.setText("Sistema Ventas Nro.:2025.11-003_a");
+        versionTxt.setText("Sistema Ventas Nro.:2025.12-005_a");
         versionTxt.setEditable(false);
         limpiarCampos();
     }

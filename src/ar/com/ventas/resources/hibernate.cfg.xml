@@ -10,7 +10,7 @@
     
     <!--property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ventas</property>
     <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.connection.password">root</propert-->
+    <property name="hibernate.connection.password">root</property-->
     
     <property name="hibernate.connection.url">jdbc:mysql://servidor:3306/ventas</property>
     <property name="hibernate.connection.username">jos</property>
@@ -57,6 +57,7 @@
     <mapping resource="ar/com/ventas/entities/CtaCteCliente.hbm.xml"/>
     <mapping resource="ar/com/ventas/entities/RenglonNotaCredito.hbm.xml"/>
     <mapping resource="ar/com/ventas/entities/Recibo.hbm.xml"/>
+    <mapping resource="ar/com/ventas/entities/StatusPermiso.hbm.xml"/>
     <mapping resource="ar/com/ventas/entities/FcReserved.hbm.xml"/>
     <mapping resource="ar/com/ventas/entities/RenglonFcReserved.hbm.xml"/>
     <mapping resource="ar/com/ventas/entities/TipoDoc.hbm.xml"/>

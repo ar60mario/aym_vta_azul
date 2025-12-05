@@ -1,11 +1,9 @@
 package ar.com.ventas.frame;
 
 import ar.com.ventas.entities.Cliente;
-import ar.com.ventas.entities.ClienteIdentificado;
 import ar.com.ventas.entities.ClienteTraba;
 import ar.com.ventas.entities.Configuracion;
 import ar.com.ventas.entities.CtaCteCliente;
-import ar.com.ventas.entities.Domicilio;
 import ar.com.ventas.entities.EquipoBloqueado;
 import ar.com.ventas.entities.FcReserved;
 import ar.com.ventas.entities.IvaVentas;
@@ -26,25 +24,18 @@ import ar.com.ventas.services.ProductoService;
 import ar.com.ventas.services.RenglonFcReservedService;
 import ar.com.ventas.services.UsuarioService;
 import ar.com.ventas.util.Constantes;
-import ar.com.ventas.util.DesktopApi;
-import ar.com.ventas.util.PDFBuilder2;
 import ar.com.ventas.util.UtilFactura;
 import ar.com.ventas.util.UtilFrame;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.Writer;
-import com.google.zxing.WriterException;
 import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.Dispatch;
 import com.jacob.com.LibraryLoader;
 import com.jacob.com.Variant;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -53,24 +44,16 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
-import com.itextpdf.text.DocumentException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import static java.lang.Thread.sleep;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -88,26 +71,11 @@ public class FacturaWebFrame extends javax.swing.JFrame {
     private static final String ruta = "c://qr//codigoQR";
     private static final String extension = ".png";
     private static final SimpleDateFormat sdf_qr = new SimpleDateFormat("yyyy-MM-dd");
-    private final DecimalFormat df_qr = new DecimalFormat("00000000");
     private DecimalFormat df_matriz = new DecimalFormat("00000000");
-    private final String url_qr = "https://www.afip.gob.ar/fe/qr/?p=";
-    private final String ver_qr = "1";
-    private String fecha_qr;
-    private final String cuit_qr = "20124127581";
-    private String puntoVenta_qr = "5";
-    private String tipoComprobante_qr;
-    private String numeroComprobante_qr;
-    private String importe_qr;
-    private final String moneda_qr = "PES";
-    private final String cotiz_qr = "1";
-    private String tipoDoc_qr;
-    private String numeroDoc_qr;
-    private final String tipoCodigoAutoriz_qr = "E";
-    private String nroCae_qr;
     private String letraFacturaPapel;
     private String sucursalFacturaPapel;
     private String numeroFacturaPapel;
-    private String[] renglones = null;
+    private final String[] renglones = null;
     private Date fecha;
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private Cliente clienteFactura = null;
@@ -134,7 +102,6 @@ public class FacturaWebFrame extends javax.swing.JFrame {
     private Float cantidad;
     private Integer categoriaIva = 4;
     private final DecimalFormat df = new DecimalFormat("#0.00");
-//    private final DecimalFormat df_prn = new DecimalFormat("#0");
     private final DecimalFormat df1 = new DecimalFormat("#0");
     private final DecimalFormat df2 = new DecimalFormat("#0.0");
     private Double saldoCliente = 0.00;
@@ -156,10 +123,8 @@ public class FacturaWebFrame extends javax.swing.JFrame {
     private final int tst = 0; // 1 esta en test
 
     public FacturaWebFrame() {
-
         initComponents();
         prepararFrame();
-
         limpiarCampos();
         bloquearCampos();
         imprimeChk.setVisible(false);
@@ -924,7 +889,6 @@ public class FacturaWebFrame extends javax.swing.JFrame {
     }
 
     private void terminarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terminarBtnActionPerformed
-
         double xSaldo = clienteFactura.getSaldo();
         double ySaldo = rint(xSaldo * 100);
         if (ySaldo != 0) {
@@ -2156,11 +2120,11 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                 String cadena = cuit1 + "0" + tipo_cbte + "0005" + cae + vto;
                 for (int i = 0; i < 39; i++) {
                     if (x == 0) {
-                        int num = Integer.valueOf(cadena.substring(i, i + 1).toString());
+                        int num = Integer.valueOf(cadena.substring(i, i + 1));
                         suma1 += num;
                         x = 1;
                     } else {
-                        int num = Integer.valueOf(cadena.substring(i, i + 1).toString());
+                        int num = Integer.valueOf(cadena.substring(i, i + 1));
                         suma2 += num;
                         x = 0;
                     }
@@ -2332,7 +2296,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
 //            reproceso = 1;
         } catch (Exception ex) {
             Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-//            JOptionPane.showMessageDialog(this, "Errora actualizando datos Factura - REPROCESO");
+            JOptionPane.showMessageDialog(this, "Error Nro 2295 - FACTURA");
 //            reproceso = 0;
         }
 //        if (reproceso == 0) {
@@ -3227,25 +3191,25 @@ public class FacturaWebFrame extends javax.swing.JFrame {
     }
 
     private void desbloquearEquipo() {
-        EquipoBloqueado eb = null;
+//        EquipoBloqueado eb = null;
         String str0 = UtilFrame.getUsuario(); // + " " + str1;
         int largo = str0.length();
-        Integer order_num = Integer.valueOf(str0.substring(0, 3));
-        String order_name = str0.substring(6, largo);
-        try {
-            eb = new EquipoBloqueadoService().getEquipoBloqueadoByNombreAndOrden(order_name, order_num);
-        } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        Integer order_num = Integer.valueOf(str0.substring(0, 3));
+//        String order_name = str0.substring(6, largo);
+//        try {
+//            eb = new EquipoBloqueadoService().getEquipoBloqueadoByNombreAndOrden(order_name, order_num);
+//        } catch (Exception ex) {
+//            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+//        }
 //        System.out.println(order_name);
 //        System.out.println(order_num);
 //        System.out.println(eb);
 //        JOptionPane.showMessageDialog(this, "VER");
-        try {
-//            new EquipoBloqueadoService().bloquearEquipoExistente(eb, false);
-        } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+////            new EquipoBloqueadoService().bloquearEquipoExistente(eb, false);
+//        } catch (Exception ex) {
+//            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
 //    private void fxor() {

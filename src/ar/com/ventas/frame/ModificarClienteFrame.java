@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ar.com.ventas.frame;
 
 import ar.com.ventas.entities.Cliente;
@@ -33,13 +28,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-/**
- *
- * @author Marcela
- */
 public class ModificarClienteFrame extends javax.swing.JFrame {
 
-    private final Logger logger = Logger.getLogger("EditarClienteFrame");
+//    private final Logger logger = Logger.getLogger("EditarClienteFrame");
     //private List<Cliente> lista = new ArrayList<Cliente>();
     private final Cliente cliente;
     private List<TipoDoc> tipos = null;
@@ -54,13 +45,8 @@ public class ModificarClienteFrame extends javax.swing.JFrame {
     private String fil;
     private String fil2;
     private Boolean alpha;
-//    private final Integer order_num;
-//    private final String order_name;
 
-    // private Domicilio domicilio;
     /**
-     *
-     *
      * @param cliente
      * @param row
      * @param pagina
