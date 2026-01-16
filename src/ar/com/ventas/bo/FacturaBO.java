@@ -5,11 +5,11 @@
  */
 package ar.com.ventas.bo;
 
-import ar.com.ventas.dao.FacturaDAO;
 import ar.com.ventas.entities.Cliente;
 import ar.com.ventas.entities.Configuracion;
 import ar.com.ventas.entities.CtaCteCliente;
 import ar.com.ventas.entities.IvaVentas;
+import ar.com.ventas.entities.Producto;
 import ar.com.ventas.entities.RenglonFactura;
 import java.util.List;
 import java.util.logging.Logger;
@@ -21,7 +21,7 @@ import org.hibernate.HibernateException;
  */
 public class FacturaBO {
 
-    private final FacturaDAO dao = new FacturaDAO();
+//    private final FacturaDAO dao = new FacturaDAO();
     private static final Logger logger = Logger.getLogger("FacturaBO");
 
     public void saveFacturaCompleta(Cliente cl, Configuracion co, CtaCteCliente cc, IvaVentas iv, List<RenglonFactura> rf) throws Exception {
@@ -35,17 +35,22 @@ public class FacturaBO {
             // grabo cuenta Corriente
             cc.setFactura(iv);
             new CtaCteClienteBO().saveCtaCteCliente(cc);
-            // grabo renglones
+            // grabo renglones y stock
             for (RenglonFactura re : rf) {
                 re.setIvaVentas(iv);
                 new RenglonFacturaBO().saveRenglon(re);
+                Producto p = re.getProducto();
+                new ProductoBO().updateProducto(p);
             }
             // grabar vendedor?
+            // actualizar stock - está
+            
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }
     }
 
+    
     /*
     private final ClienteDAO dao = new ClienteDAO();
     private static final Logger logger = Logger.getLogger("ClienteBO");

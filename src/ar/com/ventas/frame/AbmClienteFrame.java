@@ -14,12 +14,15 @@ import ar.com.ventas.services.ClienteService;
 import ar.com.ventas.services.ClienteTrabaService;
 import ar.com.ventas.services.CustomerTrabaService;
 import ar.com.ventas.services.UsuarioService;
+import ar.com.ventas.util.UtilFrame;
+import ar.com.ventas.util.UtilPermisos;
 import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -36,36 +39,42 @@ import javax.swing.table.DefaultTableModel;
 public class AbmClienteFrame extends javax.swing.JFrame {
 
     private List<Cliente> listadoCliente = null;
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+//    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private Integer row;
+    private Boolean alpha;
+
     private Usuario usuario;
-    private final Integer nivel = 1;
-    private Boolean o;
-//    private Integer order_num;
-//    private String order_name;
+//    private final Integer nivel = 1;
+//    private Boolean o;
+    private Integer pagina = 0;
+    private Integer limite = 24;
+    private String fil2;
+    private String fil;
+    private String codigo;
 
     /**
      * Creates new form AbmCliente
      *
      * @param row
+     * @param pagina
+     * @param fil
+     * @param alpha
+     * @param fil2
+     * @param codigo
      */
-    public AbmClienteFrame(Integer row, Boolean o) {
+    public AbmClienteFrame(Integer row, Integer pagina, String fil, Boolean alpha, String fil2, String codigo) {
         initComponents();
-        this.o = o;
         this.row = row;
-//        this.order_name = order_name;
-//        this.order_num = order_num;
+        this.fil = fil;
+        this.pagina = pagina;
+        this.alpha = alpha;
+        this.fil2 = fil2;
+        this.codigo = codigo;
         setearTabla();
-        //tablaClientes.set
-        if (o) {
-            alfabeticoRb.setSelected(false);
-            numericoRb.setSelected(true);
-        } else {
-            alfabeticoRb.setSelected(true);
-            numericoRb.setSelected(false);
-        }
-        llenarTabla();
+        limpiarCampos();
+        cargaInicial();
         nombreTxt.requestFocus();
+
     }
 
     /**
@@ -83,11 +92,16 @@ public class AbmClienteFrame extends javax.swing.JFrame {
         tablaClientes = new javax.swing.JTable();
         modificarBtn = new javax.swing.JButton();
         nuevoBtn = new javax.swing.JButton();
-        alfabeticoRb = new javax.swing.JRadioButton();
-        numericoRb = new javax.swing.JRadioButton();
         nombreTxt = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         buscarBtn = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        codigoTxt = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        comienzaFiltroTxt = new javax.swing.JTextField();
+        primeroBtn = new javax.swing.JButton();
+        anteriorBtn = new javax.swing.JButton();
+        siguienteBtn = new javax.swing.JButton();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -133,20 +147,6 @@ public class AbmClienteFrame extends javax.swing.JFrame {
             }
         });
 
-        alfabeticoRb.setText("Alfabético");
-        alfabeticoRb.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                alfabeticoRbActionPerformed(evt);
-            }
-        });
-
-        numericoRb.setText("Numérico");
-        numericoRb.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                numericoRbActionPerformed(evt);
-            }
-        });
-
         nombreTxt.setText("NOMBRE");
         nombreTxt.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -163,6 +163,45 @@ public class AbmClienteFrame extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("CODIGO:");
+
+        codigoTxt.setText("COD");
+        codigoTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                codigoTxtKeyPressed(evt);
+            }
+        });
+
+        jLabel3.setText("COMIENZA:");
+
+        comienzaFiltroTxt.setText("COMIENZA");
+        comienzaFiltroTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                comienzaFiltroTxtKeyPressed(evt);
+            }
+        });
+
+        primeroBtn.setText("PRIMERO");
+        primeroBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                primeroBtnActionPerformed(evt);
+            }
+        });
+
+        anteriorBtn.setText("ANTERIOR");
+        anteriorBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                anteriorBtnActionPerformed(evt);
+            }
+        });
+
+        siguienteBtn.setText("SIGUIENTE");
+        siguienteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                siguienteBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -170,22 +209,31 @@ public class AbmClienteFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 920, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(alfabeticoRb)
-                        .addGap(18, 18, 18)
-                        .addComponent(numericoRb)
-                        .addGap(26, 26, 26)
                         .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(nombreTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(buscarBtn)
-                        .addGap(0, 61, Short.MAX_VALUE))
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(codigoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(comienzaFiltroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buscarBtn))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(nuevoBtn)
                         .addGap(18, 18, 18)
                         .addComponent(modificarBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(primeroBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(anteriorBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(siguienteBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(volverBtn)))
                 .addContainerGap())
@@ -195,18 +243,23 @@ public class AbmClienteFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(alfabeticoRb)
-                    .addComponent(numericoRb)
                     .addComponent(nombreTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(buscarBtn))
+                    .addComponent(buscarBtn)
+                    .addComponent(jLabel2)
+                    .addComponent(codigoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(comienzaFiltroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nuevoBtn)
                     .addComponent(modificarBtn)
-                    .addComponent(volverBtn))
+                    .addComponent(volverBtn)
+                    .addComponent(primeroBtn)
+                    .addComponent(anteriorBtn)
+                    .addComponent(siguienteBtn))
                 .addContainerGap())
         );
 
@@ -220,8 +273,8 @@ public class AbmClienteFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_volverBtnActionPerformed
 
     private void modificarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarBtnActionPerformed
-        int row = tablaClientes.getSelectedRow();
-        if(row < 0){
+        row = tablaClientes.getSelectedRow();
+        if (row < 0) {
             JOptionPane.showMessageDialog(this, "DEBE SELECCIONAR UN CLIENTE PARA MODIFICAR");
             return;
         }
@@ -251,15 +304,15 @@ public class AbmClienteFrame extends javax.swing.JFrame {
                 return;
             }
         }
-        if (cliente != null) {
-            int r = tablaClientes.getSelectedRow();
-            ModificarClienteFrame mcf = new ModificarClienteFrame(cliente, r, o);
-            mcf.setVisible(true);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un Cliente de la lista.", "Atencion",
-                    JOptionPane.INFORMATION_MESSAGE);
-        }
+//        if (cliente != null) {
+////            int r = tablaClientes.getSelectedRow();
+        ModificarClienteFrame mcf = new ModificarClienteFrame(cliente, row, pagina, fil, alpha, fil2, codigo);
+        mcf.setVisible(true);
+        this.dispose();
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Debe seleccionar un Cliente de la lista.", "Atencion",
+//                    JOptionPane.INFORMATION_MESSAGE);
+//        }
     }//GEN-LAST:event_modificarBtnActionPerformed
 
     private void nuevoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nuevoBtnActionPerformed
@@ -268,28 +321,6 @@ public class AbmClienteFrame extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_nuevoBtnActionPerformed
-
-    private void alfabeticoRbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alfabeticoRbActionPerformed
-        if (numericoRb.isSelected()) {
-            numericoRb.setSelected(false);
-            alfabeticoRb.setSelected(true);
-            borrarTabla();
-            llenarTabla();
-        } else {
-            alfabeticoRb.setSelected(true);
-        }
-    }//GEN-LAST:event_alfabeticoRbActionPerformed
-
-    private void numericoRbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numericoRbActionPerformed
-        if (alfabeticoRb.isSelected()) {
-            alfabeticoRb.setSelected(false);
-            numericoRb.setSelected(true);
-            borrarTabla();
-            llenarTablaNumerico();
-        } else {
-            numericoRb.setSelected(true);
-        }
-    }//GEN-LAST:event_numericoRbActionPerformed
 
     private void buscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBtnActionPerformed
         if (!nombreTxt.getText().isEmpty()) {
@@ -300,10 +331,116 @@ public class AbmClienteFrame extends javax.swing.JFrame {
     private void nombreTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreTxtKeyPressed
         if (evt.getKeyCode() == 10) {
             if (!nombreTxt.getText().isEmpty()) {
+                fil = nombreTxt.getText();
                 buscarClientesByFiltro();
+            } else {
+                codigoTxt.requestFocus();
             }
         }
     }//GEN-LAST:event_nombreTxtKeyPressed
+
+    private void siguienteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguienteBtnActionPerformed
+        pagina += limite;
+        Boolean mostrado;
+        if (nombreTxt.getText().isEmpty()) {
+            if (!comienzaFiltroTxt.getText().isEmpty()) {
+                mostrado = cargarListaComienza();
+            } else {
+                mostrado = cargarLista();
+//                    }else{
+//                        mostrado = cargarLista();
+//                    }
+            }
+        } else {
+            mostrado = cargarListaNombre();
+        }
+        if (!mostrado) {
+            pagina -= limite;
+            if (pagina < 0) {
+                pagina = 0;
+            }
+            if (nombreTxt.getText().isEmpty()) {
+                if (!comienzaFiltroTxt.getText().isEmpty()) {
+                    cargarListaComienza();
+                } else {
+                    if (!codigoTxt.getText().isEmpty()) {
+                        cargarLista();
+                    }
+                }
+            } else {
+                cargarListaNombre();
+            }
+        }
+//            llenarTabla();
+//        } 
+//        else {
+//            cargarListaNumerico();
+////            llenarTablaNumerico();
+//        }
+    }//GEN-LAST:event_siguienteBtnActionPerformed
+
+    private void primeroBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_primeroBtnActionPerformed
+        pagina = 0;
+//        if (alfabeticoRb.isSelected()) {
+        cargarLista();
+//        } else {
+//            cargarListaNumerico();
+//        }
+    }//GEN-LAST:event_primeroBtnActionPerformed
+
+    private void anteriorBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anteriorBtnActionPerformed
+        pagina -= limite;
+        if (pagina < 0) {
+            pagina = 0;
+        }
+//        if (alfabeticoRb.isSelected()) {
+////            llenarTabla();
+        cargarLista();
+//        } else {
+////            llenarTablaNumerico();
+////            cargarListaNumerico();
+//        }
+    }//GEN-LAST:event_anteriorBtnActionPerformed
+
+    private void codigoTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoTxtKeyPressed
+        if (evt.getKeyCode() == 10) {
+            if (!codigoTxt.getText().isEmpty()) {
+                codigo = codigoTxt.getText();
+                comienzaFiltroTxt.setText("");
+                nombreTxt.setText("");
+                cargaClienteUnico();
+                row = 1;
+            } else {
+                comienzaFiltroTxt.setText("");
+                comienzaFiltroTxt.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_codigoTxtKeyPressed
+
+    private void comienzaFiltroTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_comienzaFiltroTxtKeyPressed
+        if (evt.getKeyCode() == 10) {
+            desBloquearBotones();
+            if (comienzaFiltroTxt.getText().isEmpty()) {
+                nombreTxt.setText("");
+                nombreTxt.requestFocus();
+            } else {
+                fil2 = comienzaFiltroTxt.getText();
+                nombreTxt.setText("");
+                codigoTxt.setText("");
+                pagina = 0;
+                row = 1;
+                listadoCliente = null;
+                try {
+                    listadoCliente = new ClienteService().getClientesComienzaByFiltro(fil2, pagina, limite);
+                } catch (Exception ex) {
+                    Logger.getLogger(AbmClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (listadoCliente != null && !listadoCliente.isEmpty()) {
+                    llenarTabla();
+                }
+            }
+        }
+    }//GEN-LAST:event_comienzaFiltroTxtKeyPressed
 
     /**
      * @param args the command line arguments
@@ -335,55 +472,63 @@ public class AbmClienteFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AbmClienteFrame(null, null).setVisible(true);
+                new AbmClienteFrame(null, null, null, null, null, null).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton alfabeticoRb;
+    private javax.swing.JButton anteriorBtn;
     private javax.swing.JButton buscarBtn;
+    private javax.swing.JTextField codigoTxt;
+    private javax.swing.JTextField comienzaFiltroTxt;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton modificarBtn;
     private javax.swing.JTextField nombreTxt;
     private javax.swing.JButton nuevoBtn;
-    private javax.swing.JRadioButton numericoRb;
+    private javax.swing.JButton primeroBtn;
+    private javax.swing.JButton siguienteBtn;
     private javax.swing.JTable tablaClientes;
     private javax.swing.JButton volverBtn;
     // End of variables declaration//GEN-END:variables
 
     private void llenarTabla() {
-        listadoCliente = null;
-        if (row == null) {
-            row = 0;
-        }
-        try {
-            ClienteService clienteService = new ClienteService();
-            if (o) {
-                listadoCliente = clienteService.getClienteOrdenado(); // Obtengo los Clientes de la DB.
-            } else {
-                listadoCliente = new ClienteService().getClienteNumerico();
-            }
-        } catch (Exception ex) {
-            // Logear error y mostrarlo
-            JOptionPane.showInternalMessageDialog(null, "Error");
-        }
+        UtilFrame.limpiarTabla(tablaClientes);
         if (listadoCliente != null && !listadoCliente.isEmpty()) {
             DefaultTableModel tabla = (DefaultTableModel) tablaClientes.getModel();
             for (Cliente cliente : listadoCliente) { // Recorro la lista de administradores y lleno la tabla.
-                Object[] fila = new Object[3];
+                Object[] fila = new Object[4];
                 fila[0] = cliente.getCodigo();
                 fila[1] = cliente.getRazonSocial();
                 fila[2] = cliente.getCuit();
+//                fila[3] = cliente.getTipo();
+                String tipoDoc = "CUIT";
+                if (cliente.getTipo().equals("96")) {
+                    tipoDoc = "DNI";
+                }
+                if (cliente.getTipo().equals("86")) {
+                    tipoDoc = "CUIL";
+                }
+                if (cliente.getTipo().equals("99")) {
+                    tipoDoc = "VTA.GLOBAL";
+                }
+                fila[3] = tipoDoc;
                 tabla.addRow(fila); // Agrego la fila a la tabla
             }
             tablaClientes.setModel(tabla); // Pongo la tabla visible.
-            Rectangle rect = tablaClientes.getCellRect(row, 0, true);
+            int rowVerif = listadoCliente.size();
+            Rectangle rect = tablaClientes.getCellRect(row - 1, 0, true);
             tablaClientes.scrollRectToVisible(rect);
             tablaClientes.clearSelection();
-            tablaClientes.setRowSelectionInterval(row, row);
+            System.out.println(row);
+            if (row > rowVerif) {
+                row = rowVerif;
+            }
+            tablaClientes.setRowSelectionInterval(row - 1, row - 1);
         }
     }
 
@@ -392,7 +537,8 @@ public class AbmClienteFrame extends javax.swing.JFrame {
         DefaultTableModel tabla = new DefaultTableModel();
         tabla.addColumn("CODIGO");
         tabla.addColumn("RAZON SOCIAL"); // Creo un nuevo modelo con las columnas
-        tabla.addColumn("CUIT");
+        tabla.addColumn("DOCUMENTO");
+        tabla.addColumn("TIPO DOCUM");
         nombreTxt.setText("");
         tablaClientes.setModel(tabla);
     }
@@ -439,88 +585,101 @@ public class AbmClienteFrame extends javax.swing.JFrame {
         return cliente;
     }
 
-    private void borrarTabla() {
-        int rows = tablaClientes.getRowCount();
-        DefaultTableModel model = (DefaultTableModel) tablaClientes.getModel();
-        if (rows > 0) {
-            for (int i = 0; i < rows; i++) {
-                model.removeRow(0);
-                listadoCliente.remove(0);
-            }
-            tablaClientes.setModel(model);
-        }
-    }
-
-    private void llenarTablaNumerico() {
-        listadoCliente = null;
-        DefaultTableModel model = (DefaultTableModel) tablaClientes.getModel();
-        try {
-            listadoCliente = new ClienteService().getClienteNumerico();
-        } catch (Exception ex) {
-            Logger.getLogger(AbmClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (listadoCliente != null && !listadoCliente.isEmpty()) {
-            for (Cliente cli : listadoCliente) {
-                Object ob[] = new Object[3];
-                ob[0] = cli.getCodigo();
-                ob[1] = cli.getRazonSocial();
-                ob[2] = cli.getCuit();
-                model.addRow(ob);
-            }
-            tablaClientes.setModel(model);
-        }
-    }
-
+//    private void borrarTabla() {
+//        int rows = tablaClientes.getRowCount();
+//        DefaultTableModel model = (DefaultTableModel) tablaClientes.getModel();
+//        if (rows > 0) {
+//            for (int i = 0; i < rows; i++) {
+//                model.removeRow(0);
+//                listadoCliente.remove(0);
+//            }
+//            tablaClientes.setModel(model);
+//        }
+//    }
+//    private void llenarTablaNumerico() {
+//        listadoCliente = null;
+//        DefaultTableModel model = (DefaultTableModel) tablaClientes.getModel();
+//        try {
+//            listadoCliente = new ClienteService().getClienteNumerico();
+//        } catch (Exception ex) {
+//            Logger.getLogger(AbmClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        if (listadoCliente != null && !listadoCliente.isEmpty()) {
+//            for (Cliente cli : listadoCliente) {
+//                Object ob[] = new Object[3];
+//                ob[0] = cli.getCodigo();
+//                ob[1] = cli.getRazonSocial();
+//                ob[2] = cli.getCuit();
+//                model.addRow(ob);
+//            }
+//            tablaClientes.setModel(model);
+//        }
+//    }
     private void buscarClientesByFiltro() {
-        borrarTabla();
+//        borrarTabla();
+        pagina = 0;
+        row = 1;
         String filtro = nombreTxt.getText();
         listadoCliente = null;
         try {
-            listadoCliente = new ClienteService().getClientesByFiltro(filtro);
+            listadoCliente = new ClienteService().getClientesByFiltro2(filtro, pagina, limite);
         } catch (Exception ex) {
             Logger.getLogger(AbmClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if (listadoCliente != null && !listadoCliente.isEmpty()) {
-            DefaultTableModel tabla = (DefaultTableModel) tablaClientes.getModel();
-            for (Cliente cli : listadoCliente) {
-                Object ob[] = new Object[3];
-                ob[0] = cli.getCodigo();
-                ob[1] = cli.getRazonSocial();
-                ob[2] = cli.getCuit();
-                tabla.addRow(ob);
-            }
-            tablaClientes.setModel(tabla);
-        }
+        llenarTabla();
+//        if (listadoCliente != null && !listadoCliente.isEmpty()) {
+//            DefaultTableModel tabla = (DefaultTableModel) tablaClientes.getModel();
+//            for (Cliente cli : listadoCliente) {
+//                Object ob[] = new Object[4];
+//                ob[0] = cli.getCodigo();
+//                ob[1] = cli.getRazonSocial();
+//                ob[2] = cli.getCuit();
+//                String tipoDoc = "CUIT";
+//                if (cli.getTipo().equals("96")) {
+//                    tipoDoc = "DNI";
+//                }
+//                if (cli.getTipo().equals("86")) {
+//                    tipoDoc = "CUIL";
+//                }
+//                if (cli.getTipo().equals("99")) {
+//                    tipoDoc = "VTA.GLOBAL";
+//                }
+//                ob[3] = tipoDoc;
+//                tabla.addRow(ob);
+//            }
+//            tablaClientes.setModel(tabla);
+//        }
     }
 
     private boolean habilitado() {
-        FileReader fr = null;
-        try {
-            fr = new FileReader("c:/ventas/permisos.txt");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        BufferedReader br = new BufferedReader(fr);
-        String acceso = "";
-        try {
-            acceso = br.readLine();
-        } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            br.close();
-        } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (acceso.equals("1")) {
-            return true;
-        }
-        habilitar();
-        if (usuario != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return UtilPermisos.habilitado(usuario);
+//        FileReader fr = null;
+//        try {
+//            fr = new FileReader("c:/ventas/permisos.txt");
+//        } catch (FileNotFoundException ex) {
+//            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        BufferedReader br = new BufferedReader(fr);
+//        String acceso = "";
+//        try {
+//            acceso = br.readLine();
+//        } catch (IOException ex) {
+//            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        try {
+//            br.close();
+//        } catch (IOException ex) {
+//            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        if (acceso.equals("1")) {
+//            return true;
+//        }
+////        habilitar();
+//        if (usuario != null) {
+//            return true;
+//        } else {
+//            return false;
+//        }
     }
 
     private void nuevo() {
@@ -529,88 +688,268 @@ public class AbmClienteFrame extends javax.swing.JFrame {
         this.dispose();
     }
 
-    private void habilitar() {
-        usuario = null;
-        JTextField field = new JTextField("");
-        String[] options = {"Ingresar"};
-        int result = JOptionPane.showOptionDialog(
-                null,
-                field,
-                "Autorización de USUARIO",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                0);
-        if (field.getText().isEmpty()) {
-            usuario = null;
-            return;
+//    private void habilitar() {
+//        usuario = null;
+//        JTextField field = new JTextField("");
+//        String[] options = {"Ingresar"};
+//        int result = JOptionPane.showOptionDialog(
+//                null,
+//                field,
+//                "Autorización de USUARIO",
+//                JOptionPane.OK_CANCEL_OPTION,
+//                JOptionPane.QUESTION_MESSAGE,
+//                null,
+//                options,
+//                0);
+//        if (field.getText().isEmpty()) {
+//            usuario = null;
+//            return;
+//        }
+//        switch (result) {
+//            case 0:
+//                int cod = Integer.valueOf(field.getText());
+//                try {
+//                    usuario = new UsuarioService().getUsuarioByCodigo(cod);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                if (usuario != null) {
+//                    if (usuario.getActivo()) {
+//                        JPasswordField field2 = new JPasswordField("");
+//                        String[] opts = {"Ingresar"};
+//                        int resulta = JOptionPane.showOptionDialog(
+//                                null,
+//                                field2,
+//                                "CONTRASEÑA: " + usuario.getNombre() + ", Autorización",
+//                                JOptionPane.OK_CANCEL_OPTION,
+//                                JOptionPane.QUESTION_MESSAGE,
+//                                null,
+//                                opts,
+//                                0);
+//                        switch (resulta) {
+//                            case 0:
+//                                int contra = Integer.valueOf(new String(field2.getPassword()));
+//                                if (contra == usuario.getContrasena()) {
+//                                    if (usuario.getNivel() > nivel) {
+//                                        JOptionPane.showMessageDialog(this, "Usuario no Habilitado");
+//                                        usuario = null;
+//                                    } else {
+//                                        String f1 = sdf.format(usuario.getFecha());
+//                                        String f2 = sdf.format(new Date());
+//                                        if (usuario.getNivel() == 2) {
+//                                            if (!f1.equals(f2)) {
+//                                                JOptionPane.showMessageDialog(this, "Permiso de Usuario Vencido");
+//                                                usuario = null;
+//                                            }
+//                                        }
+//                                    }
+//                                } else {
+//                                    JOptionPane.showMessageDialog(this, "Contraseña incorrecta");
+//                                    usuario = null;
+//                                }
+//                                break;
+//                            case 1:
+//                                usuario = null;
+//                                break;
+//                            case -1:
+//                                usuario = null;
+//                                break;
+//                        }
+//                    } else {
+//                        JOptionPane.showMessageDialog(this, "USUARIO Inactivo");
+//                        usuario = null;
+//                    }
+//                } else {
+//                    JOptionPane.showMessageDialog(this, "No existe el Usuario");
+//                    usuario = null;
+//                }
+//                break;
+//            case 1:
+//                usuario = null;
+//                break;
+//            case -1:
+//                usuario = null;
+//                break;
+//        }
+//    }
+    private Boolean cargarListaComienza() {
+        fil2 = comienzaFiltroTxt.getText();
+        listadoCliente = null;
+        try {
+            listadoCliente = new ClienteService().getClientesComienzaByFiltro(fil2, pagina, limite);
+        } catch (Exception ex) {
+            Logger.getLogger(AbmClienteFrame.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
-        switch (result) {
-            case 0:
-                int cod = Integer.valueOf(field.getText());
-                try {
-                    usuario = new UsuarioService().getUsuarioByCodigo(cod);
-                } catch (Exception ex) {
-                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                if (usuario != null) {
-                    if (usuario.getActivo()) {
-                        JPasswordField field2 = new JPasswordField("");
-                        String[] opts = {"Ingresar"};
-                        int resulta = JOptionPane.showOptionDialog(
-                                null,
-                                field2,
-                                "CONTRASEÑA: " + usuario.getNombre() + ", Autorización",
-                                JOptionPane.OK_CANCEL_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,
-                                opts,
-                                0);
-                        switch (resulta) {
-                            case 0:
-                                int contra = Integer.valueOf(new String(field2.getPassword()));
-                                if (contra == usuario.getContrasena()) {
-                                    if (usuario.getNivel() > nivel) {
-                                        JOptionPane.showMessageDialog(this, "Usuario no Habilitado");
-                                        usuario = null;
-                                    } else {
-                                        String f1 = sdf.format(usuario.getFecha());
-                                        String f2 = sdf.format(new Date());
-                                        if (usuario.getNivel() == 2) {
-                                            if (!f1.equals(f2)) {
-                                                JOptionPane.showMessageDialog(this, "Permiso de Usuario Vencido");
-                                                usuario = null;
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    JOptionPane.showMessageDialog(this, "Contraseña incorrecta");
-                                    usuario = null;
-                                }
-                                break;
-                            case 1:
-                                usuario = null;
-                                break;
-                            case -1:
-                                usuario = null;
-                                break;
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(this, "USUARIO Inactivo");
-                        usuario = null;
+        if (listadoCliente != null && !listadoCliente.isEmpty()) {
+            llenarTabla();
+            return true;
+        }
+        return false;
+    }
+
+    private Boolean cargarLista() {
+        listadoCliente = null;
+        if (nombreTxt.getText().isEmpty()) {
+            if (comienzaFiltroTxt.getText().isEmpty()) {
+                if (!codigoTxt.getText().isEmpty()) {
+                    codigo = codigoTxt.getText();
+                    Cliente cliente = null;
+                    try {
+                        cliente = new ClienteService().getClienteByCodigo(codigo);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, "Error");
                     }
+                    listadoCliente = new ArrayList<>();
+                    listadoCliente.add(cliente);
                 } else {
-                    JOptionPane.showMessageDialog(this, "No existe el Usuario");
-                    usuario = null;
+                    try {
+//                        System.out.println(pagina);
+//                        System.out.println(limite);
+//                        System.exit(0);
+                        listadoCliente = new ClienteService().getAllClientesOrdenadoByPagina(pagina, limite);
+                    } catch (Exception ex) {
+                        Logger.getLogger(AbmClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
+                        return false;
+                    }
+                    llenarTabla();
+                    return true;
                 }
-                break;
-            case 1:
-                usuario = null;
-                break;
-            case -1:
-                usuario = null;
-                break;
+            } else {
+                try {
+                    fil2 = comienzaFiltroTxt.getText();
+                    comienzaFiltroTxt.requestFocus();
+                    listadoCliente = new ClienteService().getClientesComienzaByFiltro(fil2, pagina, limite);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Error");
+                }
+            }
+        } else {
+            String filtro = nombreTxt.getText();
+            try {
+//                if (filtro.equals("*")) {
+//                    listadoCliente = new ClienteService().getAllClientesOrdenadoByPagina(pagina, limite);
+//                } else {
+                listadoCliente = new ClienteService().getClientesByFiltroPaginado(filtro, pagina, limite);
+//                }
+            } catch (Exception ex) {
+                Logger.getLogger(AbmClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        if (listadoCliente != null && !listadoCliente.isEmpty()) {
+            llenarTabla();
+            return true;
+        }
+        return false;
+    }
+
+    private Boolean cargarListaNombre() {
+        fil = nombreTxt.getText();
+        listadoCliente = null;
+        try {
+//            if (fil.equals("*")) {
+//                listadoCliente = new ClienteService().getAllClientesOrdenadoByPagina(pagina, limite);
+//            } else {
+            listadoCliente = new ClienteService().getClientesByFiltroPaginado(fil, pagina, limite);
+//            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(AbmClienteFrame.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        if (listadoCliente != null && !listadoCliente.isEmpty()) {
+            llenarTabla();
+            return true;
+        }
+        return false;
+    }
+
+    private void cargaInicial() {
+        int i = 0;
+        if (pagina == null) {
+            pagina = 0;
+        }
+        if (row == null) {
+            row = 1;
+        } else {
+            row += 1;
+        }
+        if (fil != null) {
+            nombreTxt.setText(fil);
+            nombreTxt.requestFocus();
+            codigoTxt.setText("");
+            comienzaFiltroTxt.setText("");
+        }
+        if (fil2 != null) {
+            nombreTxt.setText("");
+            codigoTxt.setText("");
+            comienzaFiltroTxt.setText(fil2);
+            comienzaFiltroTxt.requestFocus();
+        }
+        if (codigo != null) {
+            if (!codigo.isEmpty()) {
+                nombreTxt.setText("");
+                codigoTxt.setText(codigo);
+                comienzaFiltroTxt.setText("");
+                codigoTxt.requestFocus();
+                i = 1;
+            }
+        }
+        if (i == 1) {
+            cargaClienteUnico();
+        } else {
+            cargarLista();
+        }
+//        System.out.println(listadoCliente);
+//        System.exit(0);
+//        int nro = row;
+//        int nro = tablaClientes.getRowCount();
+        if (row > 0) {
+            Rectangle rect = tablaClientes.getCellRect(row - 1, 0, true);
+            tablaClientes.scrollRectToVisible(rect);
+            tablaClientes.clearSelection();
+            tablaClientes.setRowSelectionInterval(row - 1, row - 1);
+        }
+    }
+
+    private void bloquearBotones() {
+        anteriorBtn.setEnabled(false);
+        siguienteBtn.setEnabled(false);
+        primeroBtn.setEnabled(false);
+    }
+
+    private void desBloquearBotones() {
+        anteriorBtn.setEnabled(true);
+        siguienteBtn.setEnabled(true);
+        primeroBtn.setEnabled(true);
+    }
+
+    private void cargaClienteUnico() {
+        bloquearBotones();
+        Cliente cliente = null;
+        try {
+            cliente = new ClienteService().getClienteByCodigo(codigo);
+        } catch (Exception ex) {
+            Logger.getLogger(AbmClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (cliente != null) {
+            listadoCliente = new ArrayList<>();
+            listadoCliente.add(cliente);
+            if (listadoCliente != null && !listadoCliente.isEmpty()) {
+                llenarTabla();
+            }
+        }
+    }
+
+    private void limpiarCampos() {
+        nombreTxt.setText("");
+        codigoTxt.setText("");
+        comienzaFiltroTxt.setText("");
+//        numericoRb.setVisible(false);
+        buscarBtn.setVisible(false);
+//        alfabeticoRb.setVisible(false);
+//        alfabeticoRb.setSelected(true);
+//        ultimoBtn.setVisible(false);
+        alpha = true;
     }
 }

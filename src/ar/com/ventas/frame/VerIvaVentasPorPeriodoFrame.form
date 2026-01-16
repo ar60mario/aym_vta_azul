@@ -42,8 +42,9 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="excelBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="pdfBtn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="226" max="32767" attributes="0"/>
                       <Component id="volverBtn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="277" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -63,6 +64,7 @@
                   <Component id="volverBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="imprimirBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="excelBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="pdfBtn" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jScrollPane1" pref="467" max="32767" attributes="0"/>
@@ -218,6 +220,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="excelBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="pdfBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="PDF"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pdfBtnActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

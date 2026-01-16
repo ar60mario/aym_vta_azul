@@ -27,6 +27,7 @@
         <property name="ultimaFechaSistema" type="date" column="ULTIMA_FECHA_SISTEMA"/>
         <property name="cajaAnteriorCerrada" type="boolean" column="CAJA_ANTERIOR_CERRADA"/>
         <property name="numeroReciboCompras" type="integer" column="NUMERO_RECIBO_COMPRAS"/>
-        <property name="comprobante" type="long" column="COMPROBANTE"/>
+        <property name="maxVtaSinIdentif" type="double" column="MAXIMO_SIN_IDENTIFICAR"/>
+        
     </class>
 </hibernate-mapping>

@@ -26,10 +26,10 @@ public class ConsultaAfipFrame extends javax.swing.JFrame {
     private final DecimalFormat df = new DecimalFormat("#0");
 //    private Integer order_num;
 //    private String order_name;
-    
+
     /**
      * Creates new form ConsultaAfipFrame
-
+     *
      */
     public ConsultaAfipFrame() {
         initComponents();
@@ -307,14 +307,21 @@ public class ConsultaAfipFrame extends javax.swing.JFrame {
             numNcATxt.setText(df.format(co.getNumeroNotaCreditoA()));
             numNcBTxt.setText(df.format(co.getNumeroNotaCreditoB()));
         }
+        ActiveXComponent wsaa = new ActiveXComponent("WSAA");
+        System.out.println(Dispatch.get(wsaa, "InstallDir").toString()
+                + " "
+                + Dispatch.get(wsaa, "Version").toString()
+        );
+        JOptionPane.showMessageDialog(this, "VER: " + Dispatch.get(wsaa, "Version").toString());
         try {
             LibraryLoader.loadJacobLibrary();
             /* Crear objeto WSAA: Web Service de Autenticación y Autorización */
-            ActiveXComponent wsaa = new ActiveXComponent("WSAA");
+            wsaa = new ActiveXComponent("WSAA");
             System.out.println(Dispatch.get(wsaa, "InstallDir").toString()
                     + " "
                     + Dispatch.get(wsaa, "Version").toString()
             );
+            
             /* Solicitar Ticket de Acceso a AFIP (cambiar URL producción) */
             String wsdl = "https://wsaa.afip.gov.ar/ws/services/LoginCms";
             //https://servicios1.afip.gov.ar/wsfev1/service.asmx
@@ -404,6 +411,7 @@ public class ConsultaAfipFrame extends javax.swing.JFrame {
             //
             JOptionPane.showMessageDialog(this, "Proceso completado");
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "ERROR " + e);
             e.printStackTrace();
         }
     }

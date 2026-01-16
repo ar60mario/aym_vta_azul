@@ -474,7 +474,7 @@ public class NuevoClienteFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_guardarNuevoClienteBtnActionPerformed
 
     private void volverNuevoClienteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverNuevoClienteBtnActionPerformed
-        AbmClienteFrame abmClienteFrame = new AbmClienteFrame(null, false);
+        AbmClienteFrame abmClienteFrame = new AbmClienteFrame(null, null, null, null, null, null);
         this.dispose();
         abmClienteFrame.setVisible(true);
     }//GEN-LAST:event_volverNuevoClienteBtnActionPerformed

@@ -3,69 +3,115 @@
  */
 package ar.com.ventas.bo;
 
-import ar.com.ventas.dao.EquipoActivoDAO;
-import ar.com.ventas.entities.EquipoActivo;
+import ar.com.ventas.dao.ClienteDAO;
+import ar.com.ventas.entities.Cliente;
+import ar.com.ventas.entities.Domicilio;
+import ar.com.ventas.bo.DomicilioBO;
+import ar.com.ventas.dao.EquipoBloqueadoDAO;
+import ar.com.ventas.entities.EquipoBloqueado;
+import ar.com.ventas.util.Constantes;
 import java.util.List;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 
 /**
  *
  * @author Mar y Mar Informatica
  */
-public class EquipoActivoBO {
+public class EquipoBloqueadoBO {
 
-    public List<EquipoActivo> getEquiposActivos(String nombre, String tipo) throws Exception {
-        List<EquipoActivo> equipos;
-        try {
-            equipos = new EquipoActivoDAO().getEquiposActivos(nombre, tipo);
-        } catch (HibernateException ex) {
-            throw new Exception(ex);
-        }
-        return equipos;
-    }
-    
-    public List<EquipoActivo> getEquiposTodos(String nombre, String tipo) throws Exception {
-        List<EquipoActivo> equipos;
-        try {
-            equipos = new EquipoActivoDAO().getEquiposTodos(nombre, tipo);
-        } catch (HibernateException ex) {
-            throw new Exception(ex);
-        }
-        return equipos;
-    }
+    private final EquipoBloqueadoDAO dao = new EquipoBloqueadoDAO();
 
-    public Boolean activarEquipo(String nombre, String sistema) throws Exception {
+    private static final Logger logger = Logger.getLogger("EquipoBloqueadoBO");
+
+    public Boolean getEquiposLibres() throws Exception {
+        Boolean libres = true;
+        List<EquipoBloqueado> equipos;
         try {
-            return true;
+//            libres = dao.getEquiposLibres();
+            equipos = dao.getAll(EquipoBloqueado.class);
         } catch (HibernateException ex) {
             throw new Exception(ex);
         }
+        if (equipos != null && !equipos.isEmpty()) {
+            for (EquipoBloqueado eb : equipos) {
+                if (eb.getBloqueado()) {
+                    libres = false;
+                }
+            }
+        }
+        return libres;
     }
 
-    public void saveEquipoActivo(EquipoActivo equipo) throws Exception {
+    public EquipoBloqueado getEquipoBloqueadoByNombreAndOrden(String nombre, Integer orden) throws Exception {
+        EquipoBloqueado eb = null;
         try {
-            new EquipoActivoDAO().save(equipo);
-        } catch (HibernateException ex) {
+            eb = dao.getEquipoBloqueadoByNombreAndOrden(nombre, orden);
+        } catch (Exception ex) {
+//            JOptionPane.showMessageDialog(null, "bo");
+            throw new Exception(ex);
+
+        }
+//        System.out.println(nombre);
+//        System.out.println(orden);
+        return eb;
+    }
+
+    public Boolean getExisteEquipoByNombreAndOrden(String nombre, Integer orden) throws Exception {
+        Boolean existe = false;
+        try {
+            existe = dao.getExisteEquipoByNombreAndOrden(nombre, orden);
+        } catch (Exception ex) {
+            throw new Exception(ex);
+
+        }
+        return existe;
+    }
+
+    public void bloquearEquipoExistente(EquipoBloqueado eb, Boolean bloqueo) throws Exception {
+        eb.setBloqueado(bloqueo);
+        dao.update(eb);
+    }
+
+    public void bloquearEquipoExistente2(String nombre, Integer orden) throws Exception {
+        EquipoBloqueado eb;
+        try {
+            eb = dao.getEquipoBloqueadoByNombreAndOrden(nombre, orden);
+        } catch (Exception ex) {
+            throw new Exception(ex);
+        }
+        eb.setBloqueado(true);
+        try {
+            dao.update(eb);
+        } catch (Exception ex) {
             throw new Exception(ex);
         }
     }
 
-    public void updateEquipoActivo(EquipoActivo equipo) throws Exception {
+    public void updateEquipo(EquipoBloqueado equipo) throws Exception {
         try {
-            new EquipoActivoDAO().update(equipo);
-        } catch (HibernateException ex) {
+            dao.update(equipo);
+        } catch (Exception ex) {
             throw new Exception(ex);
         }
     }
-    
-    public EquipoActivo getEquipoActivoByNombreAndOrden(String nombre, Integer orden, String sistema) throws Exception {
-        EquipoActivo ea = null;
+
+    public void bloquearEquipoNuevo2(String nombre, Integer orden) throws Exception {
+        EquipoBloqueado eb = new EquipoBloqueado();
+        eb.setBloqueado(true);
+        eb.setNombre(nombre);
+        eb.setOrden(orden);
         try {
-            ea = new EquipoActivoDAO().getEquipoActivoByNombreAndOrden(nombre, orden, sistema);
-        } catch (HibernateException ex) {
+            dao.save(eb);
+        } catch (Exception ex) {
             throw new Exception(ex);
         }
-        return ea;
+    }
+
+    public void bloquearEquipoNuevo(EquipoBloqueado eb, Boolean bloqueo) throws Exception {
+        eb.setBloqueado(bloqueo);
+        dao.save(eb);
     }
 //    public List<Cliente> getAllClientes() throws Exception {
 //        List<Cliente> listClientes = null;

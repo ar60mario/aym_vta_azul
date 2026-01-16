@@ -31,6 +31,47 @@ public class ClienteDAO extends GenericDAO {
         return cliente;
     }
     
+    public List<Cliente> getAllClientesOrdenadoByPagina(Integer pagina, Integer limite) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Cliente.class);
+        criteria.setFirstResult(pagina);
+        criteria.add(Restrictions.eq("activo", true));
+        criteria.setMaxResults(limite);
+        criteria.addOrder(Order.asc("razonSocial"));
+        return (List<Cliente>) criteria.list();
+    }
+    
+    public List<Cliente> getClientesComienzaByFiltro(String f, Integer pagina, Integer limite) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Cliente.class);
+        criteria.add(Restrictions.like("razonSocial", f + "%"));
+        criteria.setFirstResult(pagina);
+        criteria.setMaxResults(limite);
+        criteria.addOrder(Order.asc("razonSocial"));
+        return (List<Cliente>) criteria.list();
+    }
+    
+    public List<Cliente> getClientesByFiltroPaginado(String f, Integer pagina, Integer limite) {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Cliente.class);
+        criteria.add(Restrictions.like("razonSocial", "%" + f + "%"));
+        criteria.setFirstResult(pagina);
+        criteria.setMaxResults(limite);
+        criteria.addOrder(Order.asc("razonSocial"));
+        return (List<Cliente>) criteria.list();
+    }
+    
+    public Long getUltimoId(){
+        Long ui;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(Cliente.class);
+        criteria.addOrder(Order.desc("id"));
+        criteria.setMaxResults(1);
+        Cliente cl = (Cliente) criteria.uniqueResult();
+        ui = cl.getId();
+        return ui;
+    }
+    
     public Cliente getByCodigoTodos(String codigo) {
         Cliente cliente = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
@@ -75,6 +116,23 @@ public class ClienteDAO extends GenericDAO {
         return (List<Cliente>) criteria.list();
     }
 
+    public List<Cliente> getClientesByFiltro2(String filtro, Integer pagina, Integer limite) {
+        List<Cliente> clientes;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+
+        Criteria criteria = session.createCriteria(Cliente.class);
+        criteria.add(Restrictions.like("razonSocial", "%"+filtro+"%"));
+        criteria.addOrder(Order.asc("razonSocial"));
+        criteria.add(Restrictions.eq("activo", true));
+        criteria.setFirstResult(pagina);
+        criteria.setMaxResults(limite);
+//        return (List<Cliente>) criteria.list();
+
+        clientes = (List<Cliente>) criteria.list();
+
+        return clientes;
+    }
+    
     public List<Cliente> getClientesByFiltro(String filtro) {
         List<Cliente> clientes = null;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();

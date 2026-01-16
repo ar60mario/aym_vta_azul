@@ -29,6 +29,7 @@ public class VerNcByClienteFrame extends javax.swing.JFrame {
     private DecimalFormat dfs = new DecimalFormat("0000");
     private DecimalFormat dfn = new DecimalFormat("00000000");
     private List<IvaVentas> nc = null;
+    private List<Cliente> clientes;
 //    private final Integer order_num;
 //    private final String order_name;
 
@@ -78,6 +79,11 @@ public class VerNcByClienteFrame extends javax.swing.JFrame {
         jLabel2.setText("Razón Social:");
 
         nombreTxt.setText("RAZON SOCIAL");
+        nombreTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombreTxtKeyPressed(evt);
+            }
+        });
 
         buscarBtn.setText("Buscar");
 
@@ -117,6 +123,11 @@ public class VerNcByClienteFrame extends javax.swing.JFrame {
         });
 
         combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        combo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -185,6 +196,24 @@ public class VerNcByClienteFrame extends javax.swing.JFrame {
     private void notaDebitoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notaDebitoBtnActionPerformed
         notaDebito();
     }//GEN-LAST:event_notaDebitoBtnActionPerformed
+
+    private void nombreTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreTxtKeyPressed
+        if (evt.getKeyCode() == 10) {
+            if (nombreTxt.getText().isEmpty()) {
+                codigoTxt.requestFocus();
+            } else {
+                buscarNombre();
+            }
+        }
+    }//GEN-LAST:event_nombreTxtKeyPressed
+
+    private void comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboActionPerformed
+        int row = combo.getSelectedIndex();
+        if (row > 0) {
+            Cliente cli = clientes.get(row -1);
+            llenarTabla(cli);
+        }
+    }//GEN-LAST:event_comboActionPerformed
 
     /**
      * @param args the command line arguments
@@ -319,5 +348,26 @@ public class VerNcByClienteFrame extends javax.swing.JFrame {
         MainFrame mf = new MainFrame();
         mf.setVisible(true);
         this.dispose();
+    }
+
+    private void buscarNombre() {
+        String filtro = nombreTxt.getText();
+        clientes = null;
+        try {
+            clientes = new ClienteService().getClientesByFiltro(filtro);
+        } catch (Exception ex) {
+            Logger.getLogger(VerNcByClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
+        if (clientes != null && !clientes.isEmpty()) {
+            combo.removeAllItems();
+            combo.addItem("");
+            for (Cliente c : clientes) {
+                combo.addItem(c.getRazonSocial() + " " + c.getAlias());
+            }
+            combo.addFocusListener(null);
+            combo.showPopup();
+            combo.requestFocus();
+        }
     }
 }

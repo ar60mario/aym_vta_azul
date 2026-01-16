@@ -8,6 +8,7 @@ package ar.com.ventas.frame;
 import ar.com.ventas.entities.Configuracion;
 import ar.com.ventas.main.MainFrame;
 import ar.com.ventas.services.ConfiguracionService;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -19,6 +20,7 @@ import javax.swing.JOptionPane;
 public class ConfiguracionFrame extends javax.swing.JFrame {
 
     private Configuracion config = null;
+    private DecimalFormat df = new DecimalFormat("#0.00");
     private Long id;
 //    private final Integer order_num;
 //    private final String order_name;
@@ -26,7 +28,7 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
     /**
      * Creates new form ConfiguracionFrame
      *
-
+     *
      */
     public ConfiguracionFrame() {
         initComponents();
@@ -64,8 +66,12 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         jLabel9 = new javax.swing.JLabel();
         numeroReciboTxt = new javax.swing.JTextField();
+        jSeparator3 = new javax.swing.JSeparator();
+        jLabel10 = new javax.swing.JLabel();
+        importeTxt = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("PARÁMETROS DE CONFIGURACIÓN");
 
         guardarBtn.setText("Guardar");
         guardarBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -83,6 +89,7 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Porcentual IVA:");
 
+        porcIvaTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         porcIvaTxt.setText("PORC - IVA");
 
         jLabel2.setText("FACTURA  -  A");
@@ -91,8 +98,10 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
 
         jLabel4.setText("Número:");
 
+        sucursalATxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         sucursalATxt.setText("SUCURSAL -A");
 
+        numeroATxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         numeroATxt.setText("NUMERO - A");
 
         jLabel5.setText("FATURA  -  B");
@@ -101,15 +110,23 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
 
         jLabel7.setText("Número:");
 
+        sucursalBTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         sucursalBTxt.setText("SUCURSAL - B");
 
+        numeroBTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         numeroBTxt.setText("NUMERO - B");
 
         jLabel8.setText("RECIBO");
 
         jLabel9.setText("Número:");
 
+        numeroReciboTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         numeroReciboTxt.setText("NUMERO RECIBO");
+
+        jLabel10.setText("Máximo Importe Venta a Cliente sin Identificar:");
+
+        importeTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        importeTxt.setText("IMPORTE");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -118,51 +135,58 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(guardarBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(volverBtn)
-                        .addGap(95, 95, 95))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jSeparator2)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(porcIvaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(sucursalATxt, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(numeroATxt, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(sucursalBTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(numeroBTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jSeparator3)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(numeroReciboTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jSeparator2)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(porcIvaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(sucursalATxt, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(numeroATxt, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(sucursalBTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(numeroBTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 54, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(guardarBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(volverBtn))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel9)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(numeroReciboTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel10)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(importeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(porcIvaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -176,9 +200,9 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(numeroATxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -190,33 +214,35 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
                     .addComponent(numeroBTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addGap(0, 0, 0)
                 .addComponent(jLabel8)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(numeroReciboTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(importeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(guardarBtn)
                     .addComponent(volverBtn))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void volverBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBtnActionPerformed
-        MainFrame mf = new MainFrame();
-        mf.setVisible(true);
-        this.dispose();
+        volver();
     }//GEN-LAST:event_volverBtnActionPerformed
 
     private void guardarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarBtnActionPerformed
         grabarConfiguracion();
-        MainFrame mf = new MainFrame();
-        mf.setVisible(true);
-        this.dispose();
+        volver();
     }//GEN-LAST:event_guardarBtnActionPerformed
 
     /**
@@ -256,7 +282,9 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton guardarBtn;
+    private javax.swing.JTextField importeTxt;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -267,6 +295,7 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTextField numeroATxt;
     private javax.swing.JTextField numeroBTxt;
     private javax.swing.JTextField numeroReciboTxt;
@@ -297,11 +326,20 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
         sucursalATxt.setText(String.valueOf(config.getSucursalA()));
         sucursalBTxt.setText(String.valueOf(config.getSucursalB()));
         numeroATxt.setText(String.valueOf(config.getNumeroFacturaA()));
-        numeroBTxt.setText(String.valueOf(config.getNumeroFacturaB()));
+        if (config.getNumeroFacturaB() != null) {
+            numeroBTxt.setText(String.valueOf(config.getNumeroFacturaB()));
+        } else {
+            numeroBTxt.setText("0");
+        }
         if (config.getNumeroRecibo() != null) {
             numeroReciboTxt.setText(String.valueOf(config.getNumeroRecibo()));
         } else {
             numeroReciboTxt.setText("0");
+        }
+        if (config.getMaxVtaSinIdentif() != null) {
+            importeTxt.setText(df.format(config.getMaxVtaSinIdentif()));
+        } else {
+            importeTxt.setText("0.00");
         }
     }
 
@@ -313,12 +351,13 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
             } catch (Exception ex) {
                 Logger.getLogger(ConfiguracionFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-            config.setIva(Float.valueOf(porcIvaTxt.getText()));
+            config.setIva(Float.valueOf(porcIvaTxt.getText().replace(",", ".")));
             config.setNumeroFacturaA(Integer.valueOf(numeroATxt.getText()));
             config.setNumeroFacturaB(Integer.valueOf(numeroBTxt.getText()));
             config.setSucursalA(Integer.valueOf(sucursalATxt.getText()));
             config.setSucursalB(Integer.valueOf(sucursalBTxt.getText()));
             config.setNumeroRecibo(Integer.valueOf(numeroReciboTxt.getText()));
+            config.setMaxVtaSinIdentif(Double.valueOf(importeTxt.getText().replace(",", ".")));
             try {
                 new ConfiguracionService().updateConfiguracion(config);
             } catch (Exception ex) {
@@ -345,6 +384,16 @@ public class ConfiguracionFrame extends javax.swing.JFrame {
         if (numeroBTxt.getText().isEmpty()) {
             return false;
         }
+        if (importeTxt.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "INGRESE UN IMPORTE");
+            return false;
+        }
         return true;
+    }
+
+    private void volver() {
+        MainFrame mf = new MainFrame();
+        mf.setVisible(true);
+        this.dispose();
     }
 }

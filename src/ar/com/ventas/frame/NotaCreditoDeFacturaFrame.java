@@ -931,7 +931,7 @@ public class NotaCreditoDeFacturaFrame extends javax.swing.JFrame {
                     str0 = str0.replace(",", ".");
                     doble = Double.valueOf(str0);
                     largo = doble.intValue();
-                    espacio = "       ";
+                    espacio = "        ";
                     largo = String.valueOf(largo).length();
                     espacio = espacio.substring(largo);
                     renglones[r] = renglones[r] + espacio + df.format(doble) + " ";
@@ -996,7 +996,7 @@ public class NotaCreditoDeFacturaFrame extends javax.swing.JFrame {
                     str0 = str0.replace(",", ".");
                     doble = Double.valueOf(str0);
                     largo = doble.intValue();
-                    espacio = "       ";
+                    espacio = "        ";
                     largo = String.valueOf(largo).length();
                     espacio = espacio.substring(largo);
                     renglones[r] = renglones[r] + espacio + df.format(doble) + " ";

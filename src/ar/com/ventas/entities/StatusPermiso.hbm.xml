@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ar.com.ventas.entities.StatusPermiso" schema="ventas" table="status_permiso">
+        <id name="id" column="ID">
+            <generator class="identity"/>
+        </id>
+        <property name="status" type="boolean" column="STATUS"/>
+        <property name="compu" type="string" column="COMPU"/>
+        <property name="orden" type="integer" column="ORDEN"/>
+        <many-to-one name="equipoActivo"
+                    class="ar.com.ventas.entities.EquipoActivo"
+                     lazy="false">
+                     <column name="ID_EQUIPO_ACTIVO" not-null="true"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

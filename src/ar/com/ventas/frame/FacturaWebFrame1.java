@@ -1,9 +1,16 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ar.com.ventas.frame;
 
 import ar.com.ventas.entities.Cliente;
+import ar.com.ventas.entities.ClienteIdentificado;
 import ar.com.ventas.entities.ClienteTraba;
 import ar.com.ventas.entities.Configuracion;
 import ar.com.ventas.entities.CtaCteCliente;
+import ar.com.ventas.entities.Domicilio;
 import ar.com.ventas.entities.EquipoBloqueado;
 import ar.com.ventas.entities.FcReserved;
 import ar.com.ventas.entities.IvaVentas;
@@ -24,18 +31,24 @@ import ar.com.ventas.services.ProductoService;
 import ar.com.ventas.services.RenglonFcReservedService;
 import ar.com.ventas.services.UsuarioService;
 import ar.com.ventas.util.Constantes;
-import ar.com.ventas.util.UtilFactura;
+import ar.com.ventas.util.DesktopApi;
+import ar.com.ventas.util.PDFBuilder2;
 import ar.com.ventas.util.UtilFrame;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.Writer;
+import com.google.zxing.WriterException;
 import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.Dispatch;
 import com.jacob.com.LibraryLoader;
 import com.jacob.com.Variant;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -44,25 +57,32 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.itextpdf.text.DocumentException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import static java.lang.Thread.sleep;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
 
-public class FacturaWebFrame extends javax.swing.JFrame {
+/**
+ *
+ * @author Mario
+ */
+public class FacturaWebFrame1 extends javax.swing.JFrame {
 
-    private JPanel contentPanel;
     private Double maximoSinIdentificar = 0.0;
     private List<RenglonFactura> renglonFactura = new ArrayList<RenglonFactura>();
     private static final int qrTamAncho = 150;
@@ -71,11 +91,26 @@ public class FacturaWebFrame extends javax.swing.JFrame {
     private static final String ruta = "c://qr//codigoQR";
     private static final String extension = ".png";
     private static final SimpleDateFormat sdf_qr = new SimpleDateFormat("yyyy-MM-dd");
+    private final DecimalFormat df_qr = new DecimalFormat("00000000");
     private DecimalFormat df_matriz = new DecimalFormat("00000000");
+    private final String url_qr = "https://www.afip.gob.ar/fe/qr/?p=";
+    private final String ver_qr = "1";
+    private String fecha_qr;
+    private final String cuit_qr = "20124127581";
+    private String puntoVenta_qr = "5";
+    private String tipoComprobante_qr;
+    private String numeroComprobante_qr;
+    private String importe_qr;
+    private final String moneda_qr = "PES";
+    private final String cotiz_qr = "1";
+    private String tipoDoc_qr;
+    private String numeroDoc_qr;
+    private final String tipoCodigoAutoriz_qr = "E";
+    private String nroCae_qr;
     private String letraFacturaPapel;
     private String sucursalFacturaPapel;
     private String numeroFacturaPapel;
-    private final String[] renglones = null;
+    private String[] renglones = null;
     private Date fecha;
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     private Cliente clienteFactura = null;
@@ -102,6 +137,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
     private Float cantidad;
     private Integer categoriaIva = 4;
     private final DecimalFormat df = new DecimalFormat("#0.00");
+//    private final DecimalFormat df_prn = new DecimalFormat("#0");
     private final DecimalFormat df1 = new DecimalFormat("#0");
     private final DecimalFormat df2 = new DecimalFormat("#0.0");
     private Double saldoCliente = 0.00;
@@ -120,22 +156,37 @@ public class FacturaWebFrame extends javax.swing.JFrame {
     private String tipoComprob = "";
     private Usuario usuario;
     private final Integer nivel = 1;
-    private final int tst = 0; // 1 esta en test
+    private final int tst = 1; // 1 esta en test
+//    private final Integer order_num;
+//    private final String order_name;
 
-    public FacturaWebFrame() {
+    /**
+     * Creates new form FacturaFrame
+     *
+     */
+    public FacturaWebFrame1() {
+        getContentPane().setBackground(new java.awt.Color(135, 206, 235));
         initComponents();
-        prepararFrame();
+        this.setLocationRelativeTo(null);
+//        this.order_name = order_name;
+//        this.order_num = order_num;
         limpiarCampos();
         bloquearCampos();
         imprimeChk.setVisible(false);
+//      levanto el modelo creado del frame
         tabla = (DefaultTableModel) tablaFactura.getModel();
     }
 
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         volverBtn = new javax.swing.JButton();
         descuentoGlobalTxt = new javax.swing.JTextField();
         descuentoGlobalLbl = new javax.swing.JLabel();
@@ -508,38 +559,38 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         importeNoblezaTxt.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         importeNoblezaTxt.setText("IMP.NOBL.");
 
-        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
-        panel.setLayout(panelLayout);
-        panelLayout.setHorizontalGroup(
-            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelLayout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addGroup(panelLayout.createSequentialGroup()
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(ivaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panelLayout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(codigoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(buscarClienteBtn)))
                         .addGap(18, 18, 18)
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(panelLayout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(razonSocialTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(10, 10, 10)
                                 .addComponent(cuitTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelLayout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(nombreClienteABuscarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(buscarClienteXNombre)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelLayout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -550,34 +601,34 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(volverBtn))
                             .addComponent(comboClientes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(panelLayout.createSequentialGroup()
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelLayout.createSequentialGroup()
-                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(panelLayout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
                                             .addComponent(jLabel6)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(codigoBarrasTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(panelLayout.createSequentialGroup()
-                                            .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(jLabel5)
                                                 .addComponent(jLabel7))
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(codigoProductoTxt)
-                                                .addGroup(panelLayout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createSequentialGroup()
                                                     .addGap(8, 8, 8)
-                                                    .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addComponent(descuentoLineaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(cantidadTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                     .addGap(18, 18, 18)
                                                     .addComponent(descuentoBtn)))))
                                     .addComponent(descuentoLineaLbl))
                                 .addGap(18, 18, 18)
-                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(panelLayout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
                                             .addComponent(nombreProductoABuscarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                             .addComponent(buscarProductoXNombreBtn))
@@ -585,15 +636,15 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                                     .addComponent(nombreProductoConsultaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(precioProductoConsultaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING)))
-                            .addGroup(panelLayout.createSequentialGroup()
-                                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(texto1PieFacturaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(texto2PieFacturaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(panelLayout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel15)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(cantidadAtadosMassalinTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -611,29 +662,29 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                                         .addComponent(importeNoblezaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(18, 18, 18)
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(descuentoVolumenTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(cantidadItemsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(terminarBtn)
                                 .addComponent(cancelarBtn)
                                 .addComponent(imprimeChk))))
-                    .addGroup(panelLayout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(incorporarAFacturaBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(agregarBtn)
                         .addGap(18, 18, 18)
                         .addComponent(eliminarItemBtn)
                         .addGap(18, 18, 18)
-                        .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelLayout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(leerCantidadBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(nuevaCantidadTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(grabarCantidadBtn))
-                            .addGroup(panelLayout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(leerPrecioBtn)
                                 .addGap(18, 18, 18)
                                 .addComponent(nuevoPrecioTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -642,11 +693,11 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        panelLayout.setVerticalGroup(
-            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelLayout.createSequentialGroup()
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(razonSocialTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buscarClienteBtn)
                     .addComponent(codigoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -658,16 +709,16 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(fechaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(ivaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nombreClienteABuscarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buscarClienteXNombre)
                     .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(codigoBarrasTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nombreProductoABuscarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -675,21 +726,21 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                     .addComponent(jLabel12)
                     .addComponent(descuentoVolumenTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(codigoProductoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
                     .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nombreProductoConsultaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(cantidadTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel18)
                     .addComponent(cantidadItemsTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(precioProductoConsultaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(descuentoLineaLbl)
                     .addComponent(descuentoLineaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -698,7 +749,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                     .addComponent(nuevaCantidadTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(grabarCantidadBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(incorporarAFacturaBtn)
                     .addComponent(agregarBtn)
                     .addComponent(eliminarItemBtn)
@@ -706,15 +757,15 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                     .addComponent(nuevoPrecioTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(grabarPrecioBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(imprimeChk)
                     .addComponent(texto1PieFacturaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelarBtn)
                     .addComponent(texto2PieFacturaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(terminarBtn)
                     .addComponent(jLabel15)
                     .addComponent(cantidadAtadosMassalinTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -731,13 +782,13 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 31, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 14, Short.MAX_VALUE))
         );
 
         pack();
@@ -759,7 +810,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             try {
                 new ClienteService().updateCliente(clienteFactura);
             } catch (Exception ex) {
-                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             }
             desbloquearCliente();
         } else {
@@ -822,7 +873,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                     buscar();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Error - buscar cliente");
-                    Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -852,41 +903,11 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                     cantidadTxt.requestFocus();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Error - buscar producto");
-                    Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
     }//GEN-LAST:event_comboProductosActionPerformed
-
-    private void verificarConsumidor() {
-        //                ClienteIdentificado ci = new ClienteIdentificado();
-//                final JFrame jFrame = FacturaWebFrame.this;
-//                this.setMinimumSize(20,20);
-        JOptionPane.showMessageDialog(null, "VERIFIQUE CLIENTE CONS.FINAL\nVENTA > " + maximoSinIdentificar);
-        /*
-        final IngresoDniFrame idf = new IngresoDniFrame();
-        idf.setVisible(true);
-        idf.setLocationRelativeTo(null);
-        idf.cancelarBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String codigo = idf.getData();
-                try {
-                    clienteFactura = new ClienteService().getClienteByCodigo(codigo);
-                    codigoTxt.setText(clienteFactura.getCodigo());
-                    razonSocialTxt.setText(clienteFactura.getRazonSocial());
-                    cuitTxt.setText(clienteFactura.getCuit());
-                } catch (Exception ex) {
-//                    Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(null, "ERRRDDDDD");
-                    return;
-                }
-                idf.dispose();
-            }
-
-        });
-         */
-    }
 
     private void terminarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terminarBtnActionPerformed
         double xSaldo = clienteFactura.getSaldo();
@@ -898,19 +919,68 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         }
         String cuit_max = clienteFactura.getCuit();
         String tipo_max = clienteFactura.getTipo();
-//        ClienteIdentificado ci = new ClienteIdentificado();
+        ClienteIdentificado ci = new ClienteIdentificado();
         if (cuit_max.equals("00-00000000-0") && tipo_max.equals("99")) {
             if (totalFactura > maximoSinIdentificar) {
-                verificarConsumidor();
-            } else {
-                terminar2();
+//                ClienteIdentificado ci = new ClienteIdentificado();
+                final JFrame jFrame = FacturaWebFrame1.this;
+                jFrame.setVisible(false);
+                IngresoDniFrame idf = new IngresoDniFrame();
+                idf.setVisible(true);
+//                idf.setLocation(null);
+                idf.cancelarBtn.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+//                        ClienteIdentificado cid = idf.getData();
+//                        Long ultimo_id;
+//                        try {
+//                            ultimo_id = new ClienteService().getUltimoId();
+//                        } catch (Exception ex) {
+//                            //Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+//                            JOptionPane.showMessageDialog(null, "ERROR nro. 933 - GRABANDO NUEVO CLIENTE");
+//                            return;
+//                        }
+//                        clienteFactura.setImporteMostrador(0.0);
+//                        try {
+//                            new ClienteService().updateCliente(clienteFactura);
+//                        } catch (Exception ex) {
+//                            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
+//                        }
+//                        clienteFactura = new Cliente();
+//                        clienteFactura.setCategoriaDeIva(5);
+//                        clienteFactura.setActivo(true);
+//                        clienteFactura.setAlias("");
+//                        ultimo_id += 1;
+//                        clienteFactura.setCodigo("999 " + ultimo_id.toString());
+//                        clienteFactura.setCuit(cid.getIdentificacion());
+//                        clienteFactura.setDescuento(0.0F);
+//                        Domicilio dm = new Domicilio();
+//                        dm.setCalle(cid.getCalle());
+//                        dm.setNumero(cid.getNumero());
+//                        dm.setCodigoPostal(cid.getCodigoPostal());
+//                        dm.setLocalidad(cid.getLocalidad());
+//                        dm.setProvincia(cid.getProvincia());
+//                        clienteFactura.setDomicilio(dm);
+//                        clienteFactura.setEntrega("");
+//                        clienteFactura.setFormaDePago(1);
+//                        clienteFactura.setImporteMostrador(totalFactura);
+//                        clienteFactura.setRazonSocial(cid.getNombre());
+//                        clienteFactura.setSaldo(0.0);
+//                        clienteFactura.setTieneDescuento(false);
+//                        clienteFactura.setTipo(cid.getTipoIdentificacion());
+//                        try {
+//                            clienteFactura = new ClienteService().saveCliente(clienteFactura);
+//                        } catch (Exception ex) {
+//                            //Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+//                            JOptionPane.showMessageDialog(null, "ERROR nro. 961 - GRABANDO NUEVO CLIENTE");
+//                            return;
+//                        }
+                        jFrame.setVisible(true);
+                    }
+                });
             }
-        } else {
-            terminar2();
+//            ClienteIdentificado ci = new IngresoDniFrame();
         }
-    }//GEN-LAST:event_terminarBtnActionPerformed
-
-    private void terminar2() {
         int escape = JOptionPane.showConfirmDialog(null, "Quiere ingresar un texto antes de Imprimir?",
                 "Texto en el pie de Factura",
                 JOptionPane.YES_NO_OPTION);
@@ -920,8 +990,6 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             texto1PieFacturaTxt.requestFocus();
         } else {
             terminarBtn.setEnabled(false);
-//                System.out.println(clienteFactura.getRazonSocial());
-//                System.exit(0);
             escape = JOptionPane.showConfirmDialog(null, "Confirma Terminar Factura?",
                     "FINALIZAR FACTURA",
                     JOptionPane.YES_NO_OPTION);
@@ -932,7 +1000,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                 terminarBtn.setEnabled(true);
             }
         }
-    }
+    }//GEN-LAST:event_terminarBtnActionPerformed
 
     private void volverBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverBtnActionPerformed
         volver();
@@ -1615,21 +1683,23 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FacturaWebFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturaWebFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FacturaWebFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturaWebFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FacturaWebFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturaWebFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FacturaWebFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FacturaWebFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FacturaWebFrame().setVisible(true);
+                new FacturaWebFrame1().setVisible(true);
             }
         });
     }
@@ -1678,6 +1748,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton leerCantidadBtn;
     private javax.swing.JButton leerPrecioBtn;
@@ -1686,7 +1757,6 @@ public class FacturaWebFrame extends javax.swing.JFrame {
     private javax.swing.JTextField nombreProductoConsultaTxt;
     private javax.swing.JTextField nuevaCantidadTxt;
     private javax.swing.JTextField nuevoPrecioTxt;
-    private javax.swing.JPanel panel;
     private javax.swing.JTextField precioProductoConsultaTxt;
     private javax.swing.JTextField razonSocialTxt;
     private javax.swing.JTable tablaFactura;
@@ -1735,14 +1805,6 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         importeNoblezaTxt.setEditable(false);
         imprimeChk.setSelected(false);
         imprimeChk.setVisible(false);
-        Long id = (long) 1;
-        try {
-            Configuracion conf = new ConfiguracionService().getFacturas(id);
-            porcentualIva = conf.getIva();
-            maximoSinIdentificar = conf.getMaxVtaSinIdentif();
-        } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     private void bloquearCampos() {
@@ -1789,7 +1851,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             clientes = new ClienteService().getClientesByFiltro(filtro);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error - leyendo Clientes");
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         DefaultComboBoxModel model = (DefaultComboBoxModel) comboClientes.getModel();
         if (clientes != null && !clientes.isEmpty()) {
@@ -1812,7 +1874,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             productos = new ProductoService().getProductosByFiltroSin90SinDepo(filtro);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error - leyendo Productos");
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (productos != null && !productos.isEmpty()) {
             for (Producto pro : productos) {
@@ -1823,14 +1885,21 @@ public class FacturaWebFrame extends javax.swing.JFrame {
 
     private void buscar() {
         filtro = "";
-
+        Long id = (long) 1;
+        try {
+            Configuracion conf = new ConfiguracionService().getFacturas(id);
+            porcentualIva = conf.getIva();
+            maximoSinIdentificar = conf.getMaxVtaSinIdentif();
+        } catch (Exception ex) {
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
+        }
         fecha = Calendar.getInstance().getTime();
         //Cliente cli = new Cliente();
         try {
             clienteFactura = new ClienteService().getClienteByCodigo(codigoTxt.getText());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error - cliente");
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (clienteFactura != null) {
             razonSocialTxt.setText(clienteFactura.getRazonSocial());
@@ -1846,7 +1915,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             try {
                 ct = new ClienteTrabaService().getClienteByCodigo(s);
             } catch (Exception ex) {
-                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (ct.getTraba1() != null) {
                 if (ct.getTraba1()) {
@@ -2120,11 +2189,11 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                 String cadena = cuit1 + "0" + tipo_cbte + "0005" + cae + vto;
                 for (int i = 0; i < 39; i++) {
                     if (x == 0) {
-                        int num = Integer.valueOf(cadena.substring(i, i + 1));
+                        int num = Integer.valueOf(cadena.substring(i, i + 1).toString());
                         suma1 += num;
                         x = 1;
                     } else {
-                        int num = Integer.valueOf(cadena.substring(i, i + 1));
+                        int num = Integer.valueOf(cadena.substring(i, i + 1).toString());
                         suma2 += num;
                         x = 0;
                     }
@@ -2158,18 +2227,19 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         // fin presentacion web
 
         // aqui va el bloqueo de equipo
-//        int bloqueado = bloquearEquipo();
-//        if (bloqueado != 1) {
-//            do {
-//                bloqueado = bloquearEquipo();
-//                fxor();
-//            } while (bloqueado != 1);
-//        }
+        int bloqueado = bloquearEquipo();
+        if (bloqueado != 1) {
+            do {
+                bloqueado = bloquearEquipo();
+                fxor();
+            } while (bloqueado != 1);
+        }
+
         String codi = clienteFactura.getCodigo();
         try {
             clienteFactura = new ClienteService().getClienteByCodigo(codi);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         saldoCliente = clienteFactura.getSaldo();
         saldoCliente += totalFactura;
@@ -2178,7 +2248,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             config = new ConfiguracionService().getFacturas(id);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Error: 2205");
         }
         config.setUltimaFechaSistema(fecha);
@@ -2241,7 +2311,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             try {
                 producto = new ProductoService().getProductoByCodigo(cod);
             } catch (Exception ex) {
-                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(this, "Error: 2268");
             }
             Float stock;
@@ -2264,7 +2334,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                             try {
                                 new ProductoService().updateProducto(caja);
                             } catch (Exception ex) {
-                                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
                                 JOptionPane.showMessageDialog(this, "Error: 2260");
                             }
                             stock += can;
@@ -2295,8 +2365,8 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             new FacturaService().saveFacturaCompleta(clienteFactura, config, ccc, ivaVentas, renglonFactura);
 //            reproceso = 1;
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this, "Error Nro 2295 - FACTURA");
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
+//            JOptionPane.showMessageDialog(this, "Errora actualizando datos Factura - REPROCESO");
 //            reproceso = 0;
         }
 //        if (reproceso == 0) {
@@ -2350,7 +2420,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Cantidad de artículos excedido");
             return;
         }
-        if (nro >= 0) {
+        if (nro > 0) {
             terminarBtn.setEnabled(true);
         } else {
             terminarBtn.setEnabled(false);
@@ -2364,8 +2434,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                 pro = new ProductoService().getProductoByCodigoBarras(Long.valueOf(codigoBarrasTxt.getText()));
                 encontrado = true;
             } catch (Exception ex) {
-                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-                nombreProductoABuscarTxt.setEditable(true);
+                Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
                 nombreProductoABuscarTxt.requestFocus();
             }
         } else {
@@ -2374,31 +2443,12 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                     pro = new ProductoService().getProductoByCodigo(Integer.valueOf(codigoProductoTxt.getText()));
                     encontrado = true;
                 } catch (Exception ex) {
-                    Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    nombreProductoABuscarTxt.setEditable(true);
+                    Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
                     nombreProductoABuscarTxt.requestFocus();
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Ingrese Código de Producto o Código de Barras");
-                nombreProductoABuscarTxt.setEditable(true);
                 nombreProductoABuscarTxt.requestFocus();
-            }
-        }
-        if (encontrado) {
-            Integer cod01 = pro.getCodigo();
-            for (RenglonFactura rf0 : renglonFactura) {
-                Integer cod02 = rf0.getProducto().getCodigo();
-                if (cod01.equals(cod02)) {
-                    JOptionPane.showMessageDialog(this, "PRODUCTO DUPLICADO");
-                    codigoBarrasTxt.setText("");
-                    codigoBarrasTxt.setEditable(true);
-                    codigoProductoTxt.setText("");
-                    codigoProductoTxt.setEditable(true);
-                    cantidadTxt.setText("");
-                    cantidadTxt.setEditable(true);
-                    agregarBtn.requestFocus();
-                    return;
-                }
             }
         }
         if (pro != null) {
@@ -2417,7 +2467,6 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                         calcularLinea(cantidad, prec, impu, pro);
                         if (cantidadTxt.getText().isEmpty()) {
                             //si la cantidad supera 9999 unidades, cuando codigo barras ingreso en cantidad
-                            JOptionPane.showMessageDialog(this, "Debe colocar una cantidad");
                             return;
                         }
                         RenglonFactura rf = new RenglonFactura();
@@ -2482,7 +2531,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                         codigoProductoTxt.setText("");
                         cantidadTxt.setText("");
                         nombreProductoABuscarTxt.setText("");
-                        agregarBtn.setEnabled(true);
+                        agregarBtn.setEnabled(false);
                         nombreProductoABuscarTxt.requestFocus();
                     }
                 } else {
@@ -2492,7 +2541,6 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                     buscarClienteBtn.setEnabled(false);
                     //codigoBarrasTxt.requestFocus();
                     nombreProductoABuscarTxt.requestFocus();
-                    agregarBtn.setEnabled(true);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Error - producto inactivo");
@@ -2501,18 +2549,15 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                 buscarClienteBtn.setEnabled(false);
                 //codigoBarrasTxt.requestFocus();
                 nombreProductoABuscarTxt.requestFocus();
-                agregarBtn.setEnabled(true);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Error - producto no existe");
             codigoProductoTxt.setText("");
             //codigoBarrasTxt.requestFocus();
-            agregarBtn.setEnabled(true);
             nombreProductoABuscarTxt.requestFocus();
         }
         comboProductos.removeAllItems();
         comboProductos.addItem("");
-        agregarBtn.setEnabled(true);
         agregarBtn.requestFocus();
     }
 
@@ -2526,7 +2571,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             tablaFactura.setModel(model1);
             nro = 0;
         }
-        renglonFactura = new ArrayList<>();
+        renglonFactura = new ArrayList<RenglonFactura>();
     }
 
     private void consultarProducto() {
@@ -2555,12 +2600,10 @@ public class FacturaWebFrame extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "No existe Producto");
                     codigoProductoTxt.requestFocus();
                 }
-                agregarBtn.setEnabled(true);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "No existe Producto");
                 //Logger.getLogger(FacturaFrame.class.getName()).log(Level.SEVERE, null, ex);
                 codigoProductoTxt.setText("");
-                codigoProductoTxt.setEditable(true);
                 codigoProductoTxt.requestFocus();
             }
         }
@@ -2672,7 +2715,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             new ClienteService().updateCliente(clienteFactura);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Error: 2512");
         }
     }
@@ -2724,7 +2767,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             fcr = new FcReservedService().saveFcReserved(fcr);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         for (RenglonFactura rf : renglonFactura) {
             RenglonFcReserved rfcr = new RenglonFcReserved();
@@ -2745,7 +2788,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
             try {
                 new RenglonFcReservedService().saveRenglonFcReserved(rfcr);
             } catch (Exception ex) {
-                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -2910,13 +2953,13 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             xCli = new ClienteTrabaService().getClienteByCodigo(codi);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         xCli.setTraba1(true);
         try {
             new ClienteTrabaService().updateCliente(xCli);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Error al bloquear Cliente");
         }
     }
@@ -2926,44 +2969,34 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             clienteFactura = new ClienteService().getClienteByCodigo(codi);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         clienteFactura.setImporteMostrador(0.0);
         try {
             new ClienteService().updateCliente(clienteFactura);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             clienteFactura = new ClienteService().getClienteByCodigo(codi);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         ClienteTraba ct = null;
         try {
             ct = new ClienteTrabaService().getClienteByCodigo(codi);
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Error al desbloquear Cliente - DEBE DESBLOQUEAR");
             return;
         }
-        if (ct != null) {
-            ct.setTraba1(false);
-            try {
-                new ClienteTrabaService().updateCliente(ct);
-            } catch (Exception ex) {
-                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(this, "Error al desbloquear Cliente - DEBE DESBLOQUEAR");
-            }
-        } else {
-            ClienteTraba ct1 = new ClienteTraba();
-            ct1.setCodigo(clienteFactura.getCodigo());
-            ct1.setTraba1(false);
-            try {
-                new ClienteTrabaService().saveCliente(ct);
-            } catch (Exception ex) {
-                Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        ct.setTraba1(false);
+        try {
+            new ClienteTrabaService().updateCliente(ct);
+        } catch (Exception ex) {
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error al desbloquear Cliente - DEBE DESBLOQUEAR");
+            return;
         }
     }
 
@@ -3141,11 +3174,109 @@ public class FacturaWebFrame extends javax.swing.JFrame {
 //
 //    }
     private void generarFacturaPdf(IvaVentas iv, List<RenglonFactura> rf) {
-        UtilFactura.generarFacturaPdf(iv, rf);
-        
+        fecha_qr = sdf_qr.format(iv.getFecha());
+        String cui = iv.getCliente().getCuit();
+        String pri = "";
+        String med = "";
+        String fin = "";
+        int lgo = cui.length();
+        if (lgo != 13) {
+            cui = "0000000000000" + cui;
+            int lgo1 = cui.length();
+            fin = cui.substring(lgo1 - 11, lgo1);
+        }
+        if (lgo > 11) {
+            pri = cui.substring(0, 2);
+            med = cui.substring(3, 11);
+            fin = cui.substring(12, 13);
+        }
+        numeroDoc_qr = pri + med + fin;
+        puntoVenta_qr = iv.getNumeroSucursal().toString();
+        tipoComprobante_qr = iv.getCodigoTipoDoc().toString();
+        numeroComprobante_qr = iv.getNumeroFactura().toString();
+        String nc = df_matriz.format(iv.getNumeroFactura());
+        importe_qr = df.format(iv.getTotal());
+        tipoDoc_qr = iv.getCliente().getTipo();
+        nroCae_qr = iv.getCae().toString();
+        String data = "{\"ver\":" + ver_qr
+                + ",\"fecha\":\"" + fecha_qr + "\""
+                + ",\"cuit\":" + cuit_qr
+                + ",\"ptoVta\":" + puntoVenta_qr
+                + ",\"tipoCmp\":" + tipoComprobante_qr
+                + ",\"nroCmp\":" + numeroComprobante_qr
+                + ",\"importe\":" + importe_qr
+                + ",\"moneda\":\"" + moneda_qr + "\""
+                + ",\"ctz\":" + cotiz_qr
+                + ",\"tipoDocRec\":" + tipoDoc_qr
+                + ",\"nroDocRec\":" + numeroDoc_qr
+                + ",\"tipoCodAut\":\"" + tipoCodigoAutoriz_qr + "\""
+                + ",\"codAut\":" + nroCae_qr + "}";
+        try {
+            generarQR(data, nc);
+        } catch (Exception ex) {
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        String code = iv.getCliente().getCodigo();
+        //String numeroFactura = iv.getNumeroFactura().toString();
+        Cliente cli = null;
+        try {
+            cli = new ClienteService().getClienteByCodigo(code);
+        } catch (Exception ex) {
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            if (categoriaIva.equals(1) || categoriaIva.equals(2)) {
+                File pdf = new PDFBuilder2().armarFcA(cli, iv, rf);  //.armarF(cli, iv, rf);
+                DesktopApi.open(pdf);
+            } else {
+                File pdf = new PDFBuilder2().armarFcB(cli, iv, rf);  //.armarF(cli, iv, rf);
+                DesktopApi.open(pdf);
+            }
+            JOptionPane.showMessageDialog(this, "PDF GENERADO CORRECTAMENTE");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("err1");
+            JOptionPane.showMessageDialog(this, "ERROR FILE 3554");
+//            JOptionPane.showMessageDialog(null, System.getProperty("user.dir"));
+//            JOptionPane.showMessageDialog(this, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("err2");
+            JOptionPane.showMessageDialog(this, "ERROR DOCUMENT 3557");
+        } catch (Exception ex) {
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("err3");
+            JOptionPane.showMessageDialog(this, "ERROR EXCEPTION 3558");
+        }
     }
 
-    
+    private void generarQR(String data, String numeroFactura) throws Exception {
+        String cadenaCodificada = Base64.getEncoder().encodeToString(data.getBytes());
+        BitMatrix matriz;
+        Writer writer = new QRCodeWriter();
+        try {
+            matriz = writer.encode(url_qr + cadenaCodificada, BarcodeFormat.QR_CODE, qrTamAncho, qrTamAlto);
+        } catch (WriterException e) {
+            e.printStackTrace(System.err);
+            JOptionPane.showMessageDialog(this, "ERROR GENERANDO QR");
+            return;
+        }
+        BufferedImage imagen = new BufferedImage(qrTamAncho,
+                qrTamAlto, BufferedImage.TYPE_INT_RGB);
+        for (int y = 0; y < qrTamAlto; y++) {
+            for (int x = 0; x < qrTamAncho; x++) {
+                int valor = (matriz.get(x, y) ? 0 : 1) & 0xff;
+                imagen.setRGB(x, y, (valor == 0 ? 0 : 0xFFFFFF));
+            }
+        }
+        //99
+        FileOutputStream qrCode;
+        //String nf_qr = numeroFactura;
+        qrCode = new FileOutputStream(ruta + numeroFactura + extension);
+        ImageIO.write(imagen, formato, qrCode);
+        qrCode.close();
+    }
 
     private void volver() {
         MainFrame ff = new MainFrame();
@@ -3162,7 +3293,7 @@ public class FacturaWebFrame extends javax.swing.JFrame {
         try {
             libres = new EquipoBloqueadoService().getEquiposLibres();
         } catch (Exception ex) {
-            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (libres) {
             EquipoBloqueado eb = null;
@@ -3173,12 +3304,12 @@ public class FacturaWebFrame extends javax.swing.JFrame {
 //                System.out.println("x"+order_num+"x");
 //                System.exit(0);
                 if (eb != null) {
-//                    new EquipoBloqueadoService().bloquearEquipoExistente(eb, true);
+                    new EquipoBloqueadoService().bloquearEquipoExistente(eb, true);
                 } else {
                     EquipoBloqueado nuevo = new EquipoBloqueado();
                     nuevo.setNombre(order_name);
                     nuevo.setOrden(order_num);
-//                    new EquipoBloqueadoService().bloquearEquipoNuevo(nuevo, true);
+                    new EquipoBloqueadoService().bloquearEquipoNuevo(nuevo, true);
                 }
             } catch (Exception ex) {
                 //Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -3191,44 +3322,32 @@ public class FacturaWebFrame extends javax.swing.JFrame {
     }
 
     private void desbloquearEquipo() {
-//        EquipoBloqueado eb = null;
+        EquipoBloqueado eb = null;
         String str0 = UtilFrame.getUsuario(); // + " " + str1;
         int largo = str0.length();
-//        Integer order_num = Integer.valueOf(str0.substring(0, 3));
-//        String order_name = str0.substring(6, largo);
-//        try {
-//            eb = new EquipoBloqueadoService().getEquipoBloqueadoByNombreAndOrden(order_name, order_num);
-//        } catch (Exception ex) {
-//            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        Integer order_num = Integer.valueOf(str0.substring(0, 3));
+        String order_name = str0.substring(6, largo);
+        try {
+            eb = new EquipoBloqueadoService().getEquipoBloqueadoByNombreAndOrden(order_name, order_num);
+        } catch (Exception ex) {
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
+        }
 //        System.out.println(order_name);
 //        System.out.println(order_num);
 //        System.out.println(eb);
 //        JOptionPane.showMessageDialog(this, "VER");
-//        try {
-////            new EquipoBloqueadoService().bloquearEquipoExistente(eb, false);
-//        } catch (Exception ex) {
-//            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            new EquipoBloqueadoService().bloquearEquipoExistente(eb, false);
+        } catch (Exception ex) {
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-//    private void fxor() {
-//        try {
-//            sleep(500);
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(FacturaWebFrame.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-    private void prepararFrame() {
-        contentPanel = panel;
-        String str0 = UtilFrame.getUsuario(); // + " " + str1;
-        JFrame jFrame = FacturaWebFrame.this;
-        jFrame.setLocationRelativeTo(null);
-        contentPanel.setBorder(new EmptyBorder(5, 5, 100, 5));
-        contentPanel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED),
-                str0, TitledBorder.LEFT, TitledBorder.BELOW_BOTTOM));
-        jFrame.setDefaultCloseOperation(0);
-        setContentPane(contentPanel);
-        getContentPane().setBackground(new java.awt.Color(135, 206, 235));
+    private void fxor() {
+        try {
+            sleep(1500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(FacturaWebFrame1.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

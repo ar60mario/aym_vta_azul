@@ -1,115 +1,119 @@
 package ar.com.ventas.services;
 
-import ar.com.ventas.bo.EquipoActivoBO;
-import ar.com.ventas.entities.EquipoActivo;
+import ar.com.ventas.bo.EquipoBloqueadoBO;
+import ar.com.ventas.entities.EquipoBloqueado;
 import ar.com.ventas.util.HibernateUtils;
-import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class EquipoActivoService {
-
-    public Integer calcularOrden(String nombre, String tipo) throws Exception {
-        Integer orden = 0;
-        List<EquipoActivo> equipos = null;
-//        EquipoActivo eq = null;
+public class EquipoBloqueadoService {
+    
+    private final EquipoBloqueadoBO bo = new EquipoBloqueadoBO();
+    
+    public Boolean getEquiposLibres() throws Exception{
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
+        Boolean libres = true;
         try {
-            equipos = new EquipoActivoBO().getEquiposTodos(nombre.trim(), tipo);
+            libres = bo.getEquiposLibres();
+//            cliente = new ClienteBO().getClienteByCodigo(codigo);
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();
             throw new Exception(ex);
         }
-//        System.out.println(equipos);
-//        JOptionPane.showMessageDialog(null, "VER");
-        if (equipos != null && !equipos.isEmpty()) {
-            int equipo = 0;
-            int equipoLibre = 0;
-            for (EquipoActivo ea : equipos) {
-                System.out.println(nombre.trim());
-                System.out.println(ea.getNombre());
-                if (ea.getNombre().equals(nombre.trim())) {
-                    System.out.println(ea.getActivo());
-                    if (ea.getActivo()) {
-                        if (ea.getOrden() > orden) {
-                            orden = ea.getOrden();
-                        }
-                    } else {
-                        orden = ea.getOrden();
-                        equipoLibre = 1;
-                        orden -= 1;
-                        break;
-                    }
-                    
-                }
-                equipo += 1;
-            }
-//            System.out.println(orden);
-//            System.exit(0);
-            orden += 1;
-            if (equipoLibre == 0) {
-                EquipoActivo ea2 = new EquipoActivo();
-                ea2.setActivo(true);
-                ea2.setNombre(nombre.trim());
-                ea2.setOrden(orden);
-                ea2.setTipo("A");
-                new EquipoActivoService().saveEquipoActivo(ea2);
-            } else {
-                EquipoActivo ea1 = equipos.get(equipo);
-                ea1.setActivo(true);
-                new EquipoActivoService().updateEquipoActivo(ea1);
-            }
-        } else {
-            orden += 1;
-            EquipoActivo ea2 = new EquipoActivo();
-            ea2.setActivo(true);
-            ea2.setNombre(nombre.trim());
-            ea2.setOrden(orden);
-            ea2.setTipo("A");
-            new EquipoActivoService().saveEquipoActivo(ea2);
-        }
-        return orden;
+        return libres;
     }
-
-    public void saveEquipoActivo(EquipoActivo equipo) throws Exception {
+    
+    public void bloquearEquipoNuevo(EquipoBloqueado eb, Boolean bloqueo) throws Exception{
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
-            new EquipoActivoBO().saveEquipoActivo(equipo);
+            bo.bloquearEquipoNuevo(eb, bloqueo);
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();
             throw new Exception(ex);
         }
     }
-
-    public void updateEquipoActivo(EquipoActivo equipo) throws Exception {
+    
+    public void bloquearEquipoNuevo2(String nombre, Integer orden) throws Exception{
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
-            new EquipoActivoBO().updateEquipoActivo(equipo);
+            bo.bloquearEquipoNuevo2(nombre, orden);
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();
             throw new Exception(ex);
         }
     }
-
-    public EquipoActivo getEquipoActivoByNombreAndOrden(String nombre, Integer orden, String sistema) throws Exception {
-        EquipoActivo ea = null;
+    
+    public void bloquearEquipoExistente(EquipoBloqueado eb, Boolean bloqueo) throws Exception{
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
         Transaction tx = session.beginTransaction();
         try {
-            ea = new EquipoActivoBO().getEquipoActivoByNombreAndOrden(nombre.trim(), orden, sistema);
+            bo.bloquearEquipoExistente(eb, bloqueo);
             tx.commit();
         } catch (Exception ex) {
             tx.rollback();
             throw new Exception(ex);
         }
-        return ea;
     }
+    
+    public void bloquearEquipoExistente2(String nombre, Integer orden) throws Exception{
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            bo.bloquearEquipoExistente2(nombre, orden);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+    }
+    
+    public void updateEquipo(EquipoBloqueado equipo) throws Exception{
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        try {
+            bo.updateEquipo(equipo);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+    }
+    
+    public EquipoBloqueado getEquipoBloqueadoByNombreAndOrden(String nombre, Integer orden) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        EquipoBloqueado eb = null;
+        try {
+            eb = bo.getEquipoBloqueadoByNombreAndOrden(nombre, orden);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+//            JOptionPane.showMessageDialog(null, "service");
+            throw new Exception(ex);
+        }
+        return eb;
+    }
+    
+    public Boolean getExisteEquipoByNombreAndOrden(String nombre, Integer orden) throws Exception {
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        Boolean existe = false;
+        try {
+            existe = bo.getExisteEquipoByNombreAndOrden(nombre, orden);
+            tx.commit();
+        } catch (Exception ex) {
+            tx.rollback();
+            throw new Exception(ex);
+        }
+        return existe;
+    }
+    
 //    public Cliente getClienteByCodigo(String codigo) throws Exception{
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
 //        Transaction tx = session.beginTransaction();

@@ -5,8 +5,10 @@
  */
 package ar.com.ventas.dao;
 
-import ar.com.ventas.entities.EquipoActivo;
+import ar.com.ventas.entities.Cliente;
+import ar.com.ventas.entities.EquipoBloqueado;
 import ar.com.ventas.util.HibernateUtils;
+//import org.hibernate.classic.Session;
 import org.hibernate.Session;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -18,38 +20,67 @@ import org.hibernate.criterion.Order;
  *
  * @author Mar y Mar Informatica
  */
-public class EquipoActivoDAO extends GenericDAO {
+public class EquipoBloqueadoDAO extends GenericDAO {
 
-    public List<EquipoActivo> getEquiposActivos(String nombre, String tipo) {
-        List<EquipoActivo> equipos;
+//    public Boolean getEquiposLibres() {
+//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+//        List<EquipoBloqueado> equipos;
+//        Boolean libre = true;
+//        Criteria criteria = session.createCriteria(EquipoBloqueado.class);
+//        criteria.add(Restrictions.eq("bloqueado", true));
+//        equipos = (List<EquipoBloqueado>) criteria.list();
+//        for(EquipoBloqueado eb:equipos){
+//            if(eb.getBloqueado()){
+//                libre = false;
+//            }
+//        }
+//        return libre;
+//    }
+    
+    public EquipoBloqueado getEquipoBloqueadoByNombreAndOrden(String nombre, Integer orden) {
+        EquipoBloqueado eb;
         Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        Criteria criteria = session.createCriteria(EquipoActivo.class);
-        criteria.add(Restrictions.eq("activo", true));
-        criteria.add(Restrictions.eq("tipo", tipo));
-        equipos = (List<EquipoActivo>) criteria.list();
-        return equipos;
-    }
-
-    public List<EquipoActivo> getEquiposTodos(String nombre, String tipo) {
-        List<EquipoActivo> equipos;
-        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        Criteria criteria = session.createCriteria(EquipoActivo.class);
-//        criteria.add(Restrictions.eq("activo", true));
-        criteria.add(Restrictions.eq("tipo", tipo));
-        equipos = (List<EquipoActivo>) criteria.list();
-        return equipos;
-    }
-
-    public EquipoActivo getEquipoActivoByNombreAndOrden(String nombre, Integer orden, String sistema) {
-        EquipoActivo equipo;
-        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
-        Criteria criteria = session.createCriteria(EquipoActivo.class);
+        Criteria criteria = session.createCriteria(EquipoBloqueado.class);
         criteria.add(Restrictions.eq("nombre", nombre));
         criteria.add(Restrictions.eq("orden", orden));
-        criteria.add(Restrictions.eq("tipo", sistema));
-        equipo = (EquipoActivo) criteria.uniqueResult();
-        return equipo;
+        eb = (EquipoBloqueado) criteria.uniqueResult();
+//        System.out.println(eb);
+//        System.out.println(nombre);
+//        System.out.println(orden);
+        return eb;
     }
+    
+//    public void bloquearEquipoExistente2(String nombre, Integer orden) {
+//        EquipoBloqueado eb;
+//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+//        Criteria criteria = session.createCriteria(EquipoBloqueado.class);
+//        criteria.add(Restrictions.eq("nombre", nombre));
+//        criteria.add(Restrictions.eq("orden", orden));
+//        eb = (EquipoBloqueado) criteria.uniqueResult();
+//        eb.setBloqueado(true);
+//        update(eb);
+//    }
+    
+    public Boolean getExisteEquipoByNombreAndOrden(String nombre, Integer orden) {
+        Integer cantidad;
+        List<EquipoBloqueado> eb = null;
+        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+        Criteria criteria = session.createCriteria(EquipoBloqueado.class);
+        criteria.add(Restrictions.eq("nombre", nombre));
+        criteria.add(Restrictions.eq("orden", orden));
+        eb = (List<EquipoBloqueado>) criteria.list();
+        cantidad = eb.size();
+        if(cantidad > 0){
+            return true;
+        }
+        return false;
+    }
+    
+    
+//    public void bloquearEquipo(EquipoBloqueado equipo, Boolean bloqueo) {
+//        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
+//        Criteria criteria = session.createCriteria(EquipoBloqueado.class);
+//    }
 //    public Cliente getByCodigo(String codigo) {
 //        Cliente cliente = null;
 //        Session session = HibernateUtils.getSessionFactory().getCurrentSession();
